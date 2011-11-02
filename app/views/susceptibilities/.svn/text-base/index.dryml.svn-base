@@ -1,0 +1,11 @@
+
+<index-page>
+	<collection: replace>
+		<div>
+			<table-plus fields="this,collected,country,season,pathogen_type">
+				<controls:/>
+			</table-plus>
+		</div>
+	</collection:>
+</index-page>
+

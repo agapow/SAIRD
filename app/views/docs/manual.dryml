@@ -1,0 +1,188 @@
+
+<docpage title="Help">
+	<doc-content:>
+
+
+<div class="section" id="introduction">
+<h1>Introduction</h1>
+<p>Emerging drug resistance is a urgent problem in public health. In many common
+diseases like influenza and tuberculosis, it is critical to record and share
+resistance data so as to prepare interventions and appropriate clinical
+treatments. SAIRD - the South American Influenza Resistance Database - is a
+web-based system for tracking and comparing resistance data across a number of
+reporting regions, allowing the saving and searching of resistance trends.</p>
+</div>
+<div class="section" id="the-saird-model-concepts">
+<h1>The SAIRD model &amp; concepts</h1>
+<p>To build a mental model of how SAIRD works, drug resistance data is stored
+and arranged in SAIRD in this way:</p>
+<ul>
+<li><p class="first">In a paragraph: <em>Members</em> will enter and view <em>susceptibility reports</em> for
+specific <em>countries</em>, <em>seasons</em> and <em>virus types</em>. These can be compared
+against <em>thresholds</em> (which are also specific for particular countries,
+seasons and virus types). Special <em>tools</em> are available to for complicated
+searching, comparison and graphing of the data.</p>
+</li>
+<li><p class="first">A <em>country</em> is given geographical area or reporting region, with
+associated members.</p>
+</li>
+<li><p class="first">A <em>season</em> is a year-long period, that starts on a given day and continues until that
+day on the following year.</p>
+</li>
+<li><p class="first">Users of SAIRD are grouped into several categories:</p>
+<blockquote>
+<ul>
+<li><p class="first"><em>Members</em> are associated with countries and cannot see data for other
+countries:</p>
+<blockquote>
+<ul class="simple">
+<li><em>Readers</em>: can only see data for their country, but not add to or edit
+it.</li>
+<li><em>Editors</em>: can add to or edit the data associated with a country.</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first"><em>Administrators</em>: special privileged users,, they can create, edit or
+delete everything.</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">The central records stored are <em>susceptibility reports</em>. These report
+an instance of observed resistance in a given <em>season</em> and <em>country</em>. This
+is recorded as a measure of resistance against one or more <em>drugs</em>,
+<em>sequence data</em> and <em>mutations</em> and <em>patient</em> information.</p>
+</li>
+<li><p class="first">Susceptibility reports are usefully compared to <em>seasonal thresholds</em>. These
+give minor and major limits for a given drug resistance found in a virus
+type in a season and country.</p>
+</li>
+</ul>
+<div class="section" id="conventions">
+<h2>Conventions</h2>
+<p>Subsections within the SAIRD site are given either as the name of the section
+or as the relative url from the base of the site. For example:</p>
+<blockquote>
+<em>Trials</em>
+<tt class="docutils literal">/trials/new</tt></blockquote>
+<p>Where a sequence of menus or choices must be followed, these are given as a
+series of steps in typewriter font. For example:</p>
+<blockquote>
+<tt class="docutils literal">Home &gt; Seasons &gt; Add a season</tt></blockquote>
+</div>
+</div>
+<div class="section" id="for-users">
+<h1>For users</h1>
+<div class="section" id="how-do-i-join-the-site">
+<h2>How do I join the site?</h2>
+<p>You can create an account yourself, but:</p>
+<ul class="simple">
+<li>You won't be able to log in until have activated your account by clicking on
+a link received in your email.</li>
+<li>Then your account won't be able to do or see anything until an administrator
+associates you with a reporting country and gives you the appropriate
+permissions.</li>
+</ul>
+<p>It may be easier to just ask an administrator to create the account for you.</p>
+<p>Note that if you have a <a class="reference external" href="http://gravatar.com">Gravatar</a> for the email
+address you use, it will appear next to your name in the system.</p>
+</div>
+<div class="section" id="how-do-i-browse-susceptibility-reports-seasonal-thresholds">
+<h2>How do I browse susceptibility reports &amp; seasonal thresholds?</h2>
+<p>On the toolbar on the top of every page, there are links to thus. Click the
+appropriate one and you see a list or reports or thresholds. Note that you
+will only see those you have access to, i.e. those for countries in which
+you are a member:</p>
+<blockquote>
+/thresholds
+/susceptibilities</blockquote>
+<p>Click on any of the listed items to go to the individual reports. Note that
+in the report you can click on the linked season, country, virus type or
+drug resistance to the detail pages for them.</p>
+</div>
+<div class="section" id="how-do-i-add-a-susceptibility-report">
+<h2>How do I add a susceptibility report?</h2>
+<p>foo</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">There's a cosmetic bug here - susceptibility reports can have
+a patient (i.e. one), but the form will allow you to create a second one.
+However if you try and save the report with 2 or more patients, it will
+raise an error.</p>
+</div>
+</div>
+<div class="section" id="how-do-i-add-a-seasonal-threshold">
+<h2>How do I add a seasonal threshold?</h2>
+<p>A seasonl
+Just like susceptibility reports, you can edit and add to a seasonal
+threshold later. For example, you might</p>
+</div>
+</div>
+<div class="section" id="for-administrators">
+<h1>For administrators</h1>
+<div class="section" id="who-can-do-what">
+<h2>Who can do what?</h2>
+<p>For security, there are different classes of users in SAIRD. They are:</p>
+<ul>
+<li><p class="first">Users: everyone with an account on SAIRD. Unless they are granted
+permissions, they can do very little.</p>
+</li>
+<li><p class="first">Administrators: special privileged users,, they can create, edit or
+delete everything.</p>
+</li>
+<li><p class="first">Members: users that are associated with countries. These will form the bulk
+of users, people who can see and create data for that country. Ordinarily
+members cannot see data that is not associated with their country.
+However, a user can be a member of more than one country. Members come in
+three types:</p>
+<blockquote>
+<ul class="simple">
+<li>Editors: are members that are allowed to create and delete data for their
+country.</li>
+<li>Readers: are members that can only see data for their country, but not
+add to or edit it.</li>
+<li>Managers: members with special administrative powers over their country.
+Note that at the moment managers have only a few small extra abilities
+over editors.</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="how-do-i-change-edit-create-x">
+<h2>How do I change / edit / create X?</h2>
+<p>The most common cases are listed below, but just about everything is editable
+in SAIRD. You can browse the lists of data in by going to the appropriate url,
+e.g.:</p>
+<blockquote>
+<tt class="docutils literal">/Thresholds</tt>
+<tt class="docutils literal">/Users</tt>
+etc.</blockquote>
+<p>Links to all of these can be found on the <tt class="docutils literal">Tools</tt> page.</p>
+<p>Something to keep in mind is that SAIRD stores two types of data:</p>
+<ul class="simple">
+<li>Data: i.e., the usual user-entered information that will: thresholds,
+susceptibility reports etc.</li>
+<li>Vocabularies: the lists of choices that are used through the system:
+countries, drug resistances, virus types etc. These can only be
+edited by the administrator. These will change rarely if at all (largely
+only when a new drug or pathogen or reporting region is added) and
+should almost never be deleted.</li>
+</ul>
+</div>
+<div class="section" id="how-do-i-create-a-user">
+<h2>How do I create a user?</h2>
+<ul class="simple">
+<li>Go to the users index page at <tt class="docutils literal">/users</tt>. This can also be found from the
+Tools page at <tt class="docutils literal">Tools &gt; User administration &gt; Users</tt>.</li>
+<li>Click <tt class="docutils literal">Create new user</tt>.</li>
+<li>Fill in their name, username, email address and password.</li>
+</ul>
+<p>Note that usernames and email addresses have to be unique throughout the
+system.</p>
+</div>
+</div>
+
+
+	</doc-content:>
+</docpage>

@@ -1,0 +1,146 @@
+============
+Things to do
+============
+
+Must do
+-------
+
+* Security mechanisms with regard to country
+
+* Graphing
+
+* Import excel
+
+* Tools controller
+
+* Decide on user-joining model: anyone join, or invite only?
+
+* Change logo
+
+* Screenshots for Monica
+
+* Check & trial in IE
+
+* Set "contact" address in footer
+
+* Seasons
+
+	- Editing & sensible creation
+	
+
+Should do
+---------
+
+* Validations?
+
+* Error signs are ugly
+
+* There is no site map - make one or delete footer pointer
+
+* Pagination in long listings of users, countries, etc.
+
+* Think: should patient location be user editable / addable
+
+* Unify names
+
+* Enhance index page search facilities.
+
+* Do they have some artwork we can use?
+
+* We currently have three "quick-link" areas on the page - the tool / navigation
+  bar, the footer and the sidebar. A bit excessive, really only need two. 
+
+* Admin tools / links in a more discrete place?
+
+
+Like to do
+----------
+
+* Localization / translation?
+
+* "Backto/upto" menu named appropriately
+
+* Proper parent link possible?
+
+* Normalize style sheet & colors
+
+* Indexes show bad capitalization "There are 3 Countries"
+
+* Give every country an icon or whatever for easy visuals
+
+* Search / side box styling needs a bit of tweaking.
+
+* Replace Thresholdentry with ThresholdReportEntry & Susceptibility with SusceptibilityReport
+
+* On a "new" page, have a "save and create another"?
+
+* "Cancel" on edit page goes to where?
+
+* All genes or just the ones they are using? And do they want genes or chromosomes?
+
+* Set string field lengths
+
+* Choose font styling
+
+* Style sidebar better
+
+* Fill in help docs
+
+* Tool icons
+
+* User head shots
+
+* Adjust whitespace in show profiles
+
+* Have the idea of a country manager
+
+* Drug "other" is a cell based test
+
+* Spreadsheet formats
+
+* Pointers to full data browsing on tools page
+
+* try out Hobo controller as tools page?
+
+* H3 is a bit crowded
+
+* PII / encryption on patient DOB
+
+* Those goddamn edit/remove buttons
+
+* Back button on tools
+
+* Highlights / style changes for error and required fields
+
+* Some sort of message or whatever for tool success?
+
+
+Have done
+---------
+
+* Gravatar picture on member card
+
+* "Users" become "members"
+
+* Countries to upper case (and in proper domain table)
+
+* Record modification date byline
+
+* "config.load_paths is deprecated and removed in Rails 3, please use
+  autoload_paths instead"
+
+* Full admin page / options
+
+* Need objects for susceptibility report entry, genes & locations
+
+* Enter vocabulary for countries, seasons, drugs, genes
+
+* Ordered indexes of country, season, drug, gene, virus types
+
+* Patient table doesn't need both "patient" and "title"
+
+* Textbox sizes on account page are bloody small
+
+* Static docs for help
+
+* Changed SAID to SAIRD for google-a-bility

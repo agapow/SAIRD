@@ -1,0 +1,71 @@
+9
+
+dir
+15
+file:///home/f0/subversion/combined-repositories/saird/trunk/vendor/plugins/paperclip/lib
+file:///home/f0/subversion/combined-repositories/saird
+
+
+
+2011-11-02T16:12:54.518644Z
+1
+paul
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+8987e1e9-b4af-42a5-8146-a3fa56b3d3fd
+
+paperclip
+dir
+
+paperclip.rb
+file
+
+
+
+
+2011-11-02T16:14:17.000000Z
+1d17dbc685eaed4003578fc0a649415d
+2011-11-02T16:12:54.518644Z
+1
+paul
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+16841
+
+tasks
+dir
+
+generators
+dir
+

@@ -1,0 +1,12 @@
+<%#
+Customize the appearance of a page showing a single seasonal threshold.
+
+TOD: hide fields that are mentioned in title
+%>
+<show-page>
+	
+	<field-list: fields="pathogen_type, season, country" />
+	
+	<collection-heading:>Drug resistance thresholds</collection-heading:>
+	
+</show-page>

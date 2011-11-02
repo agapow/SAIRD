@@ -1,0 +1,122 @@
+<!-- general page changes and extensions -->
+
+
+<!--
+The global footer.
+
+TODO: check links.
+-->
+<def tag="footer-nav">
+    <ul>
+	<nav-item href="/docs">About &amp; help</nav-item>
+	<nav-item href="http://www.hpa.org.uk/"><hosted-logo /></nav-item>
+	<nav-item href="/docs/contact">Contact</nav-item>
+    </ul>
+</def>
+
+
+<!--
+Change the overall page layout.
+
+This effects several changes:
+* inserting the favicon in the page
+* inserting the default footer
+* changing to the default site header
+
+TODO: merge without live search?
+
+-->
+<extend tag="page">
+	<old-page merge without-live-search>
+	
+		<after-scripts:>
+			<link rel="shortcut icon" href="#{base_url}/favicon.ico" />
+		</after-scripts:>
+		
+		<app-name:>
+			<a href="#{base_url}/"><site-logo/></a>
+		</app-name>
+		
+		<footer: param><footer-nav/></footer:> 
+		
+	</old-page>
+</extend>
+
+
+
+<!--
+Change the overall show page layout.
+
+Place a link at the top of all show pages that points to the index.
+There's some confusion here: a "parent-link" appears at the top of several show
+pages, but is a little cryptic (e.g. "2 Countries" on the user page? and
+something hinky seems to be going on with context as this resolves to a list of
+countries. It turns out that this is done just for objects that belong to a
+collection (:belongs_to) and the link is being generated to point to other
+objects of that collection. So this scrubs the collection link in favour of an
+index link.
+
+TODO: some better styling?
+TODO: using the relative url is a bit suspect
+TODO: making naming/wording a bit better
+FIXME: not showing up for seasons?
+-->
+<extend tag="show-page">
+	<old-show-page merge>
+	 
+		<prepend-content-header:>
+			&laquo; <a href="." class="discrete">back to all records</a>
+		</prepend-content-header:>
+	 
+		<parent-link:>
+			 <!--&laquo; <a href="." class="discrete">browse all records</a>-->
+		</parent-link:>
+		
+		<before-content-body:>
+			<if test="&this.respond_to?(:description)">
+				<p class="description">
+					fdgfdgfdg<view:description />
+				</p>
+			</if>
+		</before-content-body:>
+		
+		<after-content-body:>
+			<br clear="all" />
+			<if test="&this.respond_to?(:created_at)">
+			 <p class="byline">
+				Created <view:created_at />. Last modified <view:updated_at />.
+			 </p>
+			</if>
+		</after-content-body:>
+		
+	</old-show-page>
+</extend>
+
+
+
+<!--
+Change the overall index page layout.
+
+This is to makes the capitilzation of records more rational. At the current
+moment, it's a bit wonky.
+-->
+<extend tag="index-page">
+	<old-index-page merge>
+		
+		<heading:>
+			<%= this.member_class.view_hints.model_name_plural.capitalize() %>
+		</heading:>
+		
+		<count:>
+			<span count="&this.size">
+				There <count label="records" prefix="are" lowercase />.
+			</span>
+		</count:> 
+
+	</old-index-page>
+</extend>
+
+
+
+
+

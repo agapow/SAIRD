@@ -1,0 +1,54 @@
+
+<docpage title="Tools & utilities">
+	<doc-content:>
+		
+		<subhead>Tools</subhead> 
+		<ul>
+			<li><a href="bulkupload">Bulk upload of resistance data</a></li>
+			<li><a href="exquery">Extended query</a></li>
+			<li><a href="graphresist">Graph resistance data</a></li>
+		</ul>
+		
+		<%# TODO: need a full browsing menu for users %>
+		
+		<% if current_user.administrator? %>
+			<!-- provide quick links to editting -->
+			<subhead>Administrative tools</subhead> 
+			
+				<p>From here you can browse and edit all data. Be careful, this
+				provides access to the full, raw data.</p>
+			
+				<subsubhead>Entered data:</subsubhead>
+				
+				<ul>
+					<%-
+						link_list = [Patient, SusceptibilitySequence,
+							SequenceMutation, Threshold, Thresholdentry,
+							Susceptibility]
+					%>
+					<nav-item repeat="&link_list" with="&this">
+						<%= this.view_hints.model_name_plural %>
+					</nav-item>
+				</ul>
+				
+				<subsubhead>Vocabularies and domain tables:</subsubhead>
+				
+				<ul>
+					<%-
+						link_list = [Country, Resistance, PathogenType, Season,
+							Gene, PatientLocation]
+					%>
+					<nav-item repeat="&link_list" with="&this">
+						<%= this.view_hints.model_name_plural %>
+					</nav-item>
+				</ul>
+	
+				<subsubhead>User administration:</subsubhead>
+				
+				<ul>
+					<nav-item with="&User">Users</nav-item>
+				</ul>
+				
+		<% end %>
+	</doc-content:>
+</docpage>

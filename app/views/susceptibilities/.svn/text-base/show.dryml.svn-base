@@ -1,0 +1,46 @@
+<show-page>
+	
+	<collection-section:>
+		
+		<h3>Resistances</h3>
+		<if test="&this.susceptibility_entries.length == 0">
+			<p>No resistances have been entered.</p>
+		</if>
+		<else>
+			<ul>
+				<repeat with="&this.susceptibility_entries">
+					<li><%= this.name %></li>
+				</repeat>
+			</ul>
+		</else>
+		
+		<h3>Sequences</h3>
+		<if test="&this.susceptibility_sequences.length == 0">
+			<p>No sequences have been entered.</p>
+		</if>
+		<else>
+			<ul>
+				<repeat with="&this.susceptibility_sequences">
+					<li>
+						<%= this.title.blank? ? '-' : this.title %>,
+						<%= this.gene.name %>:
+						<repeat with="&this.sequence_mutations">
+								<%= this.description %>
+						</repeat>
+					</li>
+				</repeat>
+			</ul>
+		</else>
+	
+		<h3>Patient</h3>
+		<if test="&this.patients.length == 0">
+			<p>No patient data has been entered.</p>
+		</if>
+		<else>
+			<view:patients />
+		</else>
+		
+	</collection-section:>
+	
+</show-page>
+

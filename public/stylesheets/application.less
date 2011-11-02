@@ -1,0 +1,395 @@
+/*
+General stylesheet for application.
+
+This should be placed in app/stylesheets and will generate the equivalent .css
+file in public/stylesheets. 
+
+Note that comments in this file are stripped out by the less processing.
+*/
+
+/*** IMPORTS */
+
+/*** CONSTANTS & DEFINES */
+
+/*
+According to our color tool, 4 magic colors that work together.
+
+TODO: change element colors to match these.
+*/
+@orangebrown:   #e67e00;
+@darkbrown:     #4d2a00;
+@salmon:        #ffc580;
+@darkgray:      #737373;
+
+@page-clr: #A8ACB7; /* TODO: not required? */
+@body-clr: black; 
+@menu-clr: @orangebrown;
+@discrete-text-clr: @darkgray;
+
+@discrete-border-style:  1px dotted @discrete-text-clr;
+
+/* space on either side of main content */
+@gutter-width: 4%;
+
+@logo-ht: 180px;
+
+
+/*** IMPLEMENTATION */
+
+/* GENERAL STYLES */
+
+.undecorated_link {
+	text-decoration: none;
+	border-width: 0px;
+}
+
+.discrete_text {
+	color: @discrete-text-clr;
+}
+
+
+/* OVERALL LAYOUT */
+
+html, body {
+	background: @darkgray;
+	font-size: 1.0em;
+	font-family: franklin-gothic-urw, sans-serif;
+}
+
+body {
+	background: beige;
+	color: @body-clr;
+	width: auto;
+	padding: 0 @gutter-width;
+}
+
+
+/* HEADER */
+
+/* clickable logo and header */
+div.page-header {
+	
+	h1.app-name {
+		padding: 10px;
+		margin: 0px; 
+		text-align: center;
+		background: white;
+		
+		a {
+			margin: 10px auto;
+			padding: 0px;
+			.undecorated_link;
+		}
+	}
+
+	/* navigation tabs */
+	.main-nav {
+		position: relative;
+		top: 0px;
+		height: 21px;
+		width: 100%;
+		line-height: 21px;
+		padding: 0px;
+		text-align: right;
+		background: @menu-clr;
+	
+		li {
+			margin: 0px;
+			padding: 0px;
+			display:inline;
+			float:none;
+			width:100%;  
+			height:100%;
+	
+			a {
+				margin: 0px;
+				font-weight: normal;
+				display:inline;
+				font-size: 1.1em;
+				background: transparent !important;
+				color: white;
+			}
+		}
+		
+		/* TODO: merge into declaration above */
+		li.current a {
+			color: black;
+		}
+	
+		li a:hover {
+			background: white !important;
+			color: @menu-clr;
+		}
+	}
+}
+
+/* TABLE RULES */ 
+
+table {
+	border-collapse: separate;
+	border-spacing: 0px;
+	font-size: 100%
+}
+
+ 
+
+/* FORM ELEMENTS & ACTIONS */
+
+.button, input[type="reset"] {
+	color: white;
+	background: @menu-clr;
+	border: 1px solid @menu-clr;
+	font-size: 80%;
+	padding: 5px 10px;
+	width: auto;
+	font-size: 11px;
+	font-weight: bold;
+	margin-top: 10px;
+	text-align: center;
+	-webkit-box-align: center;
+	
+	:hover {
+		color: black;
+		background: white;
+		cursor: pointer;
+	}
+}
+
+
+a.edit-link, a.new-link, a.cancel {
+	color: @menu-clr;
+	border: 1px solid @menu-clr;
+	padding: 0px 2px;
+	font-size: 80%;
+	:hover {
+		color: white;
+		background: black;
+		border-color: black;
+	}
+}
+
+.field-list {
+	textarea, input[type=text], input[type=password] {
+		width: 50%;
+		margin: 0px;
+	}
+}
+
+
+div.input-many-item {
+	border: 1px dotted @discrete-text-clr;
+	padding: 0 1em;
+	margin-bottom: 1em;
+}
+
+
+
+
+/*** FLASHES & MESSAGES */
+/*
+Attempts to unify and share the declarations here result in the base formatting
+coming through.
+TODO: investigate generated css.
+*/
+
+.flash {
+	margin-top: 15px;
+}
+
+.flash.notice, .flash.success {
+	background: #DFF2BF;
+	color:  #4F8A10;
+	background-image: url(/images/icons/32/comment.png);
+	background-repeat: no-repeat;
+	background-position: 8px center;
+	padding-left: 48px;
+	border: 1px solid;
+}
+
+.flash.error {
+	background: #BC1C3D;
+	color: white;
+	background-image: url(/images/icons/32/error.png);
+	background-repeat: no-repeat;
+	background-position: 8px center;
+	padding-left: 48px;
+	border: 1px solid #900024;
+}
+
+div.section.error-messages {
+	background-image: url(/images/icons/32/error.png);
+	background-repeat: no-repeat;
+	background-position: 8px center;
+	padding-left: 48px;
+}
+
+
+/* MAIN CONTENT */
+
+/*
+The main body, the page area with varying content.
+
+This normalizes the original over-complicated formatting where each block within
+content had to be individually indented. Now we just let them fill the enclosing
+block, and set internal padding on it.
+*/
+div.section.content {
+	margin: 0px;
+	padding: 1.0em 45px 3.0em 45px;
+	
+	.content-header {
+		margin: 0 0 15px 0px;
+	}
+	
+	.content-body {
+		margin: 0;
+		padding: 0;
+	}
+	
+	p, ul, ol, h1, h2, h3, h4, h5 {
+		margin-bottom: 0.4em;
+	}
+	
+	h2, h3, h4, h5 {
+		margin-top: 1.5em;
+	}
+	
+	h2 {
+		font-size: 150%;
+		line-height: normal;
+	}
+	
+	h3 {
+		font-size: 110%;
+		font-weight: bold;
+		
+	}
+	
+	
+	h4 {
+		font-size: 100%;
+		text-decoration: underline;
+		font-weight: normal;
+	}
+	
+	span.description {
+		margin: 0 0 5.0em;
+		font-style: italic;
+		.discrete_text;
+	}
+	
+	p.byline {
+		margin: 1em 0 0;
+		padding: 0.5em 0 2.0em;
+		border-top: @discrete-border-style;
+		font-style: italic;
+		.discrete_text;
+	}
+}
+
+/*
+NOTE: there's some weirdness in the account details, login and signup pages
+where they are all very narrow, although not in quite the same ways. Fixed now.
+*/
+.user-account-page .change-password {
+	width: 100%;
+}
+
+.login-page .field-list {
+	width: 100%;
+}
+
+.signup-page .field-list {
+	width: 100%;
+}
+
+div.page-content, div.page-content .aside { background: white; }
+
+.aside1 { width: 173px; padding: 10px;}
+
+.search-and-browse  {
+	background: #F4A460;
+	border: 1px solid #313367;
+	font-size: 11px;
+	margin: 4px;
+ 
+	h3 {
+		background: #E67E00; color: black;
+		margin: 0px; padding: 3px 5px;
+		font-weight: normal; font-size: 13px;
+	}
+	
+	a { background: none; color: black;}
+	
+	.navigation {
+		list-style-type: circle;
+		
+		.li {
+			padding: 3px 0px;
+			font-size: 11px;
+			lineheight:14px;
+			color: white;
+			
+			a { border:none;}
+		}
+		
+	}
+	
+	.search {
+		form { margin: 0 3px 3px 3px;}
+		.search p { margin: 3px;}
+	}
+	
+	.search-field { width: 120px;}
+	.submit-button { padding: 2px; color: white; background:  #E67E00}
+	.browse-by-audience select { margin: 5px 3px; width: 92%;}
+}
+
+
+.card {
+	padding: 0.5em 1em;
+	
+}
+
+
+/* TOOL FORMS & RESULTS */
+div.tool-results, div.tool-form {
+	border-top: @discrete-border-style;
+	margin-top: 1.0em;
+	padding-top: 1.0em;
+}
+
+.dbg-msg {
+	color: red;
+}
+
+/* FOOTER */
+
+.page-footer {
+	background: white no-repeat bottom right; 
+	border-top: 1px solid  #E67E00;
+	padding: 10px;
+   text-align: center;
+
+	ul {
+		list-style-type: none;
+		
+		li {
+			display: inline;
+			padding: 0 10px;
+			
+			a {
+				.undecorated_link;
+				color: @discrete-text-clr;
+				
+				img {
+					vertical-align:middle;
+				}
+			}
+		}
+	}
+
+}
+
+
+/*** END */
