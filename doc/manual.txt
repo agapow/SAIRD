@@ -16,20 +16,19 @@ reporting regions, allowing the saving and searching of resistance trends.
 The SAIRD model & concepts
 --------------------------
 
-To build a mental model of how SAIRD works, drug resistance data is stored
-and arranged in SAIRD in this way:
+How SAIRD works, in a paragraph: *Members* will enter and view *susceptibility
+reports* for specific *countries*, *seasons* and *virus types*. These can be
+compared against *thresholds* (which are also specific for particular
+countries, seasons and virus types). Special *tools* are available to for
+complicated searching, comparison and graphing of the data.
 
-* In a paragraph: *Members* will enter and view *susceptibility reports* for
-  specific *countries*, *seasons* and *virus types*. These can be compared
-  against *thresholds* (which are also specific for particular countries,
-  seasons and virus types). Special *tools* are available to for complicated
-  searching, comparison and graphing of the data.
+In more detail:
 
 * A *country* is given geographical area or reporting region, with
   associated members.
 
-* A *season* is a year-long period, that starts on a given day and continues until that
-  day on the following year. 
+* A *season* is a year-long period, that starts on a given day and continues
+  until that day on the following year. 
   
 * Users of SAIRD are grouped into several categories:
 
@@ -39,15 +38,16 @@ and arranged in SAIRD in this way:
 		* *Readers*: can only see data for their country, but not add to or edit
 		  it.
 	
-		* *Editors*: can add to or edit the data associated with a country.
+		* *Editors*: normal members, can add to or edit the data associated with
+		  a country.
 
-	* *Administrators*: special privileged users,, they can create, edit or
+	* *Administrators*: special privileged users, can create, edit or
 	  delete everything.
 
 * The central records stored are *susceptibility reports*. These report
   an instance of observed resistance in a given *season* and *country*. This
   is recorded as a measure of resistance against one or more *drugs*,
-  *sequence data* and *mutations* and *patient* information. 
+  *sequence data* with *mutations* and *patient* information. 
 
 * Susceptibility reports are usefully compared to *seasonal thresholds*. These
   give minor and major limits for a given drug resistance found in a virus
@@ -64,7 +64,7 @@ or as the relative url from the base of the site. For example:
 	``/trials/new``
 
 Where a sequence of menus or choices must be followed, these are given as a
-series of steps in typewriter font. For example:
+series of steps in italics. For example:
 
 	``Home > Seasons > Add a season``
 
@@ -83,8 +83,6 @@ You can create an account yourself, but:
 * Then your account won't be able to do or see anything until an administrator
   associates you with a reporting country and gives you the appropriate
   permissions.
-  
-It may be easier to just ask an administrator to create the account for you.
 
 Note that if you have a `Gravatar <http://gravatar.com>`__ for the email
 address you use, it will appear next to your name in the system.
@@ -93,13 +91,14 @@ address you use, it will appear next to your name in the system.
 How do I browse susceptibility reports & seasonal thresholds?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On the toolbar on the top of every page, there are links to thus. Click the
-appropriate one and you see a list or reports or thresholds. Note that you
-will only see those you have access to, i.e. those for countries in which
-you are a member:
+On the toolbar on the top of every page, there are links to these:
 
-	/thresholds
-	/susceptibilities
+	*Susceptibility report*
+	*Seasonal thresholds*
+
+Click the appropriate one and you see a list or reports or thresholds. Note
+that you normally only see those you have access to, i.e. those for countries
+in which you are a member.
 
 Click on any of the listed items to go to the individual reports. Note that
 in the report you can click on the linked season, country, virus type or
@@ -109,19 +108,62 @@ drug resistance to the detail pages for them.
 How do I add a susceptibility report?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-foo
+On the list, or index page for susceptibility reports, click the *New*
+button. You'll be presented with a form to fill in, with required and
+optional parts:
 
-.. note:: There's a cosmetic bug here - susceptibility reports can have
-   a patient (i.e. one), but the form will allow you to create a second one.
-   However if you try and save the report with 2 or more patients, it will
-   raise an error.
+* A susceptibility report must have an name (usually the isolate involved),
+  a country, a virus type and a collection date.
+
+* It may have zero or more susceptibility entries (a drug and a measured
+  resistance), a patient (with clinical data), and zero or more sequences
+  entries (being a gene and associated mutations). The ``+`` and ``-``
+  buttons can be used increase the number of the entries, sequences and
+  mutations.
+
+After editing the form click *Save*. (Or *Cancel* to not create a new report.)
+If there are no problems, you'll be taken to a page that shows the new report.
+If there are any errors, you'll return to the editing page, with the problematic fields highlighted. (Errors could include entering the same
+mutation multiple times, forgetting to choose a virus type, entering a
+negative resistance value, etc.)
+
+You can create a susceptibility report and later add to or edit it. Go to
+the index page for reports, click on the correct record to see it, then
+click the *Edit* button. You can change the value that are already there,
+add entries and sequences and so on.
+
+**Note:** There's a cosmetic bug here - susceptibility reports can have
+a patient (i.e. one), but the form will allow you to create a second one.
+However if you try and save the report with 2 or more patients, it will
+raise an error.
+
 
 How do I add a seasonal threshold?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A seasonl 
+Seasonal thresholds are handled just like susceptibility reports: On the list, or index page for thresholds, click the *New* button. Then fill in:
+
+* A virus type, country and season. 
+
+* Optionally, zero or more resistances - an agent or drug with minor and
+  major thresholds for resistance.
+
 Just like susceptibility reports, you can edit and add to a seasonal
-threshold later. For example, you might 
+threshold later, perhaps as data comes in.
+
+
+How do I add multiple records?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SAIRD provides *tools* for the bulk uploading of susceptibility reports and
+seasonal thresholds using Excel spreadsheets. These can be found under the
+*Tools > Bulk upload* link from the toolbar. Also, if you look at *Docs >
+Downloads*, you find a description of the expected formats for each. 
+
+For susceptibility reports, select the correct country, season and virus type
+on the form, and the spreadsheet of data to be uploaded. (Thus, all records
+in a single upload belong to the same country, season and virus type.) 
+Should there be any mistakes in the data, these will be reported.
 
 
 
@@ -155,19 +197,35 @@ For security, there are different classes of users in SAIRD. They are:
 	  Note that at the moment managers have only a few small extra abilities
 	  over editors.
 
+**Note:** In development/demonstration mode, there's a gray bar across the top of the screen that allows everyone to see everything and change between
+accounts. 
+
+
+How do I create a user?
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The easiest way is to let users signup themselves. Note that usernames and
+email addresses have to be unique throughout the system. After this, you
+give to give users the correct permissions:
+
+* Go to the users index page (via the link in *Tools*). Click on the user to
+  view it and the *Edit*.
+
+* Check the appropriate box to give them administrator privileges.
+
+* Use the plus and minus buttons to "add" countries and the associated access.
+
 
 How do I change / edit / create X?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The most common cases are listed below, but just about everything is editable
-in SAIRD. You can browse the lists of data in by going to the appropriate url,
-e.g.:
+The most common cases for users are listed above, but just about everything is
+editable in SAIRD. You can browse the lists of data by going to the
+appropriate url, e.g.:
 
 	``/Thresholds``
 	``/Users``
 	etc.
-	
-Links to all of these can be found on the ``Tools`` page.
 
 Something to keep in mind is that SAIRD stores two types of data:
 
@@ -180,19 +238,20 @@ Something to keep in mind is that SAIRD stores two types of data:
   only when a new drug or pathogen or reporting region is added) and
   should almost never be deleted.
 
+Creation and editing follows the same rules for all content:
 
-How do I create a user?
-~~~~~~~~~~~~~~~~~~~~~~~
+* Go to the index page for the content, e.g. *Drugs*, ``/drugs``. Links to all
+  of these can be found on the ``Tools`` page.
 
-* Go to the users index page at ``/users``. This can also be found from the
-  Tools page at ``Tools > User administration > Users``.
-  
-* Click ``Create new user``.
+* Click *New*
 
-* Fill in their name, username, email address and password.
+* Fill in the form and click *Save*. Correct errors if necessary.
 
-Note that usernames and email addresses have to be unique throughout the
-system.
+To edit any record, again go to the index page. Click on the individual records and them click *Edit*. Change as required.
+
+**Note:** be very careful about editing vocabulary tables, especially when it
+comes to deleting entries. If, for example, you delete a drug entry that
+various reports are using, bad things will happen.
 
 
 

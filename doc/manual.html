@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
 <title>SAIRD Manual and How-To</title>
 <style type="text/css">
 
 /*
 :Author: David Goodger (goodger@python.org)
-:Id: $Id: html4css1.css 6253 2010-03-02 00:24:53Z milde $
+:Id: $Id: html4css1.css 5951 2009-05-18 18:03:10Z milde $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
@@ -157,21 +157,15 @@ h2.subtitle {
 hr.docutils {
   width: 75% }
 
-img.align-left, .figure.align-left, object.align-left {
+img.align-left, .figure.align-left{
   clear: left ;
   float: left ;
   margin-right: 1em }
 
-img.align-right, .figure.align-right, object.align-right {
+img.align-right, .figure.align-right {
   clear: right ;
   float: right ;
   margin-left: 1em }
-
-img.align-center, .figure.align-center, object.align-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 .align-left {
   text-align: left }
@@ -324,20 +318,18 @@ reporting regions, allowing the saving and searching of resistance trends.</p>
 </div>
 <div class="section" id="the-saird-model-concepts">
 <h1>The SAIRD model &amp; concepts</h1>
-<p>To build a mental model of how SAIRD works, drug resistance data is stored
-and arranged in SAIRD in this way:</p>
+<p>How SAIRD works, in a paragraph: <em>Members</em> will enter and view <em>susceptibility
+reports</em> for specific <em>countries</em>, <em>seasons</em> and <em>virus types</em>. These can be
+compared against <em>thresholds</em> (which are also specific for particular
+countries, seasons and virus types). Special <em>tools</em> are available to for
+complicated searching, comparison and graphing of the data.</p>
+<p>In more detail:</p>
 <ul>
-<li><p class="first">In a paragraph: <em>Members</em> will enter and view <em>susceptibility reports</em> for
-specific <em>countries</em>, <em>seasons</em> and <em>virus types</em>. These can be compared
-against <em>thresholds</em> (which are also specific for particular countries,
-seasons and virus types). Special <em>tools</em> are available to for complicated
-searching, comparison and graphing of the data.</p>
-</li>
 <li><p class="first">A <em>country</em> is given geographical area or reporting region, with
 associated members.</p>
 </li>
-<li><p class="first">A <em>season</em> is a year-long period, that starts on a given day and continues until that
-day on the following year.</p>
+<li><p class="first">A <em>season</em> is a year-long period, that starts on a given day and continues
+until that day on the following year.</p>
 </li>
 <li><p class="first">Users of SAIRD are grouped into several categories:</p>
 <blockquote>
@@ -348,11 +340,12 @@ countries:</p>
 <ul class="simple">
 <li><em>Readers</em>: can only see data for their country, but not add to or edit
 it.</li>
-<li><em>Editors</em>: can add to or edit the data associated with a country.</li>
+<li><em>Editors</em>: normal members, can add to or edit the data associated with
+a country.</li>
 </ul>
 </blockquote>
 </li>
-<li><p class="first"><em>Administrators</em>: special privileged users,, they can create, edit or
+<li><p class="first"><em>Administrators</em>: special privileged users, can create, edit or
 delete everything.</p>
 </li>
 </ul>
@@ -361,7 +354,7 @@ delete everything.</p>
 <li><p class="first">The central records stored are <em>susceptibility reports</em>. These report
 an instance of observed resistance in a given <em>season</em> and <em>country</em>. This
 is recorded as a measure of resistance against one or more <em>drugs</em>,
-<em>sequence data</em> and <em>mutations</em> and <em>patient</em> information.</p>
+<em>sequence data</em> with <em>mutations</em> and <em>patient</em> information.</p>
 </li>
 <li><p class="first">Susceptibility reports are usefully compared to <em>seasonal thresholds</em>. These
 give minor and major limits for a given drug resistance found in a virus
@@ -373,12 +366,12 @@ type in a season and country.</p>
 <p>Subsections within the SAIRD site are given either as the name of the section
 or as the relative url from the base of the site. For example:</p>
 <blockquote>
-<em>Trials</em>, 
+<em>Trials</em>
 <tt class="docutils literal">/trials/new</tt></blockquote>
 <p>Where a sequence of menus or choices must be followed, these are given as a
-series of steps in typewriter font. For example:</p>
+series of steps in italics. For example:</p>
 <blockquote>
-<em>Home &gt; Seasons &gt; Add a season</em></blockquote>
+<tt class="docutils literal">Home &gt; Seasons &gt; Add a season</tt></blockquote>
 </div>
 </div>
 <div class="section" id="for-users">
@@ -393,39 +386,71 @@ a link received in your email.</li>
 associates you with a reporting country and gives you the appropriate
 permissions.</li>
 </ul>
-<p>It may be easier to just ask an administrator to create the account for you.</p>
 <p>Note that if you have a <a class="reference external" href="http://gravatar.com">Gravatar</a> for the email
 address you use, it will appear next to your name in the system.</p>
 </div>
 <div class="section" id="how-do-i-browse-susceptibility-reports-seasonal-thresholds">
 <h2>How do I browse susceptibility reports &amp; seasonal thresholds?</h2>
-<p>On the toolbar on the top of every page, there are links to thus. Click the
-appropriate one and you see a list or reports or thresholds. Note that you
-will only see those you have access to, i.e. those for countries in which
-you are a member:</p>
+<p>On the toolbar on the top of every page, there are links to these:</p>
 <blockquote>
-/thresholds
-/susceptibilities</blockquote>
+<em>Susceptibility report</em>
+<em>Seasonal thresholds</em></blockquote>
+<p>Click the appropriate one and you see a list or reports or thresholds. Note
+that you normally only see those you have access to, i.e. those for countries
+in which you are a member.</p>
 <p>Click on any of the listed items to go to the individual reports. Note that
 in the report you can click on the linked season, country, virus type or
 drug resistance to the detail pages for them.</p>
 </div>
 <div class="section" id="how-do-i-add-a-susceptibility-report">
 <h2>How do I add a susceptibility report?</h2>
-<p>foo</p>
-<div class="note">
-<p class="first admonition-title">Note</p>
-<p class="last">There's a cosmetic bug here - susceptibility reports can have
+<p>On the list, or index page for susceptibility reports, click the <em>New</em>
+button. You'll be presented with a form to fill in, with required and
+optional parts:</p>
+<ul class="simple">
+<li>A susceptibility report must have an name (usually the isolate involved),
+a country, a virus type and a collection date.</li>
+<li>It may have zero or more susceptibility entries (a drug and a measured
+resistance), a patient (with clinical data), and zero or more sequences
+entries (being a gene and associated mutations). The <tt class="docutils literal">+</tt> and <tt class="docutils literal">-</tt>
+buttons can be used increase the number of the entries, sequences and
+mutations.</li>
+</ul>
+<p>After editing the form click <em>Save</em>. (Or <em>Cancel</em> to not create a new report.)
+If there are no problems, you'll be taken to a page that shows the new report.
+If there are any errors, you'll return to the editing page, with the problematic fields highlighted. (Errors could include entering the same
+mutation multiple times, forgetting to choose a virus type, entering a
+negative resistance value, etc.)</p>
+<p>You can create a susceptibility report and later add to or edit it. Go to
+the index page for reports, click on the correct record to see it, then
+click the <em>Edit</em> button. You can change the value that are already there,
+add entries and sequences and so on.</p>
+<p><strong>Note:</strong> There's a cosmetic bug here - susceptibility reports can have
 a patient (i.e. one), but the form will allow you to create a second one.
 However if you try and save the report with 2 or more patients, it will
 raise an error.</p>
 </div>
-</div>
 <div class="section" id="how-do-i-add-a-seasonal-threshold">
 <h2>How do I add a seasonal threshold?</h2>
-<p>A seasonl
-Just like susceptibility reports, you can edit and add to a seasonal
-threshold later. For example, you might</p>
+<p>Seasonal thresholds are handled just like susceptibility reports: On the list, or index page for thresholds, click the <em>New</em> button. Then fill in:</p>
+<ul class="simple">
+<li>A virus type, country and season.</li>
+<li>Optionally, zero or more resistances - an agent or drug with minor and
+major thresholds for resistance.</li>
+</ul>
+<p>Just like susceptibility reports, you can edit and add to a seasonal
+threshold later, perhaps as data comes in.</p>
+</div>
+<div class="section" id="how-do-i-add-multiple-records">
+<h2>How do I add multiple records?</h2>
+<p>SAIRD provides <em>tools</em> for the bulk uploading of susceptibility reports and
+seasonal thresholds using Excel spreadsheets. These can be found under the
+<em>Tools &gt; Bulk upload</em> link from the toolbar. Also, if you look at <em>Docs &gt;
+Downloads</em>, you find a description of the expected formats for each.</p>
+<p>For susceptibility reports, select the correct country, season and virus type
+on the form, and the spreadsheet of data to be uploaded. (Thus, all records
+in a single upload belong to the same country, season and virus type.)
+Should there be any mistakes in the data, these will be reported.</p>
 </div>
 </div>
 <div class="section" id="for-administrators">
@@ -458,17 +483,30 @@ over editors.</li>
 </blockquote>
 </li>
 </ul>
+<p><strong>Note:</strong> In development/demonstration mode, there's a gray bar across the top of the screen that allows everyone to see everything and change between
+accounts.</p>
+</div>
+<div class="section" id="how-do-i-create-a-user">
+<h2>How do I create a user?</h2>
+<p>The easiest way is to let users signup themselves. Note that usernames and
+email addresses have to be unique throughout the system. After this, you
+give to give users the correct permissions:</p>
+<ul class="simple">
+<li>Go to the users index page (via the link in <em>Tools</em>). Click on the user to
+view it and the <em>Edit</em>.</li>
+<li>Check the appropriate box to give them administrator privileges.</li>
+<li>Use the plus and minus buttons to &quot;add&quot; countries and the associated access.</li>
+</ul>
 </div>
 <div class="section" id="how-do-i-change-edit-create-x">
 <h2>How do I change / edit / create X?</h2>
-<p>The most common cases are listed below, but just about everything is editable
-in SAIRD. You can browse the lists of data in by going to the appropriate url,
-e.g.:</p>
+<p>The most common cases for users are listed above, but just about everything is
+editable in SAIRD. You can browse the lists of data by going to the
+appropriate url, e.g.:</p>
 <blockquote>
 <tt class="docutils literal">/Thresholds</tt>
 <tt class="docutils literal">/Users</tt>
 etc.</blockquote>
-<p>Links to all of these can be found on the <tt class="docutils literal">Tools</tt> page.</p>
 <p>Something to keep in mind is that SAIRD stores two types of data:</p>
 <ul class="simple">
 <li>Data: i.e., the usual user-entered information that will: thresholds,
@@ -479,17 +517,17 @@ edited by the administrator. These will change rarely if at all (largely
 only when a new drug or pathogen or reporting region is added) and
 should almost never be deleted.</li>
 </ul>
-</div>
-<div class="section" id="how-do-i-create-a-user">
-<h2>How do I create a user?</h2>
+<p>Creation and editing follows the same rules for all content:</p>
 <ul class="simple">
-<li>Go to the users index page at <tt class="docutils literal">/users</tt>. This can also be found from the
-Tools page at <tt class="docutils literal">Tools &gt; User administration &gt; Users</tt>.</li>
-<li>Click <tt class="docutils literal">Create new user</tt>.</li>
-<li>Fill in their name, username, email address and password.</li>
+<li>Go to the index page for the content, e.g. <em>Drugs</em>, <tt class="docutils literal">/drugs</tt>. Links to all
+of these can be found on the <tt class="docutils literal">Tools</tt> page.</li>
+<li>Click <em>New</em></li>
+<li>Fill in the form and click <em>Save</em>. Correct errors if necessary.</li>
 </ul>
-<p>Note that usernames and email addresses have to be unique throughout the
-system.</p>
+<p>To edit any record, again go to the index page. Click on the individual records and them click <em>Edit</em>. Change as required.</p>
+<p><strong>Note:</strong> be very careful about editing vocabulary tables, especially when it
+comes to deleting entries. If, for example, you delete a drug entry that
+various reports are using, bad things will happen.</p>
 </div>
 </div>
 </div>

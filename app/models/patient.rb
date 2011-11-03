@@ -31,15 +31,15 @@ class Patient < ActiveRecord::Base
 	
 	## Permissions:
 	def create_permitted?
-		acting_user.administrator?
+		true
 	end
 	
 	def update_permitted?
-		acting_user.administrator?
+		true
 	end
 	
 	def destroy_permitted?
-		acting_user.administrator?
+		true
 	end
 	
 	def view_permitted?(field)

@@ -1459,7 +1459,7 @@
 
     <content: param>
           <header param="content-header">
-            <a:pathogen_type param="parent-link">&laquo; <ht key="thresholds.actions.back" to="pathogen_type"><name/></ht></a:pathogen_type>
+            <a:season param="parent-link">&laquo; <ht key="thresholds.actions.back" to="season"><name/></ht></a:season>
             <h2 param="heading">
               <ht key="thresholds.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
                 <name/>
@@ -1477,7 +1477,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="country, season" param/>
+            <field-list fields="country, pathogen_type" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
                 <ht key="thresholds.collection.heading.other" >
