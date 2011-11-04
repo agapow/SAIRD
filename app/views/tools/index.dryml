@@ -4,9 +4,11 @@
 		
 		<subhead>Tools</subhead> 
 		<ul>
-			<li><a href="bulkupload">Bulk upload of resistance data</a></li>
+			<li><a href="bulkupload">Bulk upload of susceptibility reports</a></li>
+<!--
 			<li><a href="exquery">Extended query</a></li>
 			<li><a href="graphresist">Graph resistance data</a></li>
+-->
 		</ul>
 		
 		<%# TODO: need a full browsing menu for users %>

@@ -7,6 +7,22 @@ TOD: hide fields that are mentioned in title
 	
 	<field-list: fields="pathogen_type, season, country" />
 	
-	<collection-heading:>Drug resistance thresholds</collection-heading:>
-	
+	<collection-section:>
+		
+		<h3>Drug resistance thresholds</h3>
+		<if test="&this.thresholdentries.length == 0">
+			<p>No resistance thresholds have been entered.</p>
+		</if>
+		<else>
+			<ul>
+				<repeat with="&this.thresholdentries">
+					<li><a><name/></a></li>
+				</repeat>
+			</ul>
+		</else>
+		
+	</collection-section:>
+
+<collection:thresholdentries: />
+
 </show-page>

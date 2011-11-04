@@ -20,34 +20,41 @@ class User < ActiveRecord::Base
 	## Lifecycle & transitions:
 	
 	# This gives admin rights to the first sign-up.
-	# Just remove it if you don't want that
 	before_create { |user|
 		user.administrator = true if !Rails.env.test? && count == 0
 	}
 	
 	lifecycle do
-		state(:active, :default => true)
+		state(:inactive, :default => true)
+		state(:active)
 		
 		create(:signup,
 			:available_to => "Guest",
 			:params => [
-				# TODO: anyway of labelling fields other than hints
 				:name,
 				:user_name,
 				:email_address,
 				:password,
 				:password_confirmation
 			],
-			:become => :active
-		)
+			:become => :inactive,
+			:new_key => true) do
+		      UserMailer.deliver_activation(self, lifecycle.key) unless email_address.blank?
+		    end
 		
-		transition(:request_password_reset, { :active => :active }, :new_key => true) do
-			UserMailer.deliver_forgot_password(self, lifecycle.key)
+		transition :activate, { :inactive => :active }, :available_to => :key_holder
+		
+		transition :request_password_reset, { :active => :active }, :new_key => true do
+		      UserMailer.deliver_forgot_password(self, lifecycle.key)
 		end
 		
-		transition(:reset_password, { :active => :active }, :available_to => :key_holder,
-					:params => [ :password, :password_confirmation ])
-	
+		transition :request_password_reset, { :inactive => :inactive }, :new_key => true do
+		      UserMailer.deliver_activation(self, lifecycle.key)
+		end
+		
+		transition :reset_password, { :active => :active }, :available_to => :key_holder,
+			:params => [ :password, :password_confirmation ]
+
 	end
 
 	## Permissions:

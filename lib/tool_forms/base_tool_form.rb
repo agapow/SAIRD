@@ -192,6 +192,7 @@ module ToolForms
 		end
 		
 		def self.process_default(params)
+			print "I'm in the base tool"
 			return ["foo", 127], []
 		end
 		

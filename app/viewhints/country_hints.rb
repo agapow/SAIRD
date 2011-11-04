@@ -5,10 +5,10 @@ class CountryHints < Hobo::ViewHints
   model_name "Reporting Country"
   model_name_plural "Reporting Countries"
   
-  field_names(
+  field_names({
 	 # NOTE: curious - this is not used. works for for fields
-	 :users => "Members"
-  )
+	 :users => "Members",
+  })
   
   children :users
   

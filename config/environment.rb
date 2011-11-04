@@ -3,8 +3,6 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
 
-ENV["RAILS_ENV"] = "development"
-
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -46,4 +44,13 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+  
+require 'action_mailer'
+
+   ActionMailer::Base.delivery_method = :sendmail
+   ActionMailer::Base.sendmail_settings = {
+         :location       => '/usr/sbin/sendmail',
+         :arguments      => '-i -t'
+   }
+
 end

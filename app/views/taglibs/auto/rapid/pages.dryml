@@ -877,14 +877,14 @@
 <!-- ====== Resistance Pages ====== -->
 
 <def tag="index-page" for="Resistance">
-  <page merge title="#{ht 'resistances.index.title', :default=>['Potential Resistance resistances'] }">
+  <page merge title="#{ht 'resistances.index.title', :default=>['Potential resistances'] }">
     <body: class="index-page resistance" param/>
 
     <content: param>
       <header param="content-header">
         <h2 param="heading">
           <ht key="resistances.index.heading">
-            Potential Resistance resistances
+            Potential resistances
           </ht>
         </h2>
 
@@ -897,7 +897,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="resistances.actions.new">New Potential Resistance resistance</ht>
+          <ht key="resistances.actions.new">New Potential resistance</ht>
         </a>
 
         <page-nav param="top-page-nav"/>
@@ -914,21 +914,21 @@
 
 
 <def tag="new-page" for="Resistance">
-  <page merge title="#{ht 'resistances.new.title', :default=>[' New Potential Resistance resistance'] }">
+  <page merge title="#{ht 'resistances.new.title', :default=>[' New Potential resistance'] }">
     <body: class="new-page resistance" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="resistances.new.heading">
-            New Potential Resistance resistance
+            New Potential resistance
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'resistances.actions.create', :default=>['Create Potential Resistance resistance']}"/>
+          <submit: label="#{ht 'resistances.actions.create', :default=>['Create Potential resistance']}"/>
         </form>
       </section>
     </content:>
@@ -937,7 +937,7 @@
 
 
 <def tag="show-page" for="Resistance">
-  <page merge title="#{ht 'resistances.show.title', :default=>['Potential Resistance resistance'] }">
+  <page merge title="#{ht 'resistances.show.title', :default=>['Potential resistance'] }">
 
     <body: class="show-page resistance" param/>
 
@@ -953,7 +953,7 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="resistances.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit Potential Resistance resistance
+                Edit Potential resistance
               </ht>
             </a>
           </header>
@@ -969,7 +969,7 @@
 
 
 <def tag="edit-page" for="Resistance">
-  <page merge title="#{ht 'resistances.edit.title', :default=>['Edit Potential Resistance resistance'] }">
+  <page merge title="#{ht 'resistances.edit.title', :default=>['Edit Potential resistance'] }">
 
     <body: class="edit-page resistance" param/>
 
@@ -980,7 +980,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'resistances.actions.delete', :default=>['Remove This Potential Resistance resistance']}" param/>
+        <delete-button label="#{ht 'resistances.actions.delete', :default=>['Remove This Potential resistance']}" param/>
       </section>
 
       <section param="content-body">
@@ -1063,8 +1063,6 @@
     <body: class="show-page season" param/>
 
     <content: param>
-      <section-group>
-        <section param="main-content">
           <header param="content-header">
             <h2 param="heading">
               <ht key="seasons.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
@@ -1094,19 +1092,6 @@
               <collection:thresholds param/>
             </section>
           </section>
-        </section>
-
-        <aside param>
-          <section param="susceptibilities-collection-section">
-            <h3 param="susceptibilities-collection-heading">
-              <ht key="susceptibilities.collection.heading.other" >
-                Susceptibilities
-              </ht>
-            </h3>
-            <collection:susceptibilities  param="susceptibilities-collection"/>
-          </section>
-        </aside>
-      </section-group>
     </content:>
 
   </page>
@@ -1459,7 +1444,7 @@
 
     <content: param>
           <header param="content-header">
-            <a:season param="parent-link">&laquo; <ht key="thresholds.actions.back" to="season"><name/></ht></a:season>
+            <a:pathogen_type param="parent-link">&laquo; <ht key="thresholds.actions.back" to="pathogen_type"><name/></ht></a:pathogen_type>
             <h2 param="heading">
               <ht key="thresholds.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
                 <name/>
@@ -1477,7 +1462,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="country, pathogen_type" param/>
+            <field-list fields="country, season" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
                 <ht key="thresholds.collection.heading.other" >
@@ -1666,6 +1651,29 @@
 
       <section param="content-body">
         <signup-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="activate-page" polymorphic/>
+<def tag="activate-page" for="User">
+  <page title="#{ht 'users.activate.title', :default=>['Activate']}" merge>
+
+    <body: class="lifecycle-transition-page activate-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="users.activate.heading">
+            Activate
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <activate-form param="form"/>
       </section>
     </content:>
 

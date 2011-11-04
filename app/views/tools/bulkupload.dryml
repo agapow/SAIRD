@@ -21,8 +21,7 @@
 			/>
 			<form-field name="dryrun" title="Dry-run" type="boolean"
 				value="0" help="Test the format of your file, but do not save data." />
-			<form-field name="overwrite" title="Overwrite" type="boolean"
-				value="0" help="Overwrite existing data." />
+		
 		</table>
 
 	</tool-form-fields:>

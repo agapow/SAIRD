@@ -6,5 +6,34 @@ of "users", as view hints apparently cannot override the naming.
 %>
 <show-page>
 	<field-list: fields="" /> 
+
+	<collection-section:>
+		
+		<h3>Thresholds</h3>
+		<if test="&this.thresholds.length == 0">
+			<p>No thresholds have been entered for this season.</p>
+		</if>
+		<else>
+			<ul>
+				<repeat with="&this.thresholds">
+					<li><a><name/></a></li>
+				</repeat>
+			</ul>
+		</else>
+		
+		<h3>Susceptibility reports</h3>
+		<if test="&this.susceptibilities.length == 0">
+			<p>No reports have been entered for this season.</p>
+		</if>
+		<else>
+			<ul>
+				<repeat with="&this.susceptibilities">
+					<li><a><name/></a></li>
+				</repeat>
+			</ul>
+		</else>
+		
+	</collection-section:>
+	
 	
 </show-page>

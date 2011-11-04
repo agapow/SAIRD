@@ -17,6 +17,7 @@ Tool bar to appear on all pages.
 			<%= this.view_hints.model_name_plural %>
 		</nav-item>
 		<nav-item href="#{base_url}/tools/">Tools</nav-item>
+		<nav-item href="#{base_url}/docs/">Docs</nav-item>
 	</navigation>
 </def> 
 

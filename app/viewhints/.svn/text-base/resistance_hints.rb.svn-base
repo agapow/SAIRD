@@ -1,6 +1,6 @@
 class ResistanceHints < Hobo::ViewHints
 
-	model_name "Potential Resistance resistance"
+	model_name "Potential resistance"
 	
 	field_names({
 		:unit => "Unit of measurement",

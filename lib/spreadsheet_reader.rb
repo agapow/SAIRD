@@ -34,7 +34,7 @@ module SpreadsheetReader
 	#
 	class ExcelReader
 		
-		attr_accessor :wbook, :syn_dict
+		attr_accessor :wbook, :syn_dict, :headers
 		
 		# Initialise the reader.
 		#
@@ -45,11 +45,22 @@ module SpreadsheetReader
 		#    rdr = XlsReader('my-excel.xls')
 		#    rdr = XlsReader('my-excel.xls', {'foo_bar'=> 'foobar'})
 		#
-		def initialize(infile, file_type='xls')
+		def initialize(infile, file_type)
+			pp "path is #{infile}"
+			pp file_type
+			
+			# NOTE: roo insists that files end with the right extension
+			tmpfile = Tempfile.new(['excel', ".#{file_type}"])
+			tmpfile_hndl = tmpfile.open()
+			tmpfile_hndl.write (open(infile, 'r').read)
+			tmpfile_hndl.close()
+			
 			if file_type == 'xls'
-				@wbook = Excel.new(infile)
+				@wbook = Excel.new(tmpfile.path)
 			elsif file_type == 'xlsx'
-				@wbook = ExcelX.new(infile)
+				@wbook = ExcelX.new(tmpfile.path)
+			else
+				raise ArgumentError("unrecognised filetype '#{file_type}'")
 			end
 			# NOTE: in roo, you don't select a worksheet, you name the current one
 			@wbook.default_sheet = wbook.sheets.first
@@ -82,11 +93,11 @@ module SpreadsheetReader
 			end      
 			# Main:
 			# grab and parse headers
-			headers = read_headers(col_stop)
+			@headers = read_headers(col_stop)
 			# read each row
 			(2..row_stop).each { |i|
 				row_data = (1..col_stop).collect { |j| @wbook.cell(i,j) }   
-				row_zip = headers.zip(row_data).flatten()
+				row_zip = @headers.zip(row_data).flatten()
 				row_hash = Hash[*row_zip]
 				row_hash.each_pair { |k,v|
 					meth_name = "convert_#{k}"
@@ -100,6 +111,13 @@ module SpreadsheetReader
 			}
 		end
 		
+		# Clean up the title of a column to something reasonable
+		#
+		def clean_col_header (hdr)
+			return hdr.downcase.gsub(' ', '_')
+		end
+		
+		
 		# Return the canonical set of headers.
 		#
 		# This makes everything lowercase, strips flankning space, and substitutes
@@ -112,12 +130,13 @@ module SpreadsheetReader
 			}
 			# drop case, strip flanking spaces, replace gaps with underscores
 			return headers.collect { |h|
-				h_str = h.downcase.strip.gsub(' ', '_')
+				h_str = clean_col_header (h.strip())
 				@syn_dict.fetch(h_str, h_str)
 			}
 		end
 		
 		# General conversion of spreadsheet cell values 
+		#
 		def convert(val)
 			# clean up strings and return nil for 
 			if val.class == String
@@ -129,26 +148,8 @@ module SpreadsheetReader
 			return val
 		end
 		
-		def convert_collected (val)
-			# automagically called by read for collected field
-			return interp_date(val)
-		end
-		
-		def convert_avc_doi (val)
-			# automagically called by read for avc_doi field
-			return interp_date(val)
-		end
-		
 	end
 	
-	
-	### TEST & DEMO ###
-	
-	rdr = ExcelReader.new(INPUT_FILE, {"name" => "identifier")
-	rdr.read() { |rec|
-		pp rec
-	}
-
 end
 
 

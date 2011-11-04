@@ -12,7 +12,7 @@
 	
 	<p>
 		An example of the spreadsheet can be found
-		<a href="#{base_url/downloads/upload-suscep-reports.xls}">here</a>,
+		<a href="#{base_url}/downloads/upload-suscep-reports.xls">here</a>,
 		containing a few example rows. These rows can be deleted and
 		your own data included for use.
 	</p>
@@ -43,7 +43,7 @@
 	
 	<p>
 		An example of the spreadsheet can be found
-		<a href="#{base_url/downloads/upload-thresholds.xls}">here</a>,
+		<a href="#{base_url}/downloads/upload-thresholds.xls">here</a>,
 		containing a few example rows. These rows can be deleted and
 		your own data included for use.
 	</p>

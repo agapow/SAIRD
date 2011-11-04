@@ -24,7 +24,22 @@ class SusceptibilityEntry < ActiveRecord::Base
 	validates_presence_of :resistance_id 
 
 	## Permissions:
+	def create_permitted?
+		true
+	end
 
+	def update_permitted?
+		true
+	end
+
+	def destroy_permitted?
+		true
+	end
+
+	def view_permitted?(field)
+	 true 
+	end
+	
 	## Accessors:
 	def name
 		return "%s %s %s" % [

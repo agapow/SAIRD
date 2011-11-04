@@ -31,15 +31,13 @@ def process_form(tf, req)
 		# check for errors in parameters and clean them up
 		conv_params, errors = tf.is_valid?(req.parameters)
 		# if we get parameters back, it's okay, process it
-		if conv_params
+		if errors.size() == 0
 			results, errors = tf.process(conv_params)
 		end
 		# if there are any errors (from validation or processing), show them
 		if 0 < errors.size()
-			flash[:error] = errors.collect { |e|
-				msg = e[0].nil? ? e[1] : "#{e[0].capitalize}: #{e[1]}"
-				"<p>#{msg}</p>"
-			}.join("\n")
+			flash[:error] = "Please fix the following errors: <ul>%s</ul>" %
+				errors.collect { |e| "<li>#{e}</li>" }.join("\n")
 			results = nil
 		end
 	end

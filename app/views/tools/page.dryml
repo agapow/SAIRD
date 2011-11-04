@@ -19,9 +19,7 @@ elsewhere.
 		
 			<%# pre-ramble %>
 			<p param="description"><%= this.description %></p>
-			
-			<flash-messages />
-			
+						
 			<%#
 			If there are results, put them here. If non-nil, are responding to
 			submission & there's something to render. Else, this is a first view.
@@ -158,7 +156,7 @@ elsewhere.
 <def tag="tool-result" for="String">
 	<tool-result merge>
 		<result-content:>
-			A string = <%= this %>
+			<p><%= this %></p>
 		</result-content>
 	</tool-result>
 </def>
