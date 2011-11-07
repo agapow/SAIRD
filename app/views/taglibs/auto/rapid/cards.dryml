@@ -37,6 +37,17 @@
   </card>
 </def>
 
+<def tag="card" for="NewsItem">
+  <card class="news-item" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <a:poster param="creator-link"/>
+    </body:>
+  </card>
+</def>
+
 <def tag="card" for="PathogenType">
   <card class="pathogen-type" param="default" merge>
     <header: param>

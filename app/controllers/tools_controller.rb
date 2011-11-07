@@ -9,6 +9,10 @@ class ToolsController < ApplicationController
 		session[:results] = process_form(ToolForms::UploadExcelToolForm, request)
 	end
 	
+	def uploadthresholds
+		session[:results] = process_form(ToolForms::UploadThresholdsToolForm, request)
+	end
+	
 	def exquery
 		session[:results] = process_form(ToolForms::ExtendedQueryToolForm, request)
 	end

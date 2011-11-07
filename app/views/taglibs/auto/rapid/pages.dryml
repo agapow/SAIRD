@@ -8,8 +8,8 @@
     <nav-item with="&Country"><ht key="countries.nav_item">Reporting Countries</ht></nav-item>
     <nav-item with="&Gene"><ht key="genes.nav_item">Genes</ht></nav-item>
     <nav-item with="&Ic50Data"><ht key="ic50_datas.nav_item">IC50 Datas</ht></nav-item>
+    <nav-item with="&NewsItem"><ht key="news_items.nav_item">News</ht></nav-item>
     <nav-item with="&PathogenType"><ht key="pathogen_types.nav_item">Pathogen (sub)types</ht></nav-item>
-    <nav-item with="&Patient"><ht key="patients.nav_item">Patients</ht></nav-item>
   </navigation>
 </def>
 
@@ -491,6 +491,128 @@
           </ht>
         </h2>
         <delete-button label="#{ht 'mutations.actions.delete', :default=>['Remove This Mutation']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== NewsItem Pages ====== -->
+
+<def tag="index-page" for="NewsItem">
+  <page merge title="#{ht 'news_items.index.title', :default=>['News'] }">
+    <body: class="index-page news-item" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="news_items.index.heading">
+            News
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="news_items.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="news_items.actions.new">New News</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="NewsItem">
+  <page merge title="#{ht 'news_items.new.title', :default=>[' New News'] }">
+    <body: class="new-page news-item" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="news_items.new.heading">
+            New News
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'news_items.actions.create', :default=>['Create News']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="NewsItem">
+  <page merge title="#{ht 'news_items.show.title', :default=>['News'] }">
+
+    <body: class="show-page news-item" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="news_items.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a:poster param="creator-link"/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="news_items.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit News
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <view:body param="description"/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="NewsItem">
+  <page merge title="#{ht 'news_items.edit.title', :default=>['Edit News'] }">
+
+    <body: class="edit-page news-item" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="news_items.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'news_items.actions.delete', :default=>['Remove This News']}" param/>
       </section>
 
       <section param="content-body">

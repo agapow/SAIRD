@@ -1,0 +1,14 @@
+<%#
+Customize the appearance of a page showing a news item
+
+TOD: hide fields that are mentioned in title
+%>
+<show-page>
+	
+	<creator-link:>
+	</creator-link:>
+							
+	<field-list: fields="" />
+	
+
+</show-page>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111103134356) do
+ActiveRecord::Schema.define(:version => 20111107102807) do
 
   create_table "countries", :force => true do |t|
     t.datetime "created_at"
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(:version => 20111103134356) do
   end
 
   add_index "mutations", ["susceptibility_sequence_id"], :name => "index_mutations_on_susceptibility_sequence_id"
+
+  create_table "news_items", :force => true do |t|
+    t.string   "name"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "poster_id"
+  end
+
+  add_index "news_items", ["poster_id"], :name => "index_news_items_on_poster_id"
 
   create_table "pathogen_types", :force => true do |t|
     t.string   "name"

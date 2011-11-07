@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :news_items
+
 
   map.site_search  'search', :controller => 'front', :action => 'search'
   map.root :controller => 'front', :action => 'index'

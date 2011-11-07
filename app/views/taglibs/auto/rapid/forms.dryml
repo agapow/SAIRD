@@ -48,6 +48,18 @@
 
 
 
+<def tag="form" for="NewsItem">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, body, poster" param/>
+    <div param="actions">
+      <submit label="#{ht 'news_items.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="PathogenType">
   <form merge param="default">
     <error-messages param/>

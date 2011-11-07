@@ -38,6 +38,20 @@
       </p>   
    <% end -%>
    
+	<h2>Latest news</h2>
+	
+	<% recent_news = NewsItem.order_by(:updated_at).last -%>
+		<if test="&recent_news.nil?">
+			<p>There is no news.</p>
+		</if>
+		<else>
+			<subsubhead><%= recent_news.name %></subsubhead>
+			
+			<%= recent_news.body.to_html %>
+			<br />
+			<p><a href="&object_url NewsItem">More news ...</a></p>
+		</else>
+		
    </content:>
 </page>
 

@@ -45,7 +45,6 @@ module ToolForms
 			clean_params[:season] = Season.find_by_id(params['season'])
 			clean_params[:pathogen_type] = PathogenType.find_by_id(params['pathogen'])
 			clean_params[:dryrun] = params['dryrun'] != "0"
-			clean_params[:overwrite] = params['overwrite'] != "0"
 			
 			# check stuff
 			if clean_params[:country].nil? then errors << "unknown country" end

@@ -54,16 +54,12 @@
 	</p>
 
 		<ul>
-			<li>Isolate name: the name or id of the report</li>
-			<li>Collected: the date of sample collection , given in reverse
-				international format, e.g. 2010-12-25</li>
-			<li>Comment</li>
-			<li>Any number of columns named after a resistance, e.g.
-				Oseltamivir, Oseltamivir (MUNANA). These should give a number
-				or be blank, e.g. 0.1.</li>
-			<li>Any number of columns named after a gene, e.g.
-				HA, NA. These should give a comma delimited list of
-				mutations, e.g. H275P, H274X.</li>
+			<li>Pathogen type: the exact name of the virus type that is used on 
+				the system, e.g. "A(H1N1)".</li>
+			<li>Then a series of columns each named after a resistance or drug
+				on the system, e.g. "Oseltamivir (MUNANA)". The entry for 
+				these columsn should be the minor and major cutoffs, seperated
+				by a hyphen or comma, e.g. "0.2-0.4".</li>
 		</ul>
 		
 	</doc-content:>
