@@ -15,7 +15,7 @@ class Threshold < ActiveRecord::Base
 		
 		timestamps
 	end
-	
+		
 	belongs_to :season
 	belongs_to :country
 	belongs_to :pathogen_type
@@ -47,7 +47,7 @@ class Threshold < ActiveRecord::Base
 
 	## Permissions:
 	def create_permitted?
-		acting_user.administrator?
+		true
 		#if acting_user.administrator?
 		#	return true
 		#else
@@ -64,7 +64,14 @@ class Threshold < ActiveRecord::Base
 	end
 
 	def view_permitted?(field)
-		true
+		if acting_user.guest?
+			false
+		elsif acting_user.administrator?
+			true
+		else
+			acting_user.is_country_member? (country)
+		end
+		
 	end
 
 	## Accessors:

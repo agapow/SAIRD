@@ -82,7 +82,7 @@ module ToolForms
 					if params[:dryrun]
 						results << "Threshold for #{rec[:pathogen_type]} read successfully"
 					else
-						new_sr.save()
+						new_threshold.save()
 						results << "Threshold for #{rec[:pathogen_type]} saved successfully"
 					end
 				rescue StandardError => err
@@ -120,18 +120,26 @@ module ToolForms
 				)
 						
 				if ! res.nil?
-					new_entry = ThresholdEntry.new(
+					new_entry = Thresholdentry.new(
 						:resistance => res,
 					)
-					threshold_entries << new_te
 					
 					# now parse cutoffs
-					cutoffs = v.replace('-',',').split(',').collect { |c|
+					pp "HERE"
+					pp v
+					cutoffs = v.gsub('-',',').split(',').collect { |c|
 						c.strip.to_f()
 					}
-					if len(cutoffs) != 2
+					pp cutoffs
+					if cutoffs.length != 2
 						raise StandardError, "malformed cutoffs, need 2 not #{len(cutoffs)}"
+					else
+						new_entry.minor = cutoffs[0]
+						new_entry.major = cutoffs[1]
 					end
+					
+					pp new_entry
+					threshold_entries << new_entry
 				else
 					raise StandardError, "unrecognised resistance '#{k}'"
 				end

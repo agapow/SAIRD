@@ -1,6 +1,6 @@
 class SusceptibilityHints < Hobo::ViewHints
 	
-	model_name "Susceptibility report"
+	model_name "Susceptibility entry"
 	
 	field_help({
 		:isolate_name => "Use the WHO standard, e.g.

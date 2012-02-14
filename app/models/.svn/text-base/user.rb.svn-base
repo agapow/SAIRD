@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
 	# Return all countries that can edit
 	#
 	def get_editable_countries
-		return countries.filter { |c|
+		return countries.all.filter { |c|
 			is_country_editor(c)
 		}
 	end

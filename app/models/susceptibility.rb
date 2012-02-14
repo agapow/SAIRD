@@ -1,7 +1,10 @@
 class Susceptibility < ActiveRecord::Base
 
 	hobo_model # Don't put anything above this
-
+	
+   # add in shared behaviour
+   include ExtendedModelMixin
+   
 	## Db model & relationships:
 	fields do
 		isolate_name   :string, :required, :unique
@@ -61,7 +64,7 @@ class Susceptibility < ActiveRecord::Base
 	end
 
 	def view_permitted?(field)
-	 true 
+		acting_user.administrator? || acting_user.is_country_member?(country)
 	end
 	
 	## Accessors:
@@ -69,4 +72,14 @@ class Susceptibility < ActiveRecord::Base
 		return isolate_name
 	end
 
+	def find_all_permitted
+		if acting_user.administrator?
+			all
+		else
+			country_ids = [1, 5]
+			scope(:conditions=>{:country_id => country_ids})
+			
+		end
+	end
+	
 end

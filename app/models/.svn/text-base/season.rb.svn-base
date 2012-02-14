@@ -28,15 +28,15 @@ class Season < ActiveRecord::Base
 
 	## Permissions:
 	def create_permitted?
-		true
+		acting_user.administrator?
 	end
 
 	def update_permitted?
-		true
+		acting_user.administrator?
 	end
 
 	def destroy_permitted?
-		true
+		acting_user.administrator?
 	end
 
 	def view_permitted?(field)

@@ -43,7 +43,9 @@ elsewhere.
 							</p>
 						</if>
 						<else>
+							<div param="result_section">
 							<tool-result repeat="&results" />
+							</div>
 						</else>
 				</div>
 			</if>
@@ -127,6 +129,21 @@ elsewhere.
 				</select>
 			</if>
 			
+			<if test="&type == 'selectmany'">
+				<%
+				# TODO: a way to set disabled choices and accept null answers?
+				value = nil
+				%>
+				<select name="#{name}[]" 
+					class="#{name}-tag #{type} #{formid}-#{name}"
+					id="#{formid}_#{name}"
+					multiple="multiple"
+					size="5"
+					>
+				  <%= options_for_select(options, value.to_i) %>
+				</select>
+			</if>
+			
 			<if test="&type == 'file'">
 				<input class="#{name}-tag #{type} #{formid}-#{name}"
 					id="#{formid}_#{name}" name="#{name}" type="#{type}" />
@@ -161,10 +178,10 @@ elsewhere.
 	</tool-result>
 </def>
 
-<def tag="tool-result" for="Fixnum">
+<def tag="tool-result" for="Array">
 	<tool-result merge>
 		<result-content:>
-			A fixnum = <%= this %>
+			A query result = <%= this %>
 		</result-content>
 	</tool-result>
 </def>

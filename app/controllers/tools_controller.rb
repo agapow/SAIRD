@@ -31,9 +31,11 @@ def process_form(tf, req)
 	# The torturous logic of this method: we are handed a toolform & request ...
 	# Only process form if there has been a submission, otherwise results are nil
 	results = nil
+	errors = []
 	if ! req.parameters['_submit'].nil?
 		# check for errors in parameters and clean them up
 		conv_params, errors = tf.is_valid?(req.parameters)
+		pp req.parameters
 		# if we get parameters back, it's okay, process it
 		if errors.size() == 0
 			results, errors = tf.process(conv_params)

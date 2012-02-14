@@ -15,8 +15,7 @@ class ActiveRecord::Base
 	# It may be simpler to just put all validation/checking in the clean function.
 	#
 	def validate
-		# TODO: an overall validate fields for constraints that depend on multiple
-		# fields?
+
 		self.class.content_columns.each { |c|
 			col_name = c.name
 			if ! ['created_at', 'updated_at'].member?(col_name)
@@ -42,6 +41,21 @@ class ActiveRecord::Base
 			end
 		}
 	end
-		
+	
+	# if available, call method to clean all vars
+	if self.respond_to?('clean_all')
+		begin
+			arg_arr = self.class.content_columns.collect { |c|
+				col_name = c.name
+				[col_name, self[col_name]]
+			}
+			self.clean_all (Hash.new(arg_arr))
+		rescue Exception => err
+			# TODO: how do you give a general error (one that involves 2+ fields)
+			errors.add ('', err.to_s)
+		rescue
+			errors.add ('', "an unknown error occurred")
+		end
+	end
 end
 

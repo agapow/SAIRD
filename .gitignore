@@ -3,6 +3,7 @@
 .tmp*
 .svn
 *~
+~*
 .svnignore
 *.lock
 .svn/*
