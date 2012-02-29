@@ -38,6 +38,10 @@ module SuscepReader
 			return COLNAMES.fetch(hdr.downcase.gsub(' ', '_'), hdr)
 		end
 		
+		def convert_season (raw_arg):
+			return int(raw_arg)
+		end
+		
 	end
 	
 end
