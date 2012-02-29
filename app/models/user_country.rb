@@ -8,7 +8,10 @@ class UserCountry < ActiveRecord::Base
 	# and edit country data (manager). Also add thresholds?
 	
 	hobo_model # Don't put anything above this
-
+	
+   # add in shared behaviour
+   include ExtendedModelMixin
+   
 	## Defines & Constants:
 	#model_name_plural "Memberships"
  

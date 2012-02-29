@@ -1,4 +1,4 @@
-This is a web-enabled databse for the tracking of influenza drug resistance in
+This is a web-enabled databaqse for the tracking of influenza drug resistance in
 South America.
 
 For developers: How to get this running
@@ -19,4 +19,18 @@ Install the less plugin for rails as per this page
 	https://github.com/cloudhead/more/
 
 Install Roo
+
+
+
+Install Paperclip
+~~~~~~~~~~~~~~~~~
+
+SAIRD using the paperclip library for handling file uploads. This requires the
+installation of the library itself and the hobo plugin for the library. 
+
+TODO: do we have the versions right?
+
+% gen install paperclip
+
+./script/plugin install git://github.com/tablatom/paperclip_with_hobo.git
 

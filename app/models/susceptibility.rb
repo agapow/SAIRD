@@ -50,6 +50,17 @@ class Susceptibility < ActiveRecord::Base
 		}
 	end
 	
+	# Check that date falls within season
+	#
+	def clean_all (kwargs)
+		date_collected = kwargs[:collected]
+		season_id = kwargs[:season_id]
+		season = Season.find_by_id (season_id)
+		if ! season.date_within (date_collected)
+			errors.add('date_collected', 'date must be within the given season')
+		end
+	end
+	
 	## Permissions:
 	def create_permitted?
 		true

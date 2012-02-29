@@ -7,7 +7,10 @@
 class Thresholdentry < ActiveRecord::Base
 
 	hobo_model # Don't put anything above this
-
+	
+   # add in shared behaviour
+   include ExtendedModelMixin
+   
 	## Fields & relationships:
 	fields do
 		minor :float

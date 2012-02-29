@@ -52,9 +52,9 @@ class ActiveRecord::Base
 			self.clean_all (Hash.new(arg_arr))
 		rescue Exception => err
 			# TODO: how do you give a general error (one that involves 2+ fields)
-			errors.add ('', err.to_s)
+			errors.add("", err.to_s)
 		rescue
-			errors.add ('', "an unknown error occurred")
+			errors.add('', "an unknown error occurred")
 		end
 	end
 end
