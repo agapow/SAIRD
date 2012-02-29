@@ -11,7 +11,7 @@
 module ToolForms
 
 	# A tool to handle the excel bulk uploads
-	class UploadExcelToolForm < BaseToolForm
+	class UploadSusceptibilitiesForm < BaseToolForm
 		
 		def self.title
 			return 'Bulk upload of susceptibility data'
@@ -42,20 +42,21 @@ module ToolForms
 			end
 			
 			clean_params[:country] = Country.find_by_id(params['country'])
-			clean_params[:season] = Season.find_by_id(params['season'])
-			clean_params[:pathogen_type] = PathogenType.find_by_id(params['pathogen'])
+			#clean_params[:season] = Season.find_by_id(params['season'])
+			#clean_params[:pathogen_type] = PathogenType.find_by_id(params['pathogen'])
 			clean_params[:dryrun] = params['dryrun'] != "0"
 			
 			# check stuff
 			if clean_params[:country].nil? then errors << "unknown country" end
-			if clean_params[:season].nil? then errors << "unknown season" end
-			if clean_params[:pathogen_type].nil? then errors << "unknown pathogen" end
+			#if clean_params[:season].nil? then errors << "unknown season" end
+			#if clean_params[:pathogen_type].nil? then errors << "unknown pathogen" end
 			
 			return clean_params, errors
 		end
 		
 		
-		# Return all resistance reports for this season & virus type & country
+		# Return the generated resistance reports
+		#
 		def self.process_default(params)
 			## Preconditions & preparation:
 			errors = []
@@ -76,11 +77,10 @@ module ToolForms
 			rdr = SuscepReader::ExcelReader.new(sheet_file.local_path, file_ext)
 			rdr.read() { |rec|
 				begin
-					pp rec
 					new_sr = build_suscep_report(rec)
 					new_sr.country = params[:country]
-					new_sr.season = params[:season]
-					new_sr.pathogen_type = params[:pathogen_type]
+					#new_sr.season = params[:season]
+					#new_sr.pathogen_type = params[:pathogen_type]
 						
 					if params[:dryrun]
 						results << "Report #{rec[:isolate_name]} read successfully"
@@ -109,8 +109,11 @@ module ToolForms
 			if [nil, ''].member?(rec[:collected])
 				raise StandardError, 'needs a collection date'
 			end
+			season = Season.find_by_isolate_year(int(rec[:season]))
+			pathogen_type = PathogenType.find_by_name(rec[:pathogen])
 			new_sr = Susceptibility.new(:isolate_name=>rec[:isolate_name],
-				:collected=>rec[:collected])
+				:collected=>rec[:collected], :season => season,
+				:pathogen_type => pathogen_type)
 			if ! [nil, ''].member?(rec[:comment])
 				new_sr.comment = rec[:comment]
 			end

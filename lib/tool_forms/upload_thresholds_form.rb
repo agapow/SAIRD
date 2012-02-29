@@ -11,7 +11,7 @@
 module ToolForms
 
 	# A tool to handle the excel bulk uploads
-	class UploadThresholdsToolForm < BaseToolForm
+	class UploadThresholdsForm < BaseToolForm
 		
 		def self.title
 			return 'Bulk upload of seasonal thresholds'

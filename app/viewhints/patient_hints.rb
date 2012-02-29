@@ -2,15 +2,17 @@ class PatientHints < Hobo::ViewHints
 	
 	# model_name "My Model"
 	
-	field_names :na_sequence => "NAN Sequence"
+	field_names ({
+		:antivirals => "Exposure to antivirals"
+	})
 	
 	
 	field_names ({
-		:date_of_illness => "Date of illness"
+		:date_of_illness => "Date of illness onset"
 	})
 	
 	field_help ({
-		:date_of_illness => "When was the onset of symptoms?"
+		:date_of_illness => "When where symptoms detected?"
 	})
 	
 	# field_help :field1 => "Enter what you want in this field"

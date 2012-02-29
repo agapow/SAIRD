@@ -21,6 +21,9 @@ module SuscepReader
 		"date_collected" => :collected,
 		"comment" => :comment,
 		"note" => :note,
+		"year" => :season,
+		"pathogen" => :pathogen_type,
+		"subtype" => :pathogen_type,
 	}
 	
 	

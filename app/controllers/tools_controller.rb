@@ -6,11 +6,11 @@ class ToolsController < ApplicationController
 	end
 	
 	def bulkupload
-		session[:results] = process_form(ToolForms::UploadExcelToolForm, request)
+		session[:results] = process_form(ToolForms::UploadSuceptibilityForm, request)
 	end
 	
 	def uploadthresholds
-		session[:results] = process_form(ToolForms::UploadThresholdsToolForm, request)
+		session[:results] = process_form(ToolForms::UploadThresholdsForm, request)
 	end
 	
 	def exquery

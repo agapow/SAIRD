@@ -6,6 +6,13 @@ class Patient < ActiveRecord::Base
 	# what can the user do with the country?
 	Gender = HoboFields::EnumString.for(:male, :female)
 	TriState = HoboFields::EnumString.for(:yes, :no, :unknown)
+	AntiviralExposure = HoboFields::EnumString.for(
+		:patientTreated, :patientPostExposureProphylaxis,
+		:contactTreated, :contactPostExposureProphylaxis,
+		:no,
+		:unknown,
+	)
+	Progression = HoboFields::EnumString.for(:complicated, :uncomplicated, :unknown)
 	
 	fields do
 		date_of_birth         :date
@@ -13,9 +20,9 @@ class Patient < ActiveRecord::Base
 		date_of_illness       :date
 		location              :string
 		vaccinated            Patient::TriState
-		antivirals            Patient::TriState
+		antivirals            Patient::AntiviralExposure
 		household_contact     Patient::TriState
-		disease_progression   Patient::TriState
+		disease_progression   Patient::Progression
 		disease_complication  :string
 		hospitalized          Patient::TriState
 		death                 Patient::TriState
