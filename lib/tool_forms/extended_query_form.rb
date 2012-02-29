@@ -11,7 +11,7 @@
 module ToolForms
 	
 	# A tool to handle complicated queries
-	class ExtendedQueryToolForm < BaseToolForm
+	class ExtendedQueryForm < BaseToolForm
 		
 		## Accessors:
 		@@submit_buttons = ['Query']

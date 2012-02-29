@@ -1,5 +1,5 @@
 
-<tool-page with="&ToolForms::GraphResistToolForm">
+<tool-page with="&ToolForms::GraphResistanceForm">
 
 	<tool-form-body:>
 		<%
