@@ -206,3 +206,10 @@ The head is H2, and the sub- and subsubhead levels are based on that.
 TODO: sort, refactor and arrange in a suitable place
 -->
 
+<extend tag="form" for="Download">
+  <old-form merge multipart>
+    <field-list: fields="title, description, file"/>
+  </old-form>
+</extend>
+
+

@@ -9,13 +9,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111107102807) do
+ActiveRecord::Schema.define(:version => 20120229170000) do
 
   create_table "countries", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
   end
+
+  create_table "downloads", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "uploader_id"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+  end
+
+  add_index "downloads", ["uploader_id"], :name => "index_downloads_on_uploader_id"
 
   create_table "genes", :force => true do |t|
     t.string   "name"
@@ -145,6 +159,8 @@ ActiveRecord::Schema.define(:version => 20111107102807) do
     t.string  "title"
     t.integer "susceptibility_id"
     t.integer "gene_id"
+    t.string  "assay"
+    t.string  "assay_other"
   end
 
   add_index "susceptibility_sequences", ["gene_id"], :name => "index_susceptibility_sequences_on_gene_id"
