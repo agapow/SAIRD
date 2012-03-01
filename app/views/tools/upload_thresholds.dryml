@@ -2,7 +2,7 @@
 <tool-page with="&ToolForms::UploadThresholdsForm">
 
 	<tool-form-fields:>
-
+	
 		<table class="field-list">
 			<form-field type="file" name="spreadsheet"
 				help="An Excel (.xls or .xls) file in the described format."

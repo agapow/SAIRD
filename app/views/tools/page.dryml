@@ -19,65 +19,70 @@ elsewhere.
 		
 			<%# pre-ramble %>
 			<p param="description"><%= this.description %></p>
-						
-			<%#
-			If there are results, put them here. If non-nil, are responding to
-			submission & there's something to render. Else, this is a first view.
-			%>
-			<% results = session[:results] %>
-			<if test="&!results.nil?">
-				<div class="tool-results">
-					<h3>Results</h3>
-						<%
-							# put results in array to render one by one
-							# Zero-length array means no results.
-							# TODO: stick null result message (and success) into flash?
-							if results.class != Array
-								results = [results]
-							end	
-						%>
-						<if test="&results.size == 0">
-							<p param="no-result-message">
-								No results were returned. Try changing criteria or broadening
-								parameters.
-							</p>
-						</if>
-						<else>
-							<div param="result_section">
-							<tool-result repeat="&results" />
-							</div>
-						</else>
-				</div>
-			</if>
 			
-			<%# put the form here %>
-			<div class="tool-form">
-				<%
-					attrs_hsh = {
-						:action => "",
-						:method => this.form_method,
-					}
-					if this.enctype_multipart?
-						attrs_hsh[:enctype] = "multipart/form-data"
-					end
-					
-				-%>
-				<form merge-attrs="&attrs_hsh">
-					<div param="tool-form-fields">
-						THIS IS WHERE THE FORM FIELDS GO
+			<if test="&current_user.guest?">
+				<p class="flash error">Login to use this form!</p>
+			</if>
+			<else>
+				<%#
+				If there are results, put them here. If non-nil, are responding to
+				submission & there's something to render. Else, this is a first view.
+				%>
+				<% results = session[:results] %>
+				<if test="&!results.nil?">
+					<div class="tool-results">
+						<h3>Results</h3>
+							<%
+								# put results in array to render one by one
+								# Zero-length array means no results.
+								# TODO: stick null result message (and success) into flash?
+								if results.class != Array
+									results = [results]
+								end	
+							%>
+							<if test="&results.size == 0">
+								<p param="no-result-message">
+									No results were returned. Try changing criteria or broadening
+									parameters.
+								</p>
+							</if>
+							<else>
+								<div param="result_section">
+								<tool-result repeat="&results" />
+								</div>
+							</else>
 					</div>
-					<br clear="all" />
-					<div class="tool-buttons" param="tool-buttons">
-						<repeat:submit_buttons>
-							<input type="submit" name="_submit" value="&this[1]" label="&this[0]"
-								class="button submit-button"/>
-						</repeat>
-						<if test="&this.has_reset_button">
-							<input type="reset" />
-						</if>
-					</div>
-				</form>
-			</div>
+				</if>
+				
+				<%# put the form here %>
+				<div class="tool-form">
+					<%
+						attrs_hsh = {
+							:action => "",
+							:method => this.form_method,
+						}
+						if this.enctype_multipart?
+							attrs_hsh[:enctype] = "multipart/form-data"
+						end
+						
+					-%>
+					<form merge-attrs="&attrs_hsh">
+						<div param="tool-form-fields">
+							THIS IS WHERE THE FORM FIELDS GO
+						</div>
+						<br clear="all" />
+						<div class="tool-buttons" param="tool-buttons">
+							<repeat:submit_buttons>
+								<input type="submit" name="_submit" value="&this[1]" label="&this[0]"
+									class="button submit-button"/>
+							</repeat>
+							<if test="&this.has_reset_button">
+								<input type="reset" />
+							</if>
+						</div>
+					</form>
+				</div>
+			</else>
 		
 		</content:>
 	</page>
