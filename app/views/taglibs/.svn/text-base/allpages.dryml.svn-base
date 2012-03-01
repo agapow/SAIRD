@@ -130,7 +130,6 @@ moment, it's a bit wonky.
           <header param="content-header">
             <h2 param="heading"><ht key="hobo.login.heading">Log In</ht></h2>
           </header>
-   dfgfdgfdg
           <section param="content-body">
             <form action="#{base_url}/login" class="login" param>
               <labelled-item-list param>
@@ -158,7 +157,7 @@ moment, it's a bit wonky.
                 <ht key="hobo.support.or">or</ht> <a param="signup" href="&signup_url"><ht key="hobo.login.signup">Sign up</ht></a></if>
               </div>
             </form>
-            <a href="&forgot_password_url" param="forgot-password" if="&forgot_password_url"><ht key="hobo.login.forgot_password">Forgot your passwor      d?</ht></a>
+            <a href="&forgot_password_url" param="forgot-password" if="&forgot_password_url"><ht key="hobo.login.forgot_password">Forgot your password?</ht></a>
           </section>
         </content:>
      </simple-page>

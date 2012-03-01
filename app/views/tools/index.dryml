@@ -4,9 +4,9 @@
 		
 		<subhead>Tools</subhead> 
 		<ul>
-			<li><a href="bulkupload">Bulk upload of susceptibility reports</a></li>
-			<li><a href="uploadthresholds">Bulk upload of seasonal thresholds</a></li>
-			<li><a href="exquery">Search susceptibility reports</a></li>
+			<li><a href="upload_susceptibilities">Bulk upload of susceptibility reports</a></li>
+			<li><a href="upload_thresholds">Bulk upload of seasonal thresholds</a></li>
+			<li><a href="extended_query">Search susceptibility reports</a></li>
 
 <!--
 			<li><a href="graphresist">Graph resistance data</a></li>
@@ -28,7 +28,7 @@
 					<%-
 						link_list = [Patient, SusceptibilitySequence,
 							SequenceMutation, Threshold, Thresholdentry,
-							Susceptibility]
+							Susceptibility, Download]
 					%>
 					<nav-item repeat="&link_list" with="&this">
 						<%= this.view_hints.model_name_plural %>

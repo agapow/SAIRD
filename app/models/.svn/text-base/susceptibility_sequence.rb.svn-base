@@ -1,10 +1,16 @@
 class SusceptibilitySequence < ActiveRecord::Base
 
 	## Model & relations:
-	hobo_model # Don't put anything above this
+	# don't put anything above this
+	hobo_model
+	
+	Assay = HoboFields::EnumString.for(:sequencing, :pyrosequencing,
+		:snpPcr, :other)
 	
 	fields do
-		title :string
+		title         :string
+		assay         SusceptibilitySequence::Assay
+		assay_other   :string
 	end
 	
 	belongs_to :susceptibility

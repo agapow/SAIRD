@@ -1,7 +1,10 @@
 class Susceptibility < ActiveRecord::Base
 
 	hobo_model # Don't put anything above this
-
+	
+   # add in shared behaviour
+   include ExtendedModelMixin
+   
 	## Db model & relationships:
 	fields do
 		isolate_name   :string, :required, :unique
@@ -45,6 +48,17 @@ class Susceptibility < ActiveRecord::Base
 				genes_seen << s.gene_id
 			end
 		}
+	end
+	
+	# Check that date falls within season
+	#
+	def clean_all (kwargs)
+		date_collected = kwargs[:collected]
+		season_id = kwargs[:season_id]
+		season = Season.find_by_id (season_id)
+		if ! season.date_within (date_collected)
+			errors.add('date_collected', 'date must be within the given season')
+		end
 	end
 	
 	## Permissions:

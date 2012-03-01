@@ -11,7 +11,7 @@ Tool bar to appear on all pages.
 	<navigation class="main-nav" >
 		<nav-item href="#{base_url}/">Home</nav-item>
 		<%-
-			link_list = [Threshold, Susceptibility]
+			link_list = [Threshold, Susceptibility, Download]
 		%>
 		<nav-item repeat="&link_list" with="&this">
 			<%= this.view_hints.model_name_plural %>
@@ -205,4 +205,11 @@ The head is H2, and the sub- and subsubhead levels are based on that.
 
 TODO: sort, refactor and arrange in a suitable place
 -->
+
+<extend tag="form" for="Download">
+  <old-form merge multipart>
+    <field-list: fields="title, description, file"/>
+  </old-form>
+</extend>
+
 

@@ -13,6 +13,17 @@
   </card>
 </def>
 
+<def tag="card" for="Download">
+  <card class="download" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <a:uploader param="creator-link"/>
+    </body:>
+  </card>
+</def>
+
 <def tag="card" for="Gene">
   <card class="gene" param="default" merge>
     <header: param>

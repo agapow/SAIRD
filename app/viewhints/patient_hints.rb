@@ -12,7 +12,7 @@ class PatientHints < Hobo::ViewHints
 	})
 	
 	field_help ({
-		:date_of_illness => "When where symptoms detected?"
+		:date_of_illness => "When were symptoms detected?"
 	})
 	
 	# field_help :field1 => "Enter what you want in this field"

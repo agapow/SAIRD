@@ -24,8 +24,8 @@ class SusceptibilityEntry < ActiveRecord::Base
 	validates_presence_of :resistance_id 
 
 	# validate IC50
-	def clean_measure
-		return measure
+	def clean_measure (raw_arg)
+		return raw_arg
 	end
 	
 	## Permissions:

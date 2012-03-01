@@ -1,7 +1,11 @@
 class SusceptibilityEntryHints < Hobo::ViewHints
 
-  model_name "Reported resistance"
-  
+	model_name "Reported resistance"
+	
+	field_names ({
+		:measure => "IC50",
+	})
+	
 	field_help({
 		:resistance => "Which drug resistance was assessed and how",
 	})

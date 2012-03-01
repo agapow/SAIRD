@@ -12,6 +12,18 @@
 
 
 
+<def tag="form" for="Download">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="title, description, file_file_name, file_content_type, file_file_size, file_updated_at, uploader" param/>
+    <div param="actions">
+      <submit label="#{ht 'downloads.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="Gene">
   <form merge param="default">
     <error-messages param/>

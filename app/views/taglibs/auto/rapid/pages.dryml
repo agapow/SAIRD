@@ -6,10 +6,10 @@
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/">Home</nav-item>
     <nav-item with="&Country"><ht key="countries.nav_item">Reporting Countries</ht></nav-item>
+    <nav-item with="&Download"><ht key="downloads.nav_item">Downloads</ht></nav-item>
     <nav-item with="&Gene"><ht key="genes.nav_item">Genes</ht></nav-item>
     <nav-item with="&Ic50Data"><ht key="ic50_datas.nav_item">IC50 Datas</ht></nav-item>
     <nav-item with="&NewsItem"><ht key="news_items.nav_item">News</ht></nav-item>
-    <nav-item with="&PathogenType"><ht key="pathogen_types.nav_item">Pathogen (sub)types</ht></nav-item>
   </navigation>
 </def>
 
@@ -130,6 +130,129 @@
           </ht>
         </h2>
         <delete-button label="#{ht 'countries.actions.delete', :default=>['Remove This Reporting Country']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== Download Pages ====== -->
+
+<def tag="index-page" for="Download">
+  <page merge title="#{ht 'downloads.index.title', :default=>['Downloads'] }">
+    <body: class="index-page download" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="downloads.index.heading">
+            Downloads
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="downloads.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="downloads.actions.new">New Download</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Download">
+  <page merge title="#{ht 'downloads.new.title', :default=>[' New Download'] }">
+    <body: class="new-page download" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="downloads.new.heading">
+            New Download
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'downloads.actions.create', :default=>['Create Download']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Download">
+  <page merge title="#{ht 'downloads.show.title', :default=>['Download'] }">
+
+    <body: class="show-page download" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="downloads.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a:uploader param="creator-link"/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="downloads.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Download
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <view:description param="description"/>
+            <field-list fields="file_file_name, file_content_type, file_file_size, file_updated_at" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Download">
+  <page merge title="#{ht 'downloads.edit.title', :default=>['Edit Download'] }">
+
+    <body: class="edit-page download" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="downloads.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'downloads.actions.delete', :default=>['Remove This Download']}" param/>
       </section>
 
       <section param="content-body">
@@ -1250,14 +1373,14 @@
 <!-- ====== Susceptibility Pages ====== -->
 
 <def tag="index-page" for="Susceptibility">
-  <page merge title="#{ht 'susceptibilities.index.title', :default=>['Susceptibility reports'] }">
+  <page merge title="#{ht 'susceptibilities.index.title', :default=>['Susceptibility entries'] }">
     <body: class="index-page susceptibility" param/>
 
     <content: param>
       <header param="content-header">
         <h2 param="heading">
           <ht key="susceptibilities.index.heading">
-            Susceptibility reports
+            Susceptibility entries
           </ht>
         </h2>
 
@@ -1270,7 +1393,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="susceptibilities.actions.new">New Susceptibility report</ht>
+          <ht key="susceptibilities.actions.new">New Susceptibility entry</ht>
         </a>
 
         <page-nav param="top-page-nav"/>
@@ -1287,21 +1410,21 @@
 
 
 <def tag="new-page" for="Susceptibility">
-  <page merge title="#{ht 'susceptibilities.new.title', :default=>[' New Susceptibility report'] }">
+  <page merge title="#{ht 'susceptibilities.new.title', :default=>[' New Susceptibility entry'] }">
     <body: class="new-page susceptibility" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="susceptibilities.new.heading">
-            New Susceptibility report
+            New Susceptibility entry
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'susceptibilities.actions.create', :default=>['Create Susceptibility report']}"/>
+          <submit: label="#{ht 'susceptibilities.actions.create', :default=>['Create Susceptibility entry']}"/>
         </form>
       </section>
     </content:>
@@ -1310,7 +1433,7 @@
 
 
 <def tag="show-page" for="Susceptibility">
-  <page merge title="#{ht 'susceptibilities.show.title', :default=>['Susceptibility report'] }">
+  <page merge title="#{ht 'susceptibilities.show.title', :default=>['Susceptibility entry'] }">
 
     <body: class="show-page susceptibility" param/>
 
@@ -1326,7 +1449,7 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="susceptibilities.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit Susceptibility report
+                Edit Susceptibility entry
               </ht>
             </a>
           </header>
@@ -1350,7 +1473,7 @@
 
 
 <def tag="edit-page" for="Susceptibility">
-  <page merge title="#{ht 'susceptibilities.edit.title', :default=>['Edit Susceptibility report'] }">
+  <page merge title="#{ht 'susceptibilities.edit.title', :default=>['Edit Susceptibility entry'] }">
 
     <body: class="edit-page susceptibility" param/>
 
@@ -1361,7 +1484,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'susceptibilities.actions.delete', :default=>['Remove This Susceptibility report']}" param/>
+        <delete-button label="#{ht 'susceptibilities.actions.delete', :default=>['Remove This Susceptibility entry']}" param/>
       </section>
 
       <section param="content-body">
