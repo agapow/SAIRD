@@ -115,6 +115,7 @@ class User < ActiveRecord::Base
 		return nil
 	end
 	
+	
 	# Returns the users access level for this country.
 	#
 	# i.e. :editor, :manager etc. Returns nil if no access

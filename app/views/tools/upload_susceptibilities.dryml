@@ -9,7 +9,7 @@
 			/>
 			<form-field name="country" title="Country" type="selectone"
 				help="For what country is this data being lodged" 
-				options="&Country.all().select { |c| current_user.is_country_member?(c) }.collect { |c| [c.name, c.id] }"
+				options="&current_user.countries.collect { |c| [c.name, c.id] }"
 			/>
 			<form-field name="dryrun" title="Dry-run" type="boolean"
 				value="0" help="Test the format of your file, but do not save data." />
