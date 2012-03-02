@@ -1,6 +1,4 @@
-
 class ActiveRecord::Base
-		
 	# Sanitize and check data when object changed.
 	#
 	# Ugh. Was this ever worth it? Basically this automagically calls
@@ -22,16 +20,9 @@ class ActiveRecord::Base
 				begin
 					# if a cleaning method is supplied, pass value to it
 					clean_meth_name = "clean_#{col_name}"
-					pp "looking for #{clean_meth_name} ..."
 					if self.respond_to?(clean_meth_name)
-						self[col_name] = self.send(clean_meth_name,
-							self[col_name])
-					end
-					# if a validation method is supplied, get it checked
-					validate_meth_name = "validate_#{col_name}"
-					pp "looking for #{validate_meth_name} ..."
-					if self.respond_to?(validate_meth_name)
-						self.send(validate_meth_name, self[col_name])
+						pp "calling for #{clean_meth_name} ..."
+						self[col_name] = self.send(clean_meth_name, self[col_name])
 					end
 				rescue Exception => err
 					errors.add(col_name.to_sym, err.to_s)
@@ -40,22 +31,27 @@ class ActiveRecord::Base
 				end
 			end
 		}
-	end
-	
-	# if available, call method to clean all vars
-	if self.respond_to?('clean_all')
-		begin
-			arg_arr = self.class.content_columns.collect { |c|
-				col_name = c.name
-				[col_name, self[col_name]]
-			}
-			self.clean_all (Hash.new(arg_arr))
-		rescue Exception => err
-			# TODO: how do you give a general error (one that involves 2+ fields)
-			errors.add("", err.to_s)
-		rescue
-			errors.add('', "an unknown error occurred")
+
+		# if available, call method to clean all vars
+		if self.respond_to?('clean_all')
+			begin
+				pp "calling clean_all"
+				arg_arr = self.class.content_columns.collect { |c|
+					col_name = c.name
+					[col_name, self[col_name]]
+				}
+				pp arg_arr
+				# note that wierd syntax to turn an array into a hash
+				self.clean_all (Hash[arg_arr])
+			rescue Exception => err
+				# TODO: how do you give a general error (one that involves 2+ fields)
+				errors.add("", err.to_s)
+			rescue
+				errors.add('', "an unknown error occurred")
+			end
 		end
+
 	end
+
 end
 

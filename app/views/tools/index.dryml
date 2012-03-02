@@ -2,7 +2,7 @@
 <docpage title="Tools & utilities">
 	<doc-content:>
 		
-		<subhead>Tools</subhead> 
+		<subhead>Member Tools</subhead> 
 		<ul>
 			<li><a href="upload_susceptibilities">Bulk upload of susceptibility reports</a></li>
 			<li><a href="upload_thresholds">Bulk upload of seasonal thresholds</a></li>
@@ -26,8 +26,8 @@
 				
 				<ul>
 					<%-
-						link_list = [Patient, SusceptibilitySequence,
-							SequenceMutation, Threshold, Thresholdentry,
+						link_list = [Patient,
+							Threshold, Thresholdentry,
 							Susceptibility, Download]
 					%>
 					<nav-item repeat="&link_list" with="&this">

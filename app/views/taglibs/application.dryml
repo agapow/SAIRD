@@ -18,7 +18,7 @@
 
 
 <!-- plugins & extensions -->
-<!-- TODO: get rid of this and all papaerclip -->
+<!-- TODO: get rid of this and all paperclip -->
 <include src="paperclip" plugin="paperclip_with_hobo"/>
 
 <!-- features and tags for all pages -->

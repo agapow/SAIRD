@@ -10,7 +10,7 @@
 
 module ToolForms
 
-	class GraphResistForm < BaseToolForm
+	class GraphResistanceForm < BaseToolForm
 		# TODO: we need a lot better description about this sucker
 		
 		@@submit_buttons = ['Graph']

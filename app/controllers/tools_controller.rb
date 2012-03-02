@@ -5,20 +5,20 @@ class ToolsController < ApplicationController
 	def index
 	end
 	
-	def bulkupload
-		session[:results] = process_form(ToolForms::UploadSuceptibilityForm, request)
+	def upload_susceptibilities
+		session[:results] = process_form(ToolForms::UploadSusceptibilitiesForm, request)
 	end
 	
-	def uploadthresholds
+	def upload_thresholds
 		session[:results] = process_form(ToolForms::UploadThresholdsForm, request)
 	end
 	
-	def exquery
-		session[:results] = process_form(ToolForms::ExtendedQueryToolForm, request)
+	def extended_query
+		session[:results] = process_form(ToolForms::ExtendedQueryForm, request)
 	end
 	
-	def graphresist
-		session[:results] = process_form(ToolForms::GraphResistToolForm, request)
+	def graph_resistance
+		session[:results] = process_form(ToolForms::GraphResistanceForm, request)
 	end
 
 end

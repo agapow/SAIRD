@@ -2,7 +2,7 @@
 	
 	<collection-section:>
 		
-		<h3>Resistances</h3>
+		<h3>Phenotypic analyses</h3>
 		<if test="&this.susceptibility_entries.length == 0">
 			<p>No resistances have been entered.</p>
 		</if>
@@ -14,7 +14,7 @@
 			</ul>
 		</else>
 		
-		<h3>Sequences</h3>
+		<h3>Genotypic analyses</h3>
 		<if test="&this.susceptibility_sequences.length == 0">
 			<p>No sequences have been entered.</p>
 		</if>
@@ -22,10 +22,10 @@
 			<ul>
 				<repeat with="&this.susceptibility_sequences">
 					<li>
-						<%= this.title.blank? ? '-' : this.title %>,
+						<%= this.title.blank? ? '(unnamed sequence)' : this.title %>
 						<%= this.gene.name %>:
 						<repeat with="&this.sequence_mutations">
-								<%= this.description %>
+							<%= this.description %><%= h(last_item? ? '' : ', ') %>
 						</repeat>
 					</li>
 				</repeat>

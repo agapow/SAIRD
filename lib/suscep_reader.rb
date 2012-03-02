@@ -22,7 +22,9 @@ module SuscepReader
 		"comment" => :comment,
 		"note" => :note,
 		"year" => :season,
+		"season" => :season,
 		"pathogen" => :pathogen_type,
+		"pathogen_type" => :pathogen_type,
 		"subtype" => :pathogen_type,
 	}
 	
@@ -38,8 +40,10 @@ module SuscepReader
 			return COLNAMES.fetch(hdr.downcase.gsub(' ', '_'), hdr)
 		end
 		
-		def convert_season (raw_arg):
-			return int(raw_arg)
+		def convert_season (raw_arg)
+			season = raw_arg.to_i()
+			print "The season is #{season}"
+			return season
 		end
 		
 	end

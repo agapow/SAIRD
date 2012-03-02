@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229170000) do
+ActiveRecord::Schema.define(:version => 20120302130927) do
 
   create_table "countries", :force => true do |t|
     t.datetime "created_at"
@@ -23,10 +23,10 @@ ActiveRecord::Schema.define(:version => 20120229170000) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "uploader_id"
-    t.string   "file_file_name"
-    t.string   "file_content_type"
-    t.integer  "file_file_size"
-    t.datetime "file_updated_at"
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
   end
 
   add_index "downloads", ["uploader_id"], :name => "index_downloads_on_uploader_id"
@@ -123,11 +123,10 @@ ActiveRecord::Schema.define(:version => 20120229170000) do
   end
 
   create_table "sequence_mutations", :force => true do |t|
-    t.text    "description"
+    t.string  "description",                :limit => 6
     t.integer "susceptibility_sequence_id"
+    t.integer "magnitude",                  :limit => 3
   end
-
-  add_index "sequence_mutations", ["susceptibility_sequence_id"], :name => "index_sequence_mutations_on_susceptibility_sequence_id"
 
   create_table "susceptibilities", :force => true do |t|
     t.string   "isolate_name"

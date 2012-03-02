@@ -42,14 +42,10 @@ module ToolForms
 			end
 			
 			clean_params[:country] = Country.find_by_id(params['country'])
-			#clean_params[:season] = Season.find_by_id(params['season'])
-			#clean_params[:pathogen_type] = PathogenType.find_by_id(params['pathogen'])
 			clean_params[:dryrun] = params['dryrun'] != "0"
 			
 			# check stuff
 			if clean_params[:country].nil? then errors << "unknown country" end
-			#if clean_params[:season].nil? then errors << "unknown season" end
-			#if clean_params[:pathogen_type].nil? then errors << "unknown pathogen" end
 			
 			return clean_params, errors
 		end
@@ -77,10 +73,14 @@ module ToolForms
 			rdr = SuscepReader::ExcelReader.new(sheet_file.local_path, file_ext)
 			rdr.read() { |rec|
 				begin
+					pp "Heres what we got"
+					pp rec
 					new_sr = build_suscep_report(rec)
 					new_sr.country = params[:country]
+					pp params
 					#new_sr.season = params[:season]
 					#new_sr.pathogen_type = params[:pathogen_type]
+					pp new_sr
 						
 					if params[:dryrun]
 						results << "Report #{rec[:isolate_name]} read successfully"
@@ -109,8 +109,14 @@ module ToolForms
 			if [nil, ''].member?(rec[:collected])
 				raise StandardError, 'needs a collection date'
 			end
-			season = Season.find_by_isolate_year(int(rec[:season]))
-			pathogen_type = PathogenType.find_by_name(rec[:pathogen])
+			season = Season.find_by_year(rec[:season].to_i)
+			if season.nil?
+				raise StandardError, "can't find the season named '#{rec[:season]}'"
+			end			
+			pathogen_type = PathogenType.find_by_name(rec[:pathogen_type])
+			if pathogen_type.nil?
+				raise StandardError, "can't find the pathogen type named '#{rec[:pathogen_type]}'"
+			end	
 			new_sr = Susceptibility.new(:isolate_name=>rec[:isolate_name],
 				:collected=>rec[:collected], :season => season,
 				:pathogen_type => pathogen_type)
@@ -122,7 +128,7 @@ module ToolForms
 			suscep_entries = []
 			sequences = []
 			rec.each_pair { |k,v|
-				if [:isolate_name, :collected, :comment].member?(k)
+				if [:isolate_name, :collected, :comment, :season, :pathogen_type].member?(k)
 					next
 				end
 				
@@ -160,7 +166,6 @@ module ToolForms
 			new_sr.susceptibility_sequences = sequences
 			
 			## Postconditions & return:
-			pp new_sr
 			return new_sr
 		end
 		

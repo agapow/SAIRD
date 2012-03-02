@@ -1,0 +1,26 @@
+<%#
+Customize the appearance of a page showing a single download.
+
+This is needed to enable the showing a file.
+%>
+<show-page without-creator-link>
+
+                     
+   <field-list: fields="description,attachment" />
+   
+   <content-body:>
+      <p class="description">
+      	<%= this.description %>
+		</p>
+		
+      <p>Download this file <a href="#{this.attachment}">here</a></p>
+      
+      <p>(File type 
+		    <%= this.attachment_content_type %>, 
+			 size <%= this.attachment_file_size %> bytes. 
+			 Added by <view:uploader />)</p>
+			 
+   </content-body:>
+   
+	
+</show-page>

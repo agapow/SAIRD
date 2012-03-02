@@ -232,7 +232,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="file_file_name, file_content_type, file_file_size, file_updated_at" param/>
+            <field-list fields="attachment_file_name, attachment_content_type, attachment_file_size, attachment_updated_at" param/>
           </section>
     </content:>
 

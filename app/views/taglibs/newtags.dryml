@@ -11,13 +11,14 @@ Tool bar to appear on all pages.
 	<navigation class="main-nav" >
 		<nav-item href="#{base_url}/">Home</nav-item>
 		<%-
-			link_list = [Threshold, Susceptibility, Download]
+         link_list = [Threshold, Susceptibility]
 		%>
 		<nav-item repeat="&link_list" with="&this">
 			<%= this.view_hints.model_name_plural %>
 		</nav-item>
 		<nav-item href="#{base_url}/tools/">Tools</nav-item>
-		<nav-item href="#{base_url}/docs/">Docs</nav-item>
+      <nav-item href="#{base_url}/news_items/">News</nav-item>
+      <nav-item href="#{base_url}/downloads/">Downloads</nav-item>
 	</navigation>
 </def> 
 
@@ -208,7 +209,17 @@ TODO: sort, refactor and arrange in a suitable place
 
 <extend tag="form" for="Download">
   <old-form merge multipart>
-    <field-list: fields="title, description, file"/>
+    <field-list: fields="title, description, attachment"/>
+  </old-form>
+</extend>
+
+<extend tag="form" for="Susceptibility">
+  <old-form merge>
+  	   <field-list: >
+         <susceptibility-entries-label: >Phenotypic analysis</susceptibility-entries-label:>
+		    <susceptibility-sequences-label: >Genotypic analysis</susceptibility-sequences-label:>
+		</field-list:>
+      <submit: />
   </old-form>
 </extend>
 

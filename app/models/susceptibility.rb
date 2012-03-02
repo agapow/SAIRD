@@ -43,7 +43,7 @@ class Susceptibility < ActiveRecord::Base
 		genes_seen = []
 		susceptibility_sequences.each { |s|
 			if genes_seen.member?(s.gene_id)
-				errors.add('susceptibility_sequences', 'duplicate genes')
+				errors.add('susceptibility_sequences', 'contains duplicate genes')
 			else
 				genes_seen << s.gene_id
 			end
