@@ -25,12 +25,7 @@
 				/>
 					
 				<form-field name="country" type="selectmany"
-					options="&Country.all().collect { |c| [c.name, c.id] }"
-					help="Select none, one or many."
-				/>
-					
-				<form-field name="resistance" type="selectmany"
-					options="&Resistance.all().collect { |c| [c.name, c.id] }"
+					options="&current_user.countries.collect { |c| [c.name, c.id] }"
 					help="Select none, one or many."
 				/>
 					

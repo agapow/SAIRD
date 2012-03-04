@@ -18,7 +18,7 @@ module ToolForms
 				
 		def self.description
 			# TODO: sucky description
-			return 'Search the database for suceptibility reports.'
+			return 'Search the database for suceptibility entries.'
 		end
 		
 		def self.id
@@ -38,11 +38,14 @@ module ToolForms
 		
 		
 		def self.is_valid?(params)
+			# gets many seasons, many countries, many pathogens
+			# these can be one, none or many
+			
 			pp "**** params #{params}"
 			clean_params = {}
 			errors = []
 				
-			[:season, :pathogen_type, :country, :resistance].each { |p|
+			[:season, :pathogen_type, :country].each { |p|
 				param_name = p.to_s
 				param_list = params[param_name].nil? ? [] : params[param_name]
 				pp param_list
@@ -80,13 +83,6 @@ module ToolForms
 			reports = Susceptibility.scoped(:conditions => conditions).all()
 			pp "the results"
 			pp reports
-			
-			if ! params[:resistance].empty?
-				
-				
-				
-			end
-			
 			
 			# if no matching, return no result answer
 			if reports.empty?
