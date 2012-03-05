@@ -145,9 +145,9 @@ module ToolForms
 			
 			# generate graphs
 			graphs_locn = "graphs"
-			graphs_dir = "#{RAILS_ROOT}/#{graphs_locn}/"
+			graphs_dir = "#{RAILS_ROOT}/public/#{graphs_locn}/"
 			graphs_url = "#{ENV["RAILS_RELATIVE_URL_ROOT"]}/#{graphs_locn}/"
-			base_plot_name = generate_filepath_to_plot()
+			base_plot_name = generate_plot_basename()
 			pp "the filepath is #{base_plot_name} which is on the path #{graphs_dir} and the url #{graphs_url}"
 			
 			# generate whisker graph
@@ -162,17 +162,16 @@ module ToolForms
 			
 			whisker_png_path = "#{graphs_dir}#{base_plot_name}-whisker.png"
 			system ("rsvg #{whisker_svg_path} #{whisker_png_path}")
+			whisker_png_url = "#{graphs_url}#{base_plot_name}-whisker.png"
 			
+			img_msg = "<img src='#{whisker_png_url}'>"
 			# generate scatter plot
 			
 			
-			return [search_msg, "#{filtered_reports.length()} matching records were found."], []
+			return [search_msg, "#{filtered_reports.length()} matching records were found.", img_msg], []
 			
 		end
 		
-		def generate_random_filename()
-			return (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
-		end
 		
 		def self.generate_plot_basename()
 			return (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
