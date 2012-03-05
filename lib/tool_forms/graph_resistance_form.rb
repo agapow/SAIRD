@@ -62,15 +62,42 @@ module ToolForms
 		# Returns results, errors
 		#
 		def self.process_default(params)
+			## Preconditions & preparation:
 			pp params
 			
+			cntry = Country.find_by_id(params[:country])
+			ssn = Season.find_by_id(params[:season])
+			pthgn_typ = PathogenType.find_by_id(params[:pathogen_type])
+			rstnc = Resistance.find_by_id(params[:resistance])
+
+				errors = []
+			if cntry.nil?
+				errors << "No such country"
+			end
+			if ssn.nil?
+				errors << "No such season"
+			end
+			if pthgn_typ.nil?
+				errors << "No such pathogen"
+			end
+			if rstnc.nil?
+				errors << "No such resistance"
+			end
+			
+			if (0 < errors.length())
+				return [], errors
+			end
+			
+			# TODO: check users are allowed to see country
+			
+			search_msg = "Searching for #{cntry}, #{ssn}, #{pthgn_typ}, #{rstnc}"
+			
+			## Main:
 			# build conditions
 			conditions = {}
-
 			conditions[:season_id] =  params[:season]
 			conditions[:country_id] =  params[:country]
 			conditions[:pathogen_type_id] =  params[:pathogen_type]
-
 			
 			# retreive matching records
 			reports = Susceptibility.scoped(:conditions => conditions).all()
@@ -78,53 +105,61 @@ module ToolForms
 			pp reports
 			
 			# now filter for suceptibiities_entrui
-			sus_entries = []
+			filtered_reports = []
 			reports.each { |r|
-				sus_entries.concat (r.susceptibility_entries)
+				r.susceptibility_entries.each { |e|
+					if e.resistance_id == params[:resistance]
+						filtered_reports << [r.collected, e.measure]
+					end
+				}
 			}
 			
-			pp "THESE ARE THE SUSC ENTRIES"
-			pp sus_entries
-			
-			# now filter entries
-			filtered_reports = sus_entries.select { |s|
-				s.resistance_id == params[:resistance]
-			}
+			pp "THESE ARE THE FILTERED SUSC ENTRIES"
+			pp filtered_reports
 			
 			# if no matching, return no result answer
 			if filtered_reports.empty?
-				return [], ["No results were returned. Perhaps you should widen the search parameters"], []
+				return [], ["No results were returned. Perhaps you should widen the search parameters"]
 			end
 
 			# if too few to graph, return message
 			if (filtered_reports.length() < 8)
-				return [], ["Too few results to graph (#{filtered_reports.length()}). Perhaps you should widen the search parameters"], []
+				return [], ["Too few results to graph (#{filtered_reports.length()}). Perhaps you should widen the search parameters"]
 			end
 			
-			# gather values
-			vals = filtered_reports.collect { |fr| fr.measure }.sort()
-			val_count = vals.length()
-			# find box bounds
-			i25, i50, i75 = (val_count * 0.25).ceil(), (val_count * 0.50).round(), (val_count * 0.75).floor()
-			p25, p50, p75 = vals[i25-1], vals[i50-1], vals[i75-1]
-			# find whisker bounds
-			iqr = p75 - p25
-			w_top = p75 + (1.5 * iqr)
-			w_top_val = vals.select { |v| v <= w_top }.max
-			w_bottom = p25 - (1.5 * iqr)
-			w_botom_val = vals.select { |v| w_bottom <= v }.min
+			# get threshold if available
+			# should by one at most
+			thresholds = Threshold.scoped(:conditions => conditions).all()
+			t_entries = []
+			thresholds.each { |t|
+				t.thresholdentries.each { |e|
+					if e.resistance_id == params[:resistance]
+						t_entries << [e.minor, e.major]
+					end
+				}
+			}
+			season_thresholds = (0 < t_netries.length) ? t_entries[0] : nil
+			pp "The season thresholds are: #{season_thresholds}"
 			
 			# generate box graph
-			
+			base_file_path = generate_filepath_to_plot()
+			pp "the filepath is #{base_file_path}"
 			
 			# generate scatter plot
 			
 			
-			return ["#{filtered_reports.length()} matching records were found."], []
+			return [search_msg, "#{filtered_reports.length()} matching records were found."], []
 			
 		end
 		
+		def generate_random_filename()
+			return (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
+		end
 		
+		def self.generate_filepath_to_plot()
+			basename = (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
+			return "#{RAILS_ROOT}/public/graphs/#{basename}"
+		end
 		
 	end
 
