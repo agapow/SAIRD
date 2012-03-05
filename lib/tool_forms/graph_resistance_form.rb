@@ -69,8 +69,8 @@ module ToolForms
 			ssn = Season.find_by_id(params[:season])
 			pthgn_typ = PathogenType.find_by_id(params[:pathogen_type])
 			rstnc = Resistance.find_by_id(params[:resistance])
-
-				errors = []
+			
+			errors = []
 			if cntry.nil?
 				errors << "No such country"
 			end
@@ -88,9 +88,11 @@ module ToolForms
 				return [], errors
 			end
 			
+			pp errors
+			
 			# TODO: check users are allowed to see country
 			
-			search_msg = "Searching for #{cntry}, #{ssn}, #{pthgn_typ}, #{rstnc}"
+			search_msg = "Searching for #{cntry}, #{ssn.year}, #{pthgn_typ}, #{rstnc.agent}"
 			
 			## Main:
 			# build conditions
@@ -138,12 +140,28 @@ module ToolForms
 					end
 				}
 			}
-			season_thresholds = (0 < t_netries.length) ? t_entries[0] : nil
+			season_thresholds = (0 < t_entries.length) ? t_entries[0] : nil
 			pp "The season thresholds are: #{season_thresholds}"
 			
-			# generate box graph
-			base_file_path = generate_filepath_to_plot()
-			pp "the filepath is #{base_file_path}"
+			# generate graphs
+			graphs_locn = "graphs"
+			graphs_dir = "#{RAILS_ROOT}/#{graphs_locn}/"
+			graphs_url = "#{ENV["RAILS_RELATIVE_URL_ROOT"]}/#{graphs_locn}/"
+			base_plot_name = generate_filepath_to_plot()
+			pp "the filepath is #{base_plot_name} which is on the path #{graphs_dir} and the url #{graphs_url}"
+			
+			# generate whisker graph
+			pltr = Plotting::WhiskerPlotter.new(:legend => false)
+			data = filtered_reports.collect { |d| d[1] }
+			svg = pltr.render_data([['Reports', data]], :thresholds => [5.1, 6.7])
+			whisker_svg_path = "#{graphs_dir}#{base_plot_name}-whisker.svg"
+			pp whisker_svg_path
+			outfile = open(whisker_svg_path, 'w')
+			outfile.write (svg)
+			outfile.close()
+			
+			whisker_png_path = "#{graphs_dir}#{base_plot_name}-whisker.png"
+			system ("rsvg #{whisker_svg_path} #{whisker_png_path}")
 			
 			# generate scatter plot
 			
@@ -156,9 +174,8 @@ module ToolForms
 			return (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
 		end
 		
-		def self.generate_filepath_to_plot()
-			basename = (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
-			return "#{RAILS_ROOT}/public/graphs/#{basename}"
+		def self.generate_plot_basename()
+			return (0...8).map{ ('a'..'z').to_a[rand(26)] }.join
 		end
 		
 	end
