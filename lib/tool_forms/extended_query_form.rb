@@ -63,33 +63,30 @@ module ToolForms
 		## Services:
 		
 		# Return all resistance reports for this season & virus type & country
+		# 
+		# Returns results, errors
+		#
 		def self.process_default(params)
 			# TODO: allow multiple seaons & virus types? Ordering?
 			pp params
 			
 			# build conditions
 			conditions = {}
-			if ! params[:season].empty?
-				conditions[:season_id] =  params[:season]
-			end
-			if ! params[:country].empty?
-				conditions[:country_id] =  params[:country]
-			end
-			if ! params[:pathogen_type].empty?
-				conditions[:pathogen_type_id] =  params[:pathogen_type]
-			end
+			conditions[:season_id] =  params[:season]
+			conditions[:country_id] =  params[:country]
+			conditions[:pathogen_type_id] =  params[:pathogen_type]
 			
-			# retreive matching records
+			# retrieve matching records
 			reports = Susceptibility.scoped(:conditions => conditions).all()
 			pp "the results"
 			pp reports
 			
 			# if no matching, return no result answer
 			if reports.empty?
-				return ["No results were returned. Perhaps you should widen the
-					search parameters"], []
+				return [], []
 			else
-				return reports, []
+				# here we just return ids, other the session gets overly full
+				return reports.collect { |r| r.id }, []
 			end
 		end
 		

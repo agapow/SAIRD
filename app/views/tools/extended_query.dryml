@@ -2,31 +2,69 @@
 <tool-page with="&ToolForms::ExtendedQueryForm">
 
 		<result_section:>
-			<% search_res = session[:results] %>
-			<p><%= search_res.length %> records were found.</p>
-			<ul repeat="&search_res">
-				<li><a href="&object_url this"><%= this.name %></a></li>
-			</ul>
+			<%
+			   result_ids = session[:results]
+				result_records = Susceptibility.scoped(:conditions=>{:id=>result_ids})
+			%>
+			<p><%= result_ids.length %> records were found.</p>
+
+<!-- 		
+<div class="table-plus">
+	<table fields="isolate_name,collected,season,country,pathogen_type" with="&result_records"></table>
+</div>
+-->
+
+<div class="table-plus">
+   <table>
+      <thead>
+         <tr class="field-heading-row">
+            <th>Isolate name</th>
+            <th>Date of specimen collection</th>
+            <th>Season</th>
+            <th>Pathogen subtype</th>
+            <th>Country</th>
+         </tr>
+      </thead>
+      <tbody>
+
+         <tr repeat="&result_records">
+         	<td><a href="&object_url this"><%= this %></a></td>
+            <td><%= this.collected %></td>
+            <td><%= this.season %></td>
+            <td><%= this.pathogen_type %></td>
+            <td><%= this.country %></td>
+			</tr>
+
+      </tbody>
+   </table>
+</div>
+
 
 		</result_section:>
 		
 		<tool-form-fields:>
-	
+         <%
+            if current_user.administrator?
+				  visible_countries = Country.all()
+				else
+               visible_countries = current_user.countries()
+				end
+         %>
 			<table class="field-list">
 				
 				<form-field name="season" type="selectmany"
 					options="&Season.all().collect { |c| [c.name, c.id] }"
-					help="Select none, one or many."
+					help="Select one or many."
 				/>
 					
 				<form-field name="pathogen_type" type="selectmany" title="Virus type"
 					options="&PathogenType.all().collect { |c| [c.name, c.id] }"
-					help="Select none, one or many."
+					help="Select one or many."
 				/>
 					
 				<form-field name="country" type="selectmany"
-					options="&current_user.countries.collect { |c| [c.name, c.id] }"
-					help="Select none, one or many."
+					options="&visible_countries.collect { |c| [c.name, c.id] }"
+					help="Select one or many."
 				/>
 					
 			</table>

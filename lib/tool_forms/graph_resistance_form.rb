@@ -57,7 +57,10 @@ module ToolForms
 		
 		## Services:
 		
-		# Return the box and scatter plots for the 
+		# Return the box and scatter plots for the selected records
+		#
+		# Returns results, errors
+		#
 		def self.process_default(params)
 			pp params
 			
@@ -77,8 +80,11 @@ module ToolForms
 			# now filter for suceptibiities_entrui
 			sus_entries = []
 			reports.each { |r|
-				sus_entries << r.susceptibility_entries
+				sus_entries.concat (r.susceptibility_entries)
 			}
+			
+			pp "THESE ARE THE SUSC ENTRIES"
+			pp sus_entries
 			
 			# now filter entries
 			filtered_reports = sus_entries.select { |s|
@@ -87,12 +93,12 @@ module ToolForms
 			
 			# if no matching, return no result answer
 			if filtered_reports.empty?
-				return ["No results were returned. Perhaps you should widen the search parameters"], []
+				return [], ["No results were returned. Perhaps you should widen the search parameters"], []
 			end
 
 			# if too few to graph, return message
 			if (filtered_reports.length() < 8)
-				return ["Too few results to graph (#{filtered_reports.length()}). Perhaps you should widen the search parameters"], []
+				return [], ["Too few results to graph (#{filtered_reports.length()}). Perhaps you should widen the search parameters"], []
 			end
 			
 			# gather values
@@ -114,7 +120,7 @@ module ToolForms
 			# generate scatter plot
 			
 			
-			return ["#{filtered_reports.length()} matching records were found."]
+			return ["#{filtered_reports.length()} matching records were found."], []
 			
 		end
 		

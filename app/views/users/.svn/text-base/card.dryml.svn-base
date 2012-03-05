@@ -21,8 +21,7 @@ TODO: include gravatar
 					Member of
 						<repeat with="&this.user_countries">
 							<a href="#{object_url this.country}">
-								<%= this.country.name %>
-								(<view:level />)</a><%= last_item? ? '.' : ', ' %>
+								<%= this.country.name %></a><%= last_item? ? '.' : ', ' %>
 						</repeat>
 						
 						

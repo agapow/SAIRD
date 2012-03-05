@@ -6,7 +6,7 @@
 		<ul>
 			<li><a href="upload_susceptibilities">Bulk upload of susceptibility reports</a></li>
 			<li><a href="upload_thresholds">Bulk upload of seasonal thresholds</a></li>
-			<li><a href="extended_query">Search susceptibility reports</a></li>
+			<li><a href="extended_query">Search susceptibility entries</a></li>
 			<li><a href="graph_resistance">Graph resistance data</a></li>
 
 		</ul>

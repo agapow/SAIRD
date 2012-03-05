@@ -11,7 +11,7 @@ TODO: include gravatar
 	 <header: replace>
 	 	<h4>
 	 		<a href="&object_url this.country">
-	 			<%= "#{this.country.name} (#{this.level})" %>
+	 			<%= "#{this.country.name}" %>
 			</a>
 		</h4>
 	 </header:>
