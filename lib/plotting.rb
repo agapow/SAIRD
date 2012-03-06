@@ -412,7 +412,7 @@ module Plotting
 	         .add(pv.Label)
 	            .bottom(0)
 	            .text_margin(10)
-					.text(lambda {|d| "#{d}"})
+					.text(lambda {|d| (epoch + d).strftime("%m/%d")})
 	            .textBaseline("top")
 	            .textAlign("center")
 	            .visible(lambda {|d| horiz_label_ticks.member?(d)})

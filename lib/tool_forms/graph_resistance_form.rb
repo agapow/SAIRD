@@ -142,6 +142,11 @@ module ToolForms
 			}
 			season_thresholds = (0 < t_entries.length) ? t_entries[0] : nil
 			pp "The season thresholds are: #{season_thresholds}"
+			if season_thresholds.nil?
+				threshold_msg = "No threshold can be found for this country / season / resistance combination"
+			else
+				threshold_msg = "The season thresholds are #{season_thresholds[0]}, #{season_thresholds[1]}."
+			end
 			
 			# generate graphs
 			graphs_locn = "graphs"
@@ -188,6 +193,7 @@ module ToolForms
 			return [
 				search_msg,
 				"#{filtered_reports.length()} matching records were found.",
+				threshold_msg,
 				img_msg,
 				simg_msg
 			], []

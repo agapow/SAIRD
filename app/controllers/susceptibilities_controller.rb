@@ -11,7 +11,7 @@ class SusceptibilitiesController < ApplicationController
 			hobo_index
 		else
 			if current_user.guest?
-				country_ids = [100]
+				country_ids = [-1]
 			else
 				country_ids = current_user.user_countries.collect { |u| u.country_id }
 			end

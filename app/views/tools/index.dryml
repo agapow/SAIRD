@@ -2,55 +2,62 @@
 <docpage title="Tools & utilities">
 	<doc-content:>
 		
-		<subhead>Member Tools</subhead> 
-		<ul>
-			<li><a href="upload_susceptibilities">Bulk upload of susceptibility reports</a></li>
-			<li><a href="upload_thresholds">Bulk upload of seasonal thresholds</a></li>
-			<li><a href="extended_query">Search susceptibility entries</a></li>
-			<li><a href="graph_resistance">Graph resistance data</a></li>
-
-		</ul>
-		
-		<%# TODO: need a full browsing menu for users %>
-		
-		<% if current_user.administrator? %>
-			<!-- provide quick links to editting -->
-			<subhead>Administrative tools</subhead> 
+		<if test="&current_user.guest?">
+			<p>
+				Anonymous users cannot use any of the site tools.
+				<a href="&login_url">Login</a> if you have an account.
+			</p>
+		</if>
+		<else>
+			<subhead>Member Tools</subhead> 
+				<ul>
+					<li><a href="upload_susceptibilities">Bulk upload of susceptibility reports</a></li>
+					<li><a href="upload_thresholds">Bulk upload of seasonal thresholds</a></li>
+					<li><a href="extended_query">Search susceptibility entries</a></li>
+					<li><a href="graph_resistance">Graph resistance data</a></li>
+				</ul>
 			
-				<p>From here you can browse and edit all data. Be careful, this
-				provides access to the full, raw data.</p>
+			<%# TODO: need a full browsing menu for users %>
 			
-				<subsubhead>Entered data:</subsubhead>
+			<if test="&current_user.administrator?">
+				<!-- provide quick links to editting -->
+				<subhead>Administrative tools</subhead> 
 				
-				<ul>
-					<%-
-						link_list = [Patient,
-							Threshold, Thresholdentry,
-							Susceptibility, Download]
-					%>
-					<nav-item repeat="&link_list" with="&this">
-						<%= this.view_hints.model_name_plural %>
-					</nav-item>
-				</ul>
+					<p>From here you can browse and edit all data. Be careful, this
+					provides access to the full, raw data.</p>
 				
-				<subsubhead>Vocabularies and domain tables:</subsubhead>
-				
-				<ul>
-					<%-
-						link_list = [Country, Resistance, PathogenType, Season,
-							Gene, PatientLocation]
-					%>
-					<nav-item repeat="&link_list" with="&this">
-						<%= this.view_hints.model_name_plural %>
-					</nav-item>
-				</ul>
-	
-				<subsubhead>User administration:</subsubhead>
-				
-				<ul>
-					<nav-item with="&User">Users</nav-item>
-				</ul>
-				
-		<% end %>
+					<subsubhead>Entered data:</subsubhead>
+					
+					<ul>
+						<%-
+							link_list = [Patient,
+								Threshold, Thresholdentry,
+								Susceptibility, Download]
+						%>
+						<nav-item repeat="&link_list" with="&this">
+							<%= this.view_hints.model_name_plural %>
+						</nav-item>
+					</ul>
+					
+					<subsubhead>Vocabularies and domain tables:</subsubhead>
+					
+					<ul>
+						<%-
+							link_list = [Country, Resistance, PathogenType, Season,
+								Gene, PatientLocation]
+						%>
+						<nav-item repeat="&link_list" with="&this">
+							<%= this.view_hints.model_name_plural %>
+						</nav-item>
+					</ul>
+		
+					<subsubhead>User administration:</subsubhead>
+					
+					<ul>
+						<nav-item with="&User">Users</nav-item>
+					</ul>
+			</if>
+		</else>
+		
 	</doc-content:>
 </docpage>
