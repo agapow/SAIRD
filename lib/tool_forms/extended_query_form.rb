@@ -18,7 +18,8 @@ module ToolForms
 				
 		def self.description
 			# TODO: sucky description
-			return 'Search the database for suceptibility entries.'
+			return 'Search the database for suceptibility entries, choosing
+				countries, seasons and pathogen types.'
 		end
 		
 		def self.id

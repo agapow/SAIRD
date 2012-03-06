@@ -309,7 +309,7 @@ module Plotting
 	# 
 	# Oddly enough, rubyvis can only handle Times not dates, so you have to pass Time structures
 	#
-	class ScatterByDatePlotter
+	class ScatterByDatePlotter  < Plotter
 	   
 	   attr_accessor(
 	      :data_series,  # [[name, [[x1, y1], ], ...]
@@ -339,6 +339,7 @@ module Plotting
 	   # Create a plot of the passed data and return as an SVG.
 	   #
 	   # @param [] data   an array of datasets, being [name, [data]]
+	   #   where data is a series of date, value pairs
 	   #
 	   def render_data(data, kwargs={})
 	      ## Preconditions:
@@ -347,10 +348,19 @@ module Plotting
 	      }.merge(kwargs))   
 	
 	      ## Main:
-	      @data_series = data
+	      pp data
+	      epoch = Date.new(1970,1,1)
+	      @data_series = data.collect { |r|
+	         row_title = r[0]
+	         row_data = r[1].collect { |p|
+	            [(p[0] - epoch).to_i, p[1]]
+	         }
+	         [row_title, row_data]
+      	}
 	      
 	      # NOTE: need index to seperate colors
 	      @data_series.each_with_index { |d, i| d << i }
+	      	pp @data_series
 	      
 	      # find limits of data so we know where axes are
 	      x_data = @data_series.collect { |series|
@@ -393,6 +403,7 @@ module Plotting
 	      c = pv.Scale.linear(0, @data_series.size()-1).range("red", "blue")
 	      
 	      # do the axes
+	      # TODO: change text to be (epoch + d).strftime("%m/%d")
 	      horiz_label_ticks = horiz.ticks.each_slice(2).map(&:first)
 	      vis.add(pv.Rule)
 	         .data(horiz.ticks())
@@ -401,7 +412,7 @@ module Plotting
 	         .add(pv.Label)
 	            .bottom(0)
 	            .text_margin(10)
-	            .text(pv.Format.date("%b").format_lambda)
+					.text(lambda {|d| "#{d}"})
 	            .textBaseline("top")
 	            .textAlign("center")
 	            .visible(lambda {|d| horiz_label_ticks.member?(d)})
@@ -430,13 +441,15 @@ module Plotting
 	         .strokeStyle("black")
 	         
 	         
+	      # TODO: chnage stroke and fill styles to allow for
+	      # multiple data sets
 	      @data_series.each_with_index { |series, i|
 	         vis.add(pv.Dot)
 	            .data(series[1])
 	            .left(lambda {|d| horiz.scale(d[0])})
 	            .bottom(lambda {|d| vert.scale(d[1])})
-	            .stroke_style(c.scale(i))
-	            .fill_style(c.scale(i).alpha(0.2))
+	            .stroke_style("blue")
+	            .fill_style("grey")
 	            .shape_size(3)       
 	      }
 	

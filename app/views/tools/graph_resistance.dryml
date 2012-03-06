@@ -3,10 +3,9 @@
 
 		<result_section:>
 			<% search_res = session[:results] %>
-			<p>DEBUG: <%= search_res.length %> records were found.</p>
-			<ul repeat="&search_res">
-				<li><a href="&object_url this"><%= this %></a></li>
-			</ul>
+			<div repeat="&search_res">
+				<p><%= this %></p>
+			</div>
 
 		</result_section:>
 		

@@ -24,7 +24,10 @@ module ToolForms
 		end
 		
 		def self.description
-			return """Produce box and scatter plots of resistance data."""
+			return "Show whiskerbox and scatter plots of resistance data. These
+				will show the susceptibility entries for a given country, season
+				and pathogen type, compared to the thresholds for that season if
+				available."
 		end
 		
 		def self.id
@@ -92,7 +95,7 @@ module ToolForms
 			
 			# TODO: check users are allowed to see country
 			
-			search_msg = "Searching for #{cntry}, #{ssn.year}, #{pthgn_typ}, #{rstnc.agent}"
+			search_msg = "Searching for #{cntry}, #{ssn.year}, #{pthgn_typ}, #{rstnc.agent} ..."
 			
 			## Main:
 			# build conditions
@@ -115,9 +118,6 @@ module ToolForms
 					end
 				}
 			}
-			
-			pp "THESE ARE THE FILTERED SUSC ENTRIES"
-			pp filtered_reports
 			
 			# if no matching, return no result answer
 			if filtered_reports.empty?
@@ -146,14 +146,15 @@ module ToolForms
 			# generate graphs
 			graphs_locn = "graphs"
 			graphs_dir = "#{RAILS_ROOT}/public/#{graphs_locn}/"
-			graphs_url = "#{ENV["RAILS_RELATIVE_URL_ROOT"]}/#{graphs_locn}/"
+			graphs_url = "#{ENV.fetch("RAILS_RELATIVE_URL_ROOT", '')}/#{graphs_locn}/"
 			base_plot_name = generate_plot_basename()
 			pp "the filepath is #{base_plot_name} which is on the path #{graphs_dir} and the url #{graphs_url}"
 			
 			# generate whisker graph
 			pltr = Plotting::WhiskerPlotter.new(:legend => false)
 			data = filtered_reports.collect { |d| d[1] }
-			svg = pltr.render_data([['Reports', data]], :thresholds => [5.1, 6.7])
+			svg = pltr.render_data([['Reports', data]], :thresholds => season_thresholds)
+				
 			whisker_svg_path = "#{graphs_dir}#{base_plot_name}-whisker.svg"
 			pp whisker_svg_path
 			outfile = open(whisker_svg_path, 'w')
@@ -165,10 +166,31 @@ module ToolForms
 			whisker_png_url = "#{graphs_url}#{base_plot_name}-whisker.png"
 			
 			img_msg = "<img src='#{whisker_png_url}'>"
+			
 			# generate scatter plot
+			pltr = Plotting::ScatterByDatePlotter.new(:legend => false)
+			data = filtered_reports.collect { |d| [d[0], d[1]] }
+			svg = pltr.render_data([['Reports', data]], :thresholds => season_thresholds)
 			
+			scatterdate_svg_path = "#{graphs_dir}#{base_plot_name}-scatterdate.svg"
+			pp scatterdate_svg_path
+			outfile = open(scatterdate_svg_path, 'w')
+			outfile.write (svg)
+			outfile.close()
 			
-			return [search_msg, "#{filtered_reports.length()} matching records were found.", img_msg], []
+			scatterdate_png_path = "#{graphs_dir}#{base_plot_name}-scatterdate.png"
+			system ("rsvg #{scatterdate_svg_path} #{scatterdate_png_path}")
+			scatterdate_png_url = "#{graphs_url}#{base_plot_name}-scatterdate.png"
+			
+			simg_msg = "<img src='#{scatterdate_png_url}'>"
+			
+			## Return:
+			return [
+				search_msg,
+				"#{filtered_reports.length()} matching records were found.",
+				img_msg,
+				simg_msg
+			], []
 			
 		end
 		

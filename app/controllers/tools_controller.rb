@@ -28,10 +28,14 @@ def process_form(tf, req)
 	# XXX: this is not great and puts far to much work in the controller
 	# TODO: refactor or more to a more logical place
 	
-	# The torturous logic of this method: we are handed a toolform & request ...
-	# Only process form if there has been a submission, otherwise results are nil
+	# The torturous logic of this method:
+	# - we are handed a toolform & request ...
+	# - only process form if there has been a submission, otherwise results are nil
 	results = nil
 	errors = []
+	pp "FLASh LOOKS LIKE THIS"
+	pp flash
+	pp flash[:error]
 	if ! req.parameters['_submit'].nil?
 		# check for errors in parameters and clean them up
 		conv_params, errors = tf.is_valid?(req.parameters)
