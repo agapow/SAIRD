@@ -21,12 +21,14 @@ module SpreadsheetReader
 	
 	### IMPLEMENTATION ###
 	
-	# A Excel 95 spreadsheet reader that can clean up column names and convert data.
+	# A Excel spreadsheet reader that can clean up column names and convert data.
 	#
 	# Assumptions: The data is read off the first sheet of the workbook. The sheet
 	# has column headers. Column names are cleaned up, so as to tolerate small
 	# errors (see "read_headers"). Each row has the same number of entries /
 	# columns.
+	#
+	# This happens Excel95 (xls) and Excel XML (xlsx).
 	#
 	# @example How to use this class
 	#    rdr = XlsReader('my-excel.xls')

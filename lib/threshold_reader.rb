@@ -20,6 +20,7 @@ module ThresholdReader
 		"type" => :pathogen_type,
 		"virus" => :pathogen_type,
 		"virus_type" => :pathogen_type,
+		"strain" => :pathogen_type
 	}
 	
 	
