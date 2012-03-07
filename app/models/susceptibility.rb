@@ -48,34 +48,62 @@ class Susceptibility < ActiveRecord::Base
 				genes_seen << s.gene_id
 			end
 		}
+		
+		
+		# Check that date falls within season
+		if ! season.date_within (collected)
+			errors.add('collected', 'date must be within the given season')
+		end
+		
+		# check user has permission for country
+		if acting_user.guest?
+			errors.add('country',
+				'you do not have permissions to create records for this or any country')
+		elsif (! acting_user.administrator?)
+			pp country
+			pp acting_user.countries
+			if (! acting_user.countries.member? (country))
+				errors.add('country',
+					'you do not have permissions to create records for this country')
+			end
+		end
+		
 	end
 	
-	# Check that date falls within season
 	#
-	def clean_all (kwargs)
-		date_collected = kwargs[:collected]
-		season_id = kwargs[:season_id]
-		season = Season.find_by_id (season_id)
-		if ! season.date_within (date_collected)
-			errors.add('date_collected', 'date must be within the given season')
-		end
-	end
 	
 	## Permissions:
 	def create_permitted?
-		true
+		if acting_user.guest?
+			return false
+		end
+		if acting_user.administrator? or (0 < acting_user.user_countries.length)
+			return true
+		else
+			return false
+		end
 	end
 
 	def update_permitted?
-		true
+		return create_permitted?()
 	end
 
 	def destroy_permitted?
-		true
+		return create_permitted?()
 	end
 
 	def view_permitted?(field)
-		acting_user.administrator? || acting_user.is_country_member?(country)
+		if acting_user.guest?
+			return false
+		end
+		if acting_user.administrator?
+			return true
+		end
+		if country.nil? or acting_user.is_country_member?(country)
+			return true
+		else
+			return false
+		end
 	end
 	
 	## Accessors:

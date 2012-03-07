@@ -46,35 +46,54 @@ class Threshold < ActiveRecord::Base
 				res_seen << t.resistance_id
 			end
 		}
+		
+		# check user has permission for country
+		if acting_user.guest?
+			errors.add('country',
+				'you do not have permissions to create records for this or any country')
+		elsif (! acting_user.administrator?)
+			pp country
+			pp acting_user.countries
+			if (! acting_user.countries.member? (country))
+				errors.add('country',
+					'you do not have permissions to create records for this country')
+			end
+		end
+		
 	end
 
 	## Permissions:
 	def create_permitted?
-		true
-		#if acting_user.administrator?
-		#	return true
-		#else
-		#	return acting_user.is_country_editor (country)
-		#end
+		if acting_user.guest?
+			return false
+		end
+		if acting_user.administrator? or (0 < acting_user.user_countries.length)
+			return true
+		else
+			return false
+		end
 	end
 
 	def update_permitted?
-		true
+		return create_permitted?()
 	end
 
 	def destroy_permitted?
-		true
+		return create_permitted?()
 	end
 
 	def view_permitted?(field)
 		if acting_user.guest?
-			false
-		elsif acting_user.administrator?
-			true
-		else
-			acting_user.is_country_member? (country)
+			return false
 		end
-		
+		if acting_user.administrator?
+			return true
+		end
+		if country.nil? or acting_user.is_country_member?(country)
+			return true
+		else
+			return false
+		end
 	end
 
 	## Accessors:
