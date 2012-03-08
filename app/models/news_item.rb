@@ -2,7 +2,10 @@ class NewsItem < ActiveRecord::Base
 
    hobo_model # Don't put anything above this
 
-   ## Model & relations:
+   # add in shared behaviour
+   include ExtendedModelMixin
+   
+   ## Db model & relationships:
    fields do
       name        :string, :required
       body        :markdown, :required

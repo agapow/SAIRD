@@ -30,21 +30,26 @@ class Resistance < ActiveRecord::Base
 	end	
 	
 	## Permissions:
-	def create_permitted?
-		true
-	end
-	
-	def update_permitted?
-		true
-	end
-	
-	def destroy_permitted?
-		true
-	end
-	
-	def view_permitted?(field)
-		true
-	end
+   
+   # Who is allowed to view the country?
+   #
+   # Currently, we let everyone who is a member of any country see the country.
+   # Anonymous and unverified users are forbidden. 
+   #
+   # TODO: customise this for different fields?
+   #
+   def read_permitted?
+   	if acting_user.guest? or (acting_user.countries.length() == 0)
+   		return false
+   	end
+      return true
+   end
+   
+   # Who is allowed to edit resistance data?
+   #
+   def write_permitted?
+      return acting_user.administrator?
+   end
 
 	## Accessors:
 	def name

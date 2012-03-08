@@ -79,6 +79,8 @@ module ToolForms
 					new_threshold.country = params[:country]
 					new_threshold.season = params[:season]
 						
+					new_threshold.validate()
+					pp new_threshold.errors
 					if params[:dryrun]
 						results << "Threshold for #{rec[:pathogen_type]} read successfully"
 					else
