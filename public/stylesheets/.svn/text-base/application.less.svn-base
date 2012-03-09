@@ -278,6 +278,11 @@ div.section.content {
 		.discrete_text;
 	}
 	
+	p.description {
+      font-style: italic;
+      .discrete_text;
+	}
+	
 	p.byline {
 		margin: 1em 0 0;
 		padding: 0.5em 0 2.0em;
