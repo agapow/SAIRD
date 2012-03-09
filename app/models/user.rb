@@ -88,8 +88,11 @@ class User < ActiveRecord::Base
 	end
 	
 	def view_permitted?(field)
-		# TODO: maybe change so only viewable by other country members?
-		true
+   	if acting_user.guest? or (acting_user.countries.length() == 0)
+   		return false
+   	else
+   		return true
+   	end
 	end
 	
 	## Accessors:

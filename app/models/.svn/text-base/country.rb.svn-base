@@ -30,48 +30,22 @@ class Country < ActiveRecord::Base
    
    # Who is allowed to view the country?
    #
-   # Currently, we let everyone see the country and the listing of who is a
-   # member.
+   # Currently, we let everyone who is a member of any country see the country.
+   # Anonymous and unverified users are forbidden. 
    #
    # TODO: customise this for different fields?
    #
    def read_permitted?
-      return (acting_user.administrator? || true)
+   	if acting_user.guest? or (acting_user.countries.length() == 0)
+   		return false
+   	end
+      return true
    end
    
    # Who is allowed to edit country data?
    #
-   # Currently, we let everyone who is a member of the country to edit
-   # everything about the country.
-   #
-   # TODO: this may need to be evolved. See comments in user_country.
-   #
    def write_permitted?
-      return (acting_user.administrator? || users.member?(acting_user))
-   end
-
-   # Who is allowed to view data asscociated with the country?
-   #
-   # This governs whether data that "belongs" to the country can be seen by a
-   # user. Currently, we let everyone can edit the data see it, roughly the
-   # story with the European database.
-   #
-   # TODO: this may need to be evolved.
-   #
-   def read_data_permitted?
-      return write_data_permitted?
-   end
-   
-   # Who is allowed to edit data asscociated with the country?
-   #
-   # This governs whether data that "belongs" to the country can be changed by a
-   # user. Currently, we let everyone can edit the country, edit the data, which
-   # equates to a member.
-   #
-   # TODO: this is a bit crude, may need to see evolved.
-   #
-   def write_data_permitted?
-      return write_permitted?
+      return acting_user.administrator?
    end
    
 end

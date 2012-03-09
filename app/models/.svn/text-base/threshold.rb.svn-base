@@ -19,6 +19,7 @@ class Threshold < ActiveRecord::Base
 		timestamps
 	end
 		
+	# XXX: shoudl these be checked with :after_add, :conditions
 	belongs_to :season
 	belongs_to :country
 	belongs_to :pathogen_type
@@ -48,15 +49,18 @@ class Threshold < ActiveRecord::Base
 		}
 		
 		# check user has permission for country
-		if acting_user.guest?
-			errors.add('country',
-				'you do not have permissions to create records for this or any country')
-		elsif (! acting_user.administrator?)
-			pp country
-			pp acting_user.countries
-			if (! acting_user.countries.member? (country))
+		# because validate is sometimes called without a user, we test for this
+		if ! acting_user.nil? 
+			if acting_user.guest?
 				errors.add('country',
-					'you do not have permissions to create records for this country')
+					'you do not have permissions to create records for this or any country')
+			elsif (! acting_user.administrator?)
+				pp country
+				pp acting_user.countries
+				if (! acting_user.countries.member? (country))
+					errors.add('country',
+						'you do not have permissions to create records for this country')
+				end
 			end
 		end
 		

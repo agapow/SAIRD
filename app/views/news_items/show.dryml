@@ -3,6 +3,11 @@ Customize the appearance of a page showing a news item
 
 TOD: hide fields that are mentioned in title
 %>
-<show-page>
+<show-page without-creator-link>
+
+	<append-content-body:>
+	<br />
+	<p class='description'>Posted by <view:poster />.</p>
+	</append-content-body:>
 
 </show-page>

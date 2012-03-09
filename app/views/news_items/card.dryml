@@ -1,0 +1,16 @@
+<%#
+Override card listing of news to show poster & date posted.
+
+TODO: allow for deleted user.
+
+%>
+
+<extend tag="card" for="NewsItem">
+  <old-card  merge>
+    <body: replace>
+      <p class="description">
+      	Posted on <view:created_at /> by <view:poster />
+		</p>
+    </body:>
+  </old-card>
+</extend>

@@ -1,8 +1,7 @@
 <%#
 Override listing of season to show number of thresholds and reports
 
-TODO: make less space consuming
-????: it would be more orthogonal for this to appear in the model view folder
+XXX: make less space consuming
 %>
 
 <extend tag="card" for="Season">

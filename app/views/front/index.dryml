@@ -46,8 +46,9 @@
 		</if>
 		<else>
 			<subsubhead><%= recent_news.name %></subsubhead>
-			
 			<%= recent_news.body.to_html %>
+			<p class="description">Posted <%= recent_news.created_at %> by
+			   <%= recent_news.poster %>.</p>
 			<br />
 			<p><a href="&object_url NewsItem">More news ...</a></p>
 		</else>

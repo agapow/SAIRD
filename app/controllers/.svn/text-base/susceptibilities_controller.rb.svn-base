@@ -1,12 +1,12 @@
 class SusceptibilitiesController < ApplicationController
 
-  hobo_model_controller
+	hobo_model_controller
 
-  auto_actions :all
- 
-  
-  
+	auto_actions :all
+
 	def index
+			# filter list so people can't see anything but their own countries
+		
 		if current_user.administrator?
 			hobo_index
 		else
@@ -21,11 +21,15 @@ class SusceptibilitiesController < ApplicationController
 
 #  autocomplete_for :title
 
-#def show
-#  hobo_show :permission_denied_response => proc { 
-#	render :text => "On yer bike sunshine!"
-#  }, :not_found_response => proc {
-#	redirect_to homepage_url
-#  } 
-#end 
+#	def show
+#		if current_user.guest?
+#			hobo_show({
+#				:permission_denied_response => proc { render :text => "On yer bike sunshine!" },
+#				:not_found_response => proc { redirect_to homepage_url }
+#			})
+#		else
+#			hobo_show
+#		end
+#	end
+	
 end

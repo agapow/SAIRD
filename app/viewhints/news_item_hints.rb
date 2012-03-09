@@ -1,14 +1,13 @@
 class NewsItemHints < Hobo::ViewHints
-
-  model_name "News"
-  
+	
+	model_name "News"
+	
 	field_help({
-		:body => '
-      Supports markdown formatting (
-			*emphasized* = <em>emphasized</em><br />
-      	**strong** = <strong>strong</strong><br />).
-		Go <a href="http://daringfireball.net/projects/markdown/syntax">here</a>
-      for more information.'
+		:body => "Enter the news item main text here. This supports
+			<a href='http://daringfireball.net/projects/markdown/basics'>markdown
+			formatting</a>. For example, *emphasized* is <em>emphasized</em> and
+			**strong** is <strong>strong</strong>. If in doubt just use plain
+			text."
 	})
 	
 end

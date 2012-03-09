@@ -94,6 +94,37 @@ class User < ActiveRecord::Base
 	
 	## Accessors:
 	
+	# Return a list every country this user can view
+	#
+	# Note this does not allow for guests / anonymous users. They must be
+	# handled seperately.
+	#
+	def list_readable_countries
+		if administrator?
+			return Country.all { |c| id }
+		else
+			return countries()
+		end
+	end
+	
+	# Return a list of ids for every country this user can view
+	#
+	# Note this does not allow for guests / anonymous users. They must be
+	# handled seperately.
+	#
+	def list_readable_country_ids
+		# XXX: is this method necessary?
+		return list_readable_countries.collect { |c| c.id }
+	end
+	
+	# Return a list every country this user can edit or create records for
+	#
+	# At the moment, this just devolves to the read permission
+	#
+	def list_writable_countries
+		return list_readable_countries()
+	end
+	
 	# Return all countries that can edit
 	#
 	def get_editable_countries

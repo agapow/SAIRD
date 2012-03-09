@@ -29,6 +29,7 @@
 <include src="users/card" />
 <include src="user_countries/card" />
 <include src="seasons/card" />
+<include src="news_items/card" />
 
 
 <!-- toolforms -->
