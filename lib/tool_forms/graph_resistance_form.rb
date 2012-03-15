@@ -151,7 +151,7 @@ module ToolForms
 			# generate graphs
 			graphs_locn = "graphs"
 			graphs_dir = "#{RAILS_ROOT}/public/#{graphs_locn}/"
-			graphs_url = "#{ENV.fetch("RAILS_RELATIVE_URL_ROOT", '')}/#{graphs_locn}/"
+			graphs_url = "/#{graphs_locn}/"
 			base_plot_name = generate_plot_basename()
 			pp "the filepath is #{base_plot_name} which is on the path #{graphs_dir} and the url #{graphs_url}"
 			
@@ -187,15 +187,14 @@ module ToolForms
 			system ("rsvg #{scatterdate_svg_path} #{scatterdate_png_path}")
 			scatterdate_png_url = "#{graphs_url}#{base_plot_name}-scatterdate.png"
 			
-			simg_msg = "<img src='#{scatterdate_png_url}'>"
 			
 			## Return:
 			return [
 				search_msg,
 				"#{filtered_reports.length()} matching records were found.",
 				threshold_msg,
-				img_msg,
-				simg_msg
+				ImageResult.new(whisker_png_url, :caption => "Reported resistance distribution"),
+				ImageResult.new(scatterdate_png_url, :caption => "Reported resistance versus date")
 			], []
 			
 		end

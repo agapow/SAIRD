@@ -4,7 +4,7 @@
 		<result_section:>
 			<% search_res = session[:results] %>
 			<div repeat="&search_res">
-				<p><%= this %></p>
+				<tool-result with="&this" />
 			</div>
 
 		</result_section:>
