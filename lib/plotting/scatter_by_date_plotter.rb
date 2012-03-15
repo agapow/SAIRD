@@ -19,6 +19,7 @@ module Plotting
 	      :canvas_ht,
 	      :margin,
 	      :title,
+	      :log,
 	   )
 	   
 	   def initialize(kwargs={})
@@ -26,7 +27,8 @@ module Plotting
 	      opts = OpenStruct.new({
 	         :plot_ht => 250,
 	         :plot_wt => 400,
-	         :legend => true,   
+	         :legend => true,
+	         :log => false,
 	      }.merge(kwargs))
 	      ## Main:
 	      @plot_ht = opts.plot_ht
@@ -34,6 +36,7 @@ module Plotting
 	      @canvas_ht = opts.plot_ht
 	      @canvas_wt = opts.plot_wt
 	      @legend = opts.legend
+	      @log = opts.log
 	   end
 	   
 	   # Create a plot of the passed data and return as an SVG.
@@ -97,7 +100,14 @@ module Plotting
 	      
 	      # scaling to position datapoints in plot
 	      horiz = pv.Scale.linear(x_bounds[0], x_bounds[1]).nice().range(0, @plot_wt)
-	      vert = pv.Scale.linear(y_bounds[0], y_bounds[1]).nice().range(0, @plot_ht)
+	      
+	      pp "LOG IS #{@log}"
+	      if @log
+	      	vert = pv.Scale.log(y_bounds[0]+0.01, y_bounds[1]).nice().range(0, @plot_ht)
+	      else
+	      	vert = pv.Scale.linear(y_bounds[0], y_bounds[1]).nice().range(0, @plot_ht)
+			end
+
 	      # without this, errors out with Date.to_f missing method
 	      format = pv.Format.date("%b")
 	      c = pv.Scale.linear(0, @data_series.size()-1).range("red", "blue")

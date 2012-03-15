@@ -364,6 +364,17 @@ div.tool-results, div.tool-form {
 	padding-top: 1.0em;
 }
 
+p.image-result {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
+	text-align: center;
+	border: 1px solid gray;
+}
+
+
 .dbg-msg {
 	color: red;
 }

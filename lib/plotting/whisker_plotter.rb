@@ -36,7 +36,7 @@ module Plotting
 	         :whisker_clr => "blue",
 	         :legend => true,#
 	         :log => false,
-	         :outliers => []
+	         :calc_thresholds => false,
 	      }.merge(kwargs))
 	      ## Main:
 	      @plot_ht = opts.plot_ht
@@ -48,28 +48,30 @@ module Plotting
 	      @bar_clr = opts.bar_clr
 	      @whisker_clr = opts.whisker_clr
 	      @legend = opts.legend
+	      @log = opts.log
 	   end
 	   
 	   # Create a plot of the passed data and return as an SVG.
 	   #
-	   # @param [] data   an array of pairs, being [name, [data]]
+	   # @param [] data   an array of pairs, being [name, [data]] where
+	   #    the data is the points of the plot
 	   #
 	   def render_data(data, kwargs={})
 	      ## Preconditions:
 	      opts = OpenStruct.new({
-	         :thresholds => nil,     
+	         :thresholds => nil,
+	         :outliers => []
 	      }.merge(kwargs))   
 	
 	      # calculate quartiles for plot, use this as data
 	      @data_series = data.collect { |row|
-	         data = bottom_25_median_75_top(row[1])
 	         OpenStruct.new(
 	            :name => row[0],
-	            :w_bottom => data[0],
-	            :q25 => data[1],
-	            :q50 => data[2],
-	            :q75 => data[3],
-	            :w_top => data[4],
+	            :w_bottom => row[1][0],
+	            :q25 => row[1][1],
+	            :q50 => row[1][2],
+	            :q75 => row[1][3],
+	            :w_top => row[1][4],
 	            :index => 0
 	         )                                      
 	      }
@@ -85,6 +87,7 @@ module Plotting
 	         possible_range.concat opts.thresholds
 	      end
 	      bounds = bounds(possible_range)
+	      pp "The bounds are #{bounds}"
 	      plot_range = bounds[1] - bounds[0]
 	
 	      
@@ -104,7 +107,7 @@ module Plotting
 	      
 	      # scaling to position datapoints in plot
 			if @log == true
-				vert = pv.Scale.log(bounds[0], bounds[1]).range(0, @plot_ht)
+				vert = pv.Scale.log(bounds[0]+0.01, bounds[1]).range(0, @plot_ht)
 			else
 				vert = pv.Scale.linear(bounds[0], bounds[1]).range(0, @plot_ht)
 			end

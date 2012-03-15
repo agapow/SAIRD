@@ -224,3 +224,20 @@ TODO: sort, refactor and arrange in a suitable place
 </extend>
 
 
+<def tag="tool-result" for="ToolForms::ToolResult">
+   <p><%= this.content %></p>
+</def>
+
+<def tag="tool-result" for="String">
+   <p><%= this.content %></p>
+</def>
+
+<def tag="tool-result" for="ToolForms::ImageResult">
+   <p class="image-result">
+		<img src="#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '')}#{this.content}" />
+		<if test="&!this.caption.nil?">
+			<br /><%= this.caption %>
+		</if>
+	</p>
+</def>
+

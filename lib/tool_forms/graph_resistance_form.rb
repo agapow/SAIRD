@@ -94,8 +94,8 @@ module ToolForms
 			pp errors
 			
 			# TODO: check users are allowed to see country
-			
-			search_msg = "Searching for #{cntry}, #{ssn.year}, #{pthgn_typ}, #{rstnc.agent} ..."
+			results_arr = []
+			results_arr << "Searching for #{cntry}, #{ssn.year}, #{pthgn_typ}, #{rstnc.agent} ..."
 			
 			## Main:
 			# build conditions
@@ -127,8 +127,10 @@ module ToolForms
 			# if too few to graph, return message
 			if (filtered_reports.length() < 8)
 				return [], ["Too few results to graph (#{filtered_reports.length()}). Perhaps you should widen the search parameters"]
+			else
+				results_arr << "#{filtered_reports.length()} matching records were found."
 			end
-			
+
 			# get threshold if available
 			# should by one at most
 			thresholds = Threshold.scoped(:conditions => conditions).all()
@@ -149,53 +151,102 @@ module ToolForms
 			end
 			
 			# generate graphs
+			# generate basic vars for graphs
 			graphs_locn = "graphs"
 			graphs_dir = "#{RAILS_ROOT}/public/#{graphs_locn}/"
 			graphs_url = "/#{graphs_locn}/"
 			base_plot_name = generate_plot_basename()
-			pp "the filepath is #{base_plot_name} which is on the path #{graphs_dir} and the url #{graphs_url}"
 			
-			# generate whisker graph
-			pltr = Plotting::WhiskerPlotter.new(:legend => false)
-			data = filtered_reports.collect { |d| d[1] }
-			svg = pltr.render_data([['Reports', data]], :thresholds => season_thresholds)
+			# generate the data
+			w_bottom, p25, p50, p75, w_top = Plotting::whisker_and_box_bounds(
+				filtered_reports.collect { |d| d[1] },
+				:log => true
+			)
+			pp "our box and whisker is #{w_bottom}, #{p25}, #{p50}, #{p75}, #{w_top}"
+			outliers = []
+			inliers = []
+			filtered_reports.each { |d|
+				if ((d[1] < w_bottom) or (w_top < d[1]))
+					outlier << d
+				else
+					inliers << d
+				end
+			}
+			
+			
+			# generate whisker graphs
+			# first graph, no outliers, second outliers
+			plot_args = [
+				{
+					:title => 'Reported resistance distribution',
+					:name => 'whisker',
+					:log => false,
+					:outliers => []
+				},
+				{
+					:title => 'Reported resistance distribution, with outliers',
+					:name => 'whisker-outliers',
+					:log => true,
+				:outliers => outliers.collect { |d| d[1] }
+				},
+			]
+						
+			plot_args.each { |a|
 				
-			whisker_svg_path = "#{graphs_dir}#{base_plot_name}-whisker.svg"
-			pp whisker_svg_path
-			outfile = open(whisker_svg_path, 'w')
-			outfile.write (svg)
-			outfile.close()
+				pltr = Plotting::WhiskerPlotter.new(:legend => false, :log => a[:log])
+				svg = pltr.render_data([['Reports', [w_bottom, p25, p50, p75, w_top]]],
+					:thresholds => season_thresholds)
+					
+				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"
+				outfile = open(svg_path, 'w')
+				outfile.write (svg)
+				outfile.close()
+				
+				png_path = svg_path.gsub(/\.svg$/, '.png')
+				system ("rsvg #{svg_path} #{png_path}")
+				png_url = "#{graphs_url}#{base_plot_name}-#{a[:name]}.png"
+				results_arr << ImageResult.new(png_url, :caption => a[:title])
+			}
 			
-			whisker_png_path = "#{graphs_dir}#{base_plot_name}-whisker.png"
-			system ("rsvg #{whisker_svg_path} #{whisker_png_path}")
-			whisker_png_url = "#{graphs_url}#{base_plot_name}-whisker.png"
-			
-			img_msg = "<img src='#{whisker_png_url}'>"
 			
 			# generate scatter plot
-			pltr = Plotting::ScatterByDatePlotter.new(:legend => false)
-			data = filtered_reports.collect { |d| [d[0], d[1]] }
-			svg = pltr.render_data([['Reports', data]], :thresholds => season_thresholds)
-			
-			scatterdate_svg_path = "#{graphs_dir}#{base_plot_name}-scatterdate.svg"
-			pp scatterdate_svg_path
-			outfile = open(scatterdate_svg_path, 'w')
-			outfile.write (svg)
-			outfile.close()
-			
-			scatterdate_png_path = "#{graphs_dir}#{base_plot_name}-scatterdate.png"
-			system ("rsvg #{scatterdate_svg_path} #{scatterdate_png_path}")
-			scatterdate_png_url = "#{graphs_url}#{base_plot_name}-scatterdate.png"
-			
+			scatter_date_args = [
+				{
+					:title => 'Reported resistance versus date',
+					:name => 'scatter-date',
+					:log => false,
+					:outliers => []
+				},
+				{
+					:title => 'Reported resistance versus date, with outliers',
+					:name => 'scatter-date-outliers',
+					:log => true,
+					:outliers => outliers
+				},
+			]
+
+			scatter_date_args.each { |a|
+				
+				pltr = Plotting::ScatterByDatePlotter.new(:legend => false, :log => a[:log])
+				svg = pltr.render_data([['', inliers]],
+					:thresholds => season_thresholds,
+				)
+				
+				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"
+				pp svg_path
+				outfile = open(svg_path, 'w')
+				outfile.write (svg)
+				outfile.close()
+				
+				png_path = svg_path.gsub(/\.svg$/, '.png')
+				system ("rsvg #{svg_path} #{png_path}")
+				png_url = "#{graphs_url}#{base_plot_name}-#{a[:name]}.png"
+				results_arr << ImageResult.new(png_url, :caption => a[:title])
+
+			}
 			
 			## Return:
-			return [
-				search_msg,
-				"#{filtered_reports.length()} matching records were found.",
-				threshold_msg,
-				ImageResult.new(whisker_png_url, :caption => "Reported resistance distribution"),
-				ImageResult.new(scatterdate_png_url, :caption => "Reported resistance versus date")
-			], []
+			return results_arr, []
 			
 		end
 		

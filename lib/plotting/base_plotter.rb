@@ -43,17 +43,17 @@ module Plotting
 		   range_scale = 10.0**(range_digits-1)
 		
 		   # because you can't divide dates or time, handle those manually
-		   if min.class == Date
+		   #if min.class == Date
 		      margin = range / 10 + 1
 		      min_bound = min - margin
 		      max_bound = max + margin
-		   elsif min.class == Time
-		      min_bound = min - 100000
-		      max_bound = max + 100000
-		   else
-		      min_bound = ((min / range_scale) - 1) * range_scale
-		      max_bound = ((max / range_scale) + 1) * range_scale
-		   end
+		   #elsif min.class == Time
+		   #   min_bound = min - 100000
+		   #   max_bound = max + 100000
+		   #else
+		   #   min_bound = ((min / range_scale) - 1) * range_scale
+		   #   max_bound = ((max / range_scale) + 1) * range_scale
+		   #end
 		   return min_bound, max_bound, range_scale
 		end
 	end
