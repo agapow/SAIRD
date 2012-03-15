@@ -230,6 +230,7 @@ module ToolForms
 				pltr = Plotting::ScatterByDatePlotter.new(:legend => false, :log => a[:log])
 				svg = pltr.render_data([['', inliers]],
 					:thresholds => season_thresholds,
+					:outlier => outliers,
 				)
 				
 				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"

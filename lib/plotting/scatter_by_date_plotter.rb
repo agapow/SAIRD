@@ -47,7 +47,9 @@ module Plotting
 	   def render_data(data, kwargs={})
 	      ## Preconditions:
 	      opts = OpenStruct.new({
-	         :thresholds => nil,     
+	         :season_thresholds => nil,
+	         :extrapolated_thresholds => nil,
+	         :outliers => [],
 	      }.merge(kwargs))   
 	
 	      ## Main:
@@ -71,6 +73,9 @@ module Plotting
 	            pt[0]
 	         }
 	      }.flatten()
+	      if ! opts.outliers.nil?
+	      	x_data.concat(opts.outliers.collect { |x| x[0] })
+			end
 	      x_min, x_max = x_data.min(), x_data.max()
 	      x_bounds = bounds([x_min, x_max])
 	
@@ -79,11 +84,17 @@ module Plotting
 	            pt[1]
 	         }
 	      }.flatten()
+			if ! opts.outliers.nil?
+				x_data.concat(opts.outliers.collect { |x| x[1] })
+			end
 	      y_min, y_max = y_data.min(), y_data.max()
 	      possible_range = [y_min, y_max]
-	      if ! opts.thresholds.nil?
-	         possible_range.concat (opts.thresholds)
+	      if ! opts.season_thresholds.nil?
+	         possible_range.concat (opts.season_thresholds)
 	      end
+			if ! opts.extrapolated_thresholds.nil?
+			   possible_range.concat (opts.season_thresholds)
+			end
 	      pp possible_range
 	      y_bounds = bounds(possible_range)
 	      pp y_bounds
@@ -163,25 +174,38 @@ module Plotting
 	            .shape_size(3)       
 	      }
 	
-	      if ! opts.thresholds.nil?
-	         # TODO: make thresholds a dashed or different colored line
-	         thresholds = opts.thresholds.sort()
-	         min_threshold = thresholds[0]
-	         max_threshold = thresholds[1]
-	
-	         pp "doing thresholds"
-	
+			if ! opts.outliers.empty?
+	         vis.add(pv.Dot)
+	            .data(opts.outliers)
+	            .left(lambda {|d| horiz.scale(d[0])})
+	            .bottom(lambda {|d| vert.scale(d[1])})
+	            .stroke_style("red")
+	            .fill_style("grey")
+	            .shape_size(3)
+			end
+
+	      if ! opts.season_thresholds.nil?
 	         vis.add(pv.Rule)
-	            .data(thresholds)
+	            .data(opts.season_thresholds)
 	            .bottom(lambda {|d| vert.scale(d)})
 	            .height(1)
 	            .anchor("left")
 	            .lineWidth(@canvas_wt)
 	            .strokeStyle(lambda {|d| pv.color("red") })
 	            .antialias(true)
-	                  
 	      end
 	
+			if ! opts.extrapolated_thresholds.nil?
+			   vis.add(pv.Rule)
+			      .data(opts.extrapolated_thresholds)
+			      .bottom(lambda {|d| vert.scale(d)})
+			      .height(1)
+			      .anchor("left")
+			      .lineWidth(@canvas_wt)
+			      .strokeStyle(lambda {|d| pv.color("blue") })
+			      .antialias(true)
+			end
+
 	      # legend/key
 	      if @legend
 	         names_and_indexes = (0...@data_series.size()).zip(
