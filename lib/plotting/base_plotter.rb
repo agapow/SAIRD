@@ -45,7 +45,7 @@ module Plotting
 		   # because you can't divide dates or time, handle those manually
 		   #if min.class == Date
 		      margin = range / 10 + 1
-		      min_bound = min - margin
+		      min_bound = [min - margin, 0].max()
 		      max_bound = max + margin
 		   #elsif min.class == Time
 		   #   min_bound = min - 100000

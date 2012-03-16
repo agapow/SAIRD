@@ -53,7 +53,6 @@ module Plotting
 	      }.merge(kwargs))   
 	
 	      ## Main:
-	      pp data
 	      epoch = Date.new(1970,1,1)
 	      @data_series = data.collect { |r|
 	         row_title = r[0]
@@ -74,6 +73,9 @@ module Plotting
 	         }
 	      }.flatten()
 	      if ! opts.outliers.nil?
+				opts.outliers = opts.outliers.collect { |p|
+					[(p[0] - epoch).to_i, p[1]]
+				}
 	      	x_data.concat(opts.outliers.collect { |x| x[0] })
 			end
 	      x_min, x_max = x_data.min(), x_data.max()
@@ -95,9 +97,7 @@ module Plotting
 			if ! opts.extrapolated_thresholds.nil?
 			   possible_range.concat (opts.season_thresholds)
 			end
-	      pp possible_range
 	      y_bounds = bounds(possible_range)
-	      pp y_bounds
 	      
 	      # make area for plotting
 	      # ???: adhoc values for left, etc. set padding for labels
@@ -112,7 +112,6 @@ module Plotting
 	      # scaling to position datapoints in plot
 	      horiz = pv.Scale.linear(x_bounds[0], x_bounds[1]).nice().range(0, @plot_wt)
 	      
-	      pp "LOG IS #{@log}"
 	      if @log
 	      	vert = pv.Scale.log(y_bounds[0]+0.01, y_bounds[1]).nice().range(0, @plot_ht)
 	      else
@@ -125,7 +124,7 @@ module Plotting
 	      
 	      # do the axes
 	      # TODO: change text to be (epoch + d).strftime("%m/%d")
-	      horiz_label_ticks = horiz.ticks.each_slice(2).map(&:first)
+	      horiz_label_ticks = horiz.ticks.each_slice(3).map(&:first)
 	      vis.add(pv.Rule)
 	         .data(horiz.ticks())
 	         .left(horiz)
@@ -173,9 +172,8 @@ module Plotting
 	            .fill_style("grey")
 	            .shape_size(3)       
 	      }
-	
 			if ! opts.outliers.empty?
-	         vis.add(pv.Dot)
+	        vis.add(pv.Dot)
 	            .data(opts.outliers)
 	            .left(lambda {|d| horiz.scale(d[0])})
 	            .bottom(lambda {|d| vert.scale(d[1])})

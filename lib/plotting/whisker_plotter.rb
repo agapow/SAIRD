@@ -59,10 +59,12 @@ module Plotting
 	   def render_data(data, kwargs={})
 	      ## Preconditions:
 	      opts = OpenStruct.new({
-	         :thresholds => nil,
+	         :season_thresholds => nil,
+	         :extrapolated_thresholds => nil,
 	         :outliers => []
 	      }.merge(kwargs))   
-	
+	   	
+	      pp "whisker outliers are #{opts.outliers}"
 	      # calculate quartiles for plot, use this as data
 	      @data_series = data.collect { |row|
 	         OpenStruct.new(
@@ -80,12 +82,15 @@ module Plotting
 	         d.index = i
 	      }
 	      # find limits of data so we know where axes are
-	      data_min = @data_series.collect { |col| col.w_bottom }.min()
-	      data_max = @data_series.collect { |col| col.w_top }.max()
+	      data_min = (@data_series.collect { |col| col.w_bottom } + opts.outliers).min()
+	      data_max = (@data_series.collect { |col| col.w_top } + opts.outliers).max()
 	      possible_range = [data_min, data_max]
-	      if ! opts.thresholds.nil?
-	         possible_range.concat opts.thresholds
+	      if ! opts.season_thresholds.nil?
+	         possible_range.concat opts.season_thresholds
 	      end
+			if ! opts.extrapolated_thresholds.nil?
+			   possible_range.concat opts.extrapolated_thresholds
+			end
 	      bounds = bounds(possible_range)
 	      pp "The bounds are #{bounds}"
 	      plot_range = bounds[1] - bounds[0]
@@ -185,13 +190,26 @@ module Plotting
 	         .lineWidth(bar_width)
 	         .strokeStyle("white")
 	      
-	      if ! opts.thresholds.nil?
+			pp "OUTLIERS #{opts.outliers}"
+			if ! opts.outliers.empty?
+				pp "OUTLIERS"
+				pp opts.outliers
+			  vis.add(pv.Dot)
+			      .data(opts.outliers)
+			      .left(horiz.scale(0.5))
+			      .bottom(lambda {|d| vert.scale(d)})
+			      .stroke_style("red")
+			      .fill_style("grey")
+			      .shape_size(3)
+			end
+
+	      if ! opts.season_thresholds.nil?
 	         # TODO: make thresholds a dashed or different colored line
 	         thresholds = opts.thresholds.sort()
 	         min_threshold = thresholds[0]
 	         max_threshold = thresholds[1]
 	
-	         pp "doing thresholds"
+	         pp "doing season thresholds"
 	
 	         vis.add(pv.Rule)
 	            .data(thresholds)
@@ -204,6 +222,25 @@ module Plotting
 	                  
 	      end
 	
+			if ! opts.extrapolated_thresholds.nil?
+			   # TODO: make thresholds a dashed or different colored line
+			   thresholds = opts.thresholds.sort()
+			   min_threshold = thresholds[0]
+			   max_threshold = thresholds[1]
+			
+			   pp "doing extrapolated thresholds"
+			
+			   vis.add(pv.Rule)
+			      .data(thresholds)
+			      .bottom(lambda {|d| vert.scale(d)})
+			      .height(1)
+			      .anchor("left")
+			      .lineWidth(@canvas_wt)
+			      .strokeStyle(lambda {|d| pv.color("red") })
+			      .antialias(true)
+			            
+			end
+
 	      vis.render()
 	      return vis.to_svg()
 	   end

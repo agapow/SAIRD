@@ -167,12 +167,14 @@ module ToolForms
 			inliers = []
 			filtered_reports.each { |d|
 				if ((d[1] < w_bottom) or (w_top < d[1]))
-					outlier << d
+					outliers << d
 				else
 					inliers << d
 				end
 			}
-			
+			pp "SPLIT DATA"
+			pp outliers
+			pp inliers
 			
 			# generate whisker graphs
 			# first graph, no outliers, second outliers
@@ -187,7 +189,7 @@ module ToolForms
 					:title => 'Reported resistance distribution, with outliers',
 					:name => 'whisker-outliers',
 					:log => true,
-				:outliers => outliers.collect { |d| d[1] }
+					:outliers => outliers.collect { |d| d[1] }
 				},
 			]
 						
@@ -195,7 +197,7 @@ module ToolForms
 				
 				pltr = Plotting::WhiskerPlotter.new(:legend => false, :log => a[:log])
 				svg = pltr.render_data([['Reports', [w_bottom, p25, p50, p75, w_top]]],
-					:thresholds => season_thresholds)
+					:thresholds => season_thresholds, :outliers => a[:outliers])
 					
 				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"
 				outfile = open(svg_path, 'w')
@@ -230,7 +232,7 @@ module ToolForms
 				pltr = Plotting::ScatterByDatePlotter.new(:legend => false, :log => a[:log])
 				svg = pltr.render_data([['', inliers]],
 					:thresholds => season_thresholds,
-					:outlier => outliers,
+					:outliers => outliers,
 				)
 				
 				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"
