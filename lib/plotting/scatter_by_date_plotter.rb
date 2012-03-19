@@ -95,7 +95,7 @@ module Plotting
 	         possible_range.concat (opts.season_thresholds)
 	      end
 			if ! opts.extrapolated_thresholds.nil?
-			   possible_range.concat (opts.season_thresholds)
+			   possible_range.concat (opts.extrapolated_thresholds)
 			end
 	      y_bounds = bounds(possible_range)
 	      
@@ -104,10 +104,10 @@ module Plotting
 	      vis = pv.Panel.new()
 	         .width(@canvas_wt)
 	         .height(@canvas_ht)
-	         .left(30)
+	         .left(75)
 	         .bottom(20)
 	         .top(10)
-	         .right(10)
+	         .right(75)
 	      
 	      # scaling to position datapoints in plot
 	      horiz = pv.Scale.linear(x_bounds[0], x_bounds[1]).nice().range(0, @plot_wt)
@@ -137,7 +137,7 @@ module Plotting
 	            .textAlign("center")
 	            .visible(lambda {|d| horiz_label_ticks.member?(d)})
 	      
-	      vert_label_ticks = vert.ticks.each_slice(2).map(&:first)
+	      vert_label_ticks = vert.ticks.each_slice(4).map(&:first)
 	      vis.add(pv.Rule)
 	         .data(vert.ticks())
 	         .bottom(vert)
@@ -145,7 +145,7 @@ module Plotting
 	         .add(pv.Label)
 	            .left(0)
 	            .text_margin(5)
-	            .text(vert.tick_format)
+	            .text(lambda {|d| "%.1f" % d})
 	            .textBaseline("top")
 	            .textAlign("right")
 	            .visible(lambda {|d| vert_label_ticks.member?(d)})
@@ -182,27 +182,35 @@ module Plotting
 	            .shape_size(3)
 			end
 
-	      if ! opts.season_thresholds.nil?
-	         vis.add(pv.Rule)
-	            .data(opts.season_thresholds)
-	            .bottom(lambda {|d| vert.scale(d)})
-	            .height(1)
-	            .anchor("left")
-	            .lineWidth(@canvas_wt)
-	            .strokeStyle(lambda {|d| pv.color("red") })
-	            .antialias(true)
-	      end
-	
-			if ! opts.extrapolated_thresholds.nil?
-			   vis.add(pv.Rule)
-			      .data(opts.extrapolated_thresholds)
-			      .bottom(lambda {|d| vert.scale(d)})
-			      .height(1)
-			      .anchor("left")
-			      .lineWidth(@canvas_wt)
-			      .strokeStyle(lambda {|d| pv.color("blue") })
-			      .antialias(true)
-			end
+			threshold_data = [
+				{
+					:title => 'current',
+					:data => opts.season_thresholds.nil? ? [] : opts.season_thresholds,
+					:colour => "green",
+				},
+				{
+					:title => 'extrapolated',
+					:data => opts.extrapolated_thresholds.nil? ? [] : opts.extrapolated_thresholds,
+					:colour => 'yellow',
+				}
+			]
+			
+			threshold_data.each { |t|
+				# TODO: make thresholds a dashed or different colored line
+				pp "printing threshold #{t}"
+				x = vis.add(pv.Rule)
+					.data(t[:data])
+					.bottom(lambda {|d| vert.scale(d)})
+					.height(1)
+					.lineWidth(0.5)
+					.antialias(true)
+					.strokeStyle(t[:colour])
+						.add(pv.Label)                                      
+						.right(-5)                                           
+						.textAlign("left")
+						.textBaseline("middle")
+						.text(t[:title])
+			}
 
 	      # legend/key
 	      if @legend

@@ -102,10 +102,11 @@ module Plotting
 	         .width(@canvas_wt)
 	         .height(@canvas_ht)
 	         .margin(@margin)
-	         .left(50)
+	         .left(60)
 	         .bottom(20)
 	         .top(10)
-	         .right(10)
+	         .right(75)
+	       
 	         
 	      # adhoc guess at bar width
 	      bar_width = @plot_wt / @data_series.size() * 0.7
@@ -135,14 +136,14 @@ module Plotting
 	      vis.add(pv.Rule)
 	         .data(vert.ticks())  
 	         .bottom(lambda {|d| vert.scale(d)})                             
-	         .strokeStyle(lambda { |d| label_ticks.member?(d) ?  "black" : "lightblue" })
+	         .strokeStyle(lambda { |d| label_ticks.member?(d) ?  "blue" : "lightblue" })
 	         .line_width(0.5)
 	         .antialias(true)
 	         .add(pv.Label)                                      
-	            .left(0)                                           
+	            .left(-5)                                           
 	            .textAlign("right")
 	            .textBaseline("middle")
-	            .text(lambda {|d| label_ticks.member?(d) ?  sprintf("%0.2f", d) : '' })             
+	            .text(lambda {|d| label_ticks.member?(d) ?  sprintf("%0.2f", d) : '' })
 	      
 	      # y (vertical) axis
 	      vis.add(pv.Rule)
@@ -203,95 +204,66 @@ module Plotting
 			      .shape_size(3)
 			end
 
-	      if ! opts.season_thresholds.nil?
-	         # TODO: make thresholds a dashed or different colored line
-	         thresholds = opts.thresholds.sort()
-	         min_threshold = thresholds[0]
-	         max_threshold = thresholds[1]
-	
-	         pp "doing season thresholds"
-	
-	         vis.add(pv.Rule)
-	            .data(thresholds)
-	            .bottom(lambda {|d| vert.scale(d)})
-	            .height(1)
-	            .anchor("left")
-	            .lineWidth(@canvas_wt)
-	            .strokeStyle(lambda {|d| pv.color("red") })
-	            .antialias(true)
-	                  
-	      end
-	
-			if ! opts.extrapolated_thresholds.nil?
-			   # TODO: make thresholds a dashed or different colored line
-			   thresholds = opts.thresholds.sort()
-			   min_threshold = thresholds[0]
-			   max_threshold = thresholds[1]
+			threshold_data = [
+				{
+					:title => 'current',
+					:data => opts.season_thresholds.nil? ? [] : opts.season_thresholds,
+					:colour => "green",
+				},
+				{
+					:title => 'extrapolated',
+					:data => opts.extrapolated_thresholds.nil? ? [] : opts.extrapolated_thresholds,
+					:colour => 'yellow',
+				}
+			]
+
+			threshold_data.each { |t|
+				# TODO: make thresholds a dashed or different colored line
+				pp "printing threshold #{t}"
+				x = vis.add(pv.Rule)
+					.data(t[:data])
+					.bottom(lambda {|d| vert.scale(d)})
+					.height(1)
+					.lineWidth(0.5)
+					.antialias(true)
+					.strokeStyle(t[:colour])
+						.add(pv.Label)                                      
+						.right(-5)                                           
+						.textAlign("left")
+						.textBaseline("middle")
+						.text(t[:title])
+					
+				pp x.class
+
+			}
 			
-			   pp "doing extrapolated thresholds"
-			
-			   vis.add(pv.Rule)
-			      .data(thresholds)
-			      .bottom(lambda {|d| vert.scale(d)})
-			      .height(1)
-			      .anchor("left")
-			      .lineWidth(@canvas_wt)
-			      .strokeStyle(lambda {|d| pv.color("red") })
-			      .antialias(true)
-			            
-			end
+#vis.add(pv.Rule)
+#.data(vert.ticks())  
+#.bottom(lambda {|d| vert.scale(d)})                             
+#.strokeStyle(lambda { |d| label_ticks.member?(d) ?  "blue" : "lightblue" })
+#.line_width(0.5)
+#.antialias(true)
+#.add(pv.Label)                                      
+#.left(0)                                           
+#.textAlign("right")
+#.textBaseline("middle")
+#.text(lambda {|d| label_ticks.member?(d) ?  sprintf("%0.2f", d) : '' })
+      	
+#   vis.add(pv.Rule)
+#      .data(opts.season_thresholds)
+#      .bottom(lambda {|d| vert.scale(d)})
+#      .height(1)
+#      .anchor("left")
+#      .lineWidth(@canvas_wt)
+#      .strokeStyle(lambda {|d| pv.color("red") })
+#      .antialias(true)
+
 
 	      vis.render()
 	      return vis.to_svg()
 	   end
 	
-	   # Takes a numeric array and returns the min, q1, q2 (median), q3, max.
-	   #
-	   # @param [Array]  arr  a list or array
-	   #
-	   # There's a number of ways of calculating percentiles (and thus quartiles),
-	   # especially when it comes to interpolating between points. This uses the
-	   # simplest continuous method, doing a weighted sum of neighbouring values.
-	   #
-	   def quartiles(arr)
-	      sort_arr = arr.sort()
-	      len = sort_arr.size()
-	      q1_q2_q3 = [0.25, 0.5, 0.75].collect { |v|
-	         indx_f = (len * v) - 0.5
-	         indx_i = indx_f.to_i()
-	         if (indx_i == indx_f)
-	            sort_arr[indx_i]
-	         else
-	            res = indx_f - indx_i
-	            (sort_arr[indx_i] * (1 - res)) + (sort_arr[indx_i+1] * res)
-	         end
-	      }
-	      return [sort_arr[0]] + q1_q2_q3 + [sort_arr[-1]] 
-	   end
-	
-	   # Given an array of values, calculate 25, 50, 75 quartiles and whisker limits
-	   #
-	   def bottom_25_median_75_top (arr)
-	      vals = arr.sort()
-	      len = vals.size()
-	      # find (1-based) positions in array for quartiles
-	      i25 = (len * 0.25).ceil()
-	      i50 = (len * 0.50).round()
-	      i75 = (len * 0.75).floor()
-	      # get actual values from array
-	      p25 = vals[i25-1]
-	      p50 = vals[i50-1]
-	      p75 = vals[i75-1]
-	
-	      # calculate whisker top & bottomiqr = p75 - p25
-	      iqr = p75 - p25
-	      w_top = p75 + (1.5 * iqr)
-	      w_top_val = vals.select { |v| v <= w_top }.max
-	      w_bottom = p25 - (1.5 * iqr)
-	      w_bottom_val = [vals.select { |v| w_bottom <= v }.min, 0].max
-	
-	      return [w_bottom_val, p25, p50, p75, w_top_val] 
-	   end
+
 	   
 	end
 

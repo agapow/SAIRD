@@ -163,6 +163,10 @@ module ToolForms
 				:log => true
 			)
 			pp "our box and whisker is #{w_bottom}, #{p25}, #{p50}, #{p75}, #{w_top}"
+			iqr = p75 - p25
+			extrap_thresholds = [p75 + (1.5 * iqr), p75 + (3.0 * iqr)]
+			pp "extrap thresholds = #{extrap_thresholds}"
+			
 			outliers = []
 			inliers = []
 			filtered_reports.each { |d|
@@ -175,6 +179,8 @@ module ToolForms
 			pp "SPLIT DATA"
 			pp outliers
 			pp inliers
+			
+			
 			
 			# generate whisker graphs
 			# first graph, no outliers, second outliers
@@ -197,7 +203,10 @@ module ToolForms
 				
 				pltr = Plotting::WhiskerPlotter.new(:legend => false, :log => a[:log])
 				svg = pltr.render_data([['Reports', [w_bottom, p25, p50, p75, w_top]]],
-					:thresholds => season_thresholds, :outliers => a[:outliers])
+					:season_thresholds => season_thresholds,
+					:extrapolated_thresholds => extrap_thresholds,
+					:outliers => a[:outliers],
+				)
 					
 				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"
 				outfile = open(svg_path, 'w')
@@ -231,7 +240,8 @@ module ToolForms
 				
 				pltr = Plotting::ScatterByDatePlotter.new(:legend => false, :log => a[:log])
 				svg = pltr.render_data([['', inliers]],
-					:thresholds => season_thresholds,
+					:season_thresholds => season_thresholds,
+					:extrapolated_thresholds => extrap_thresholds,
 					:outliers => outliers,
 				)
 				
