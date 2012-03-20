@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302130927) do
+ActiveRecord::Schema.define(:version => 20120320112224) do
 
   create_table "countries", :force => true do |t|
     t.datetime "created_at"
@@ -125,8 +125,10 @@ ActiveRecord::Schema.define(:version => 20120302130927) do
   create_table "sequence_mutations", :force => true do |t|
     t.string  "description",                :limit => 6
     t.integer "susceptibility_sequence_id"
-    t.integer "magnitude",                  :limit => 3
+    t.integer "magnitude"
   end
+
+  add_index "sequence_mutations", ["susceptibility_sequence_id"], :name => "index_sequence_mutations_on_susceptibility_sequence_id"
 
   create_table "susceptibilities", :force => true do |t|
     t.string   "isolate_name"
@@ -195,7 +197,7 @@ ActiveRecord::Schema.define(:version => 20120302130927) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "country_id"
-    t.string   "level",      :default => "'--- :editor\n'"
+    t.string   "level",      :default => "--- :editor\n"
   end
 
   add_index "user_countries", ["country_id"], :name => "index_user_countries_on_country_id"

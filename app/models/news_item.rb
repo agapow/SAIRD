@@ -27,5 +27,9 @@ class NewsItem < ActiveRecord::Base
    def write_permitted?
       acting_user.administrator?
    end
+   
+	def poster_view_permitted?
+		true
+	end
 
 end

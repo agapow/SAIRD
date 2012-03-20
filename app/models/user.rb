@@ -87,8 +87,22 @@ class User < ActiveRecord::Base
 		acting_user.administrator?
 	end
 	
+	# Who can view a user page?
+	#
+	# - a viewer should be able to see themselves
+	# - admins can see anyone
+	# - guests and unverified users can't see anyone
+	# - verfied users / members can see everyone
+	#
 	def view_permitted?(field)
-   	if acting_user.guest? or (acting_user.countries.length() == 0)
+		# TODO: implement user can see self
+   	if acting_user.guest?
+   		return false
+   	elsif acting_user.id == id
+   		return true
+   	elsif acting_user.administrator?
+   		return true
+   	elsif (acting_user.countries.length() == 0)
    		return false
    	else
    		return true
