@@ -36,10 +36,15 @@ class Country < ActiveRecord::Base
    # TODO: customise this for different fields?
    #
    def read_permitted?
-   	if acting_user.guest? or (acting_user.countries.length() == 0)
+   	if acting_user.guest?
    		return false
+   	elsif acting_user.administrator?
+   		return true
+   	elsif (acting_user.countries.length() == 0)
+   		return false
+   	else
+   		return true
    	end
-      return true
    end
    
    # Who is allowed to edit country data?

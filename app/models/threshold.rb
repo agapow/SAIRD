@@ -100,6 +100,10 @@ class Threshold < ActiveRecord::Base
 		end
 	end
 
+	def country_view_permitted?
+		true
+	end
+	
 	## Accessors:
 	def name
 		#return "#{virus_type.name} #{season.name} (#{country.name})"
