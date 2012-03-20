@@ -208,12 +208,12 @@ module Plotting
 				{
 					:title => 'current',
 					:data => opts.season_thresholds.nil? ? [] : opts.season_thresholds,
-					:colour => "green",
+					:colour => "red",
 				},
 				{
 					:title => 'extrapolated',
 					:data => opts.extrapolated_thresholds.nil? ? [] : opts.extrapolated_thresholds,
-					:colour => 'yellow',
+					:colour => 'orange',
 				}
 			]
 
@@ -232,9 +232,6 @@ module Plotting
 						.textAlign("left")
 						.textBaseline("middle")
 						.text(t[:title])
-					
-				pp x.class
-
 			}
 			
 #vis.add(pv.Rule)
