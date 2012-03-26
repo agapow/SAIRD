@@ -106,6 +106,10 @@ class Susceptibility < ActiveRecord::Base
 		end
 	end
 	
+	def country_view_permitted?
+		true
+	end
+	
 	## Accessors:
 	def name
 		return isolate_name

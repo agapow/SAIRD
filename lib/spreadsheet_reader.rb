@@ -115,8 +115,18 @@ module SpreadsheetReader
 		
 		# Clean up the title of a column to something reasonable
 		#
+		# If the header is recognised or a synonym, return it in the canonical
+		# i.e. a symbol. Otherwise send back the raw form (a string with space
+		# stripped from flanks)
+		#
 		def clean_col_header (hdr)
-			return hdr.downcase.gsub(' ', '_')
+			# Conversion is:
+			# - strip flanking space
+			# - convert all internal non-alphanumerics to underscores
+			# reduce consequetive underscores to a single one
+			# TODO: strip flanking underscores
+			clean_str = hdr.downcase.strip.gsub(/\W+/, '_')
+			return clean_str.gsub(/_+/, '_')
 		end
 		
 		
@@ -132,8 +142,9 @@ module SpreadsheetReader
 			}
 			# drop case, strip flanking spaces, replace gaps with underscores
 			return headers.collect { |h|
-				h_str = clean_col_header (h.strip())
-				@syn_dict.fetch(h_str, h_str)
+				raw_val = h.strip()
+				h_str = clean_col_header (raw_val)
+				@syn_dict.fetch(h_str, raw_val)
 			}
 		end
 		
