@@ -56,53 +56,55 @@ module SuscepReader
 		:patient_vaccinated => [
 			:vaccinated,
 			:vaccination,
-			:patient_vaccination,
-		]
+			:patient_vaccination
+		],
 		
-		:patient_antivirals = [
+		:patient_antivirals => [
 			:antivirals,
-		]
+			:antiviral,
+			:patient_antiviral
+		],
 			
-		:patient_household = [
+		:patient_household => [
 			:household,
 			:household_contact,
 			:patient_household_contact,
-		]
+		],
+		
 		:patient_disease => [
 			:disease,
 			:disease_progression,
 			:patient_disease_progression,
-		]
+		],
 		
 		:patient_complication => [
 			:patient_disease_complication,
 			:disease_complication,
-		]
+		],
 		
 		:patient_hospitalized => [
 			:hospitalized,
 			:hospitalised,
 			:patient_hospitalised,
 			:hospital,
-		]
+		],
 		
 		:patient_death => [
 			:patient_dead,
 			:death,
 			:dead,
-		]
+		],
 		
-		
-
-		antivirals            Patient::AntiviralExposure
-		disease_progression   Patient::Progression
 	}
 	
+	PATIENT_COLS = []
+		
 	OTHER_FIELDS.each_pair { |k, v|
 		v.each { |s|
 			COLNAMES[v.to_s] = k
 		}
 		COLNAMES[k.to_s] = k
+		PATIENT_COLS << k
 	}
 	
 	### IMPLEMENTATION ###
@@ -157,18 +159,14 @@ module SuscepReader
 		end
 	
 		def convert_patient_antivirals(raw_val)
-			val = raw_val.strip.downcase()
+			val = raw_val.strip.downcase().gsub(/\s/, '')
 			return {
 				:patienttreated => :patientTreated,
 				:patientpostexposureprophylaxis => :patientPostExposureProphylaxis,
 				:contacttreated => :contactTreated,
-				::contactpostexposureprophylaxis => :contactPostExposureProphylaxis,
-				:patient_treated => :patientTreated,
-				:patient_post_exposure_prophylaxis => :patientPostExposureProphylaxis,
-				:contact_treated => :contactTreated,
-				::contact_post_exposure_prophylaxis => :contactPostExposureProphylaxis,
+				:contactpostexposureprophylaxis => :contactPostExposureProphylaxis,
 				:n => :no,
-				:no => :no
+				:no => :no,
 				:unknown => :unknown,
 				:"?" => :unknown,
 				:"" => :unknown,

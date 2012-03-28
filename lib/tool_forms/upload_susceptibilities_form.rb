@@ -124,13 +124,37 @@ module ToolForms
 				new_sr.comment = rec[:comment]
 			end
 			
-			# Other fields
-			suscep_entries = []
-			sequences = []
+			# patient fields
+			patient_data = {}
+			seq_resistance_data = {}
 			rec.each_pair { |k,v|
 				if [:isolate_name, :collected, :comment, :season, :pathogen_type].member?(k)
 					next
+				elsif SuscepReader::PATIENT_COLS.member?(k)
+					patient_data[k] = v
+				else
+					seq_resistance_data[k] = v
 				end
+			}
+
+			new_sr.susceptibility_entries, new_sr.susceptibility_sequences =
+				build_pheno_geno(seq_resistance_data)
+				
+			new_patient = build_patient(patient_data)
+			if ! new_patient.nil?
+				new_sr.patients << new_patient
+			end
+			
+			## Postconditions & return:
+			return new_sr
+		end
+		
+		
+		def self.build_pheno_geno(rec)
+			suscep_entries = []
+			sequences = []
+			rec.each_pair { |k,v|
+				
 				
 				if [nil, ''].member?(v)
 					next
@@ -161,13 +185,74 @@ module ToolForms
 					raise StandardError, "unrecognised gene or resistance '#{k}'"
 				end
 			}
-			
-			new_sr.susceptibility_entries = suscep_entries
-			new_sr.susceptibility_sequences = sequences
-			
-			## Postconditions & return:
-			return new_sr
+			return suscep_entries, sequences
 		end
+
+		def self.build_patient(rec)
+			passed_fields = {}
+			rec.each_pair { |k,v|
+				if ! [nil, ''].member(v)
+					passed_fields[k] = v
+				end
+			}
+			if passed_fields.length() == 0
+				return nil
+			else
+				new_p = Patient.new()
+				
+				passed_fields.each_pair { |k,v|
+					if k == :patient_date_of_birth
+						new_p.date_of_birth = v
+					elsif k == :patient_date_of_illness
+						new_p.date_of_illness = v
+					elsif k == :patient_gender
+						new_p.gender = v
+					elsif k ==  :patient_location
+						new_p.location = v
+					elsif k ==  :patient_vaccinated
+						new_p.vaccinated = v
+					elsif k ==  :patient_antivirals
+						new_p.antivirals = v
+					elsif k ==  :patient_household
+						new_p.household_contact = v
+					elsif k ==  :patient_disease
+						new_p.disease_progression = v
+					elsif k ==  :patient_complication
+						new_p.disease_complication = v
+					elsif k ==  :patient_hospitalized
+						new_p.hospitalized = v
+					elsif k ==  :patient_death
+						new_p.death = v
+					else
+						# TODO: raise error
+					end
+				}
+				if ! [nil, ''].member(rec[:patient_date_of_birth])
+					
+				end
+				
+			end
+			
+			
+			
+
+		
+			gender                Patient::Gender
+			date_of_illness       :date
+			location              :string
+			vaccinated            Patient::TriState
+			antivirals            Patient::AntiviralExposure
+			household_contact     Patient::TriState
+			disease_progression   Patient::Progression
+			disease_complication  :string
+			hospitalized          Patient::TriState
+			death                 Patient::TriState
+			
+			
+				
+			return nil
+		end
+
 		
 	end
 

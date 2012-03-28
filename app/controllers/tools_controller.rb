@@ -33,9 +33,12 @@ def process_form(tf, req)
 	# - only process form if there has been a submission, otherwise results are nil
 	results = nil
 	errors = []
+	# NOTE: we do this because there's a weird problem where error messages 
+	# seem to be cached. So we explicitly clear it out. A session thing maybe?
 	pp "FLASh LOOKS LIKE THIS"
 	pp flash
 	pp flash[:error]
+	flash[:error] = nil
 	if ! req.parameters['_submit'].nil?
 		# check for errors in parameters and clean them up
 		conv_params, errors = tf.is_valid?(req.parameters)
