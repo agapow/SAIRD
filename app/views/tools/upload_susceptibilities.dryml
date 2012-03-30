@@ -3,13 +3,23 @@
 
 	<tool-form-fields:>
 
+      <%
+      if current_user.guest?
+          cntries = []
+      elsif current_user.administrator?
+          cntries = Country.all()
+      else
+          cntries = current_user.countries
+      end
+      %>
+		
 		<table class="field-list">
 			<form-field type="file" name="spreadsheet"
 				help="An Excel (.xls or .xls) file in the described format."
 			/>
 			<form-field name="country" title="Country" type="selectone"
 				help="For what country is this data being lodged" 
-				options="&current_user.countries.collect { |c| [c.name, c.id] }"
+				options="&cntries.collect { |c| [c.name, c.id] }"
 			/>
 			<form-field name="dryrun" title="Dry-run" type="boolean"
 				value="0" help="Test the format of your file, but do not save data." />
