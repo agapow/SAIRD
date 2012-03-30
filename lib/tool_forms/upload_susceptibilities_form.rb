@@ -151,6 +151,7 @@ module ToolForms
 		
 		
 		def self.build_pheno_geno(rec)
+			pp "ENTERINg BUILD GENO PHENO"
 			suscep_entries = []
 			sequences = []
 			rec.each_pair { |k,v|
@@ -175,8 +176,33 @@ module ToolForms
 					suscep_entries << suscep_entry
 		
 				elsif ! gen.nil?
+					pp "ENTERERING MUTATIONS"
 					mutations = v.split(',').collect { |m|
-						SequenceMutation.new(:description => m.strip)
+						pp "mutations"
+						pp m
+						
+						mut = m.strip.upcase.split(/\s+/, 2).collect { |s| s.strip }
+						pp mut
+						mut_desc = mut[0]
+						if mut_desc.match(/^[A-Z]?\d+[A-Z]$/).nil?
+							raise StandardError, "error in mutation description for '#{m}', must match format [X]123Y [45%]"
+						end
+						if mut.length == 1
+							# no percent
+							pp "MAKING MUTATION JUST DESC"
+
+							SequenceMutation.new(:description => mut_desc)
+						else
+							mut_percent_match = mut[1].match(/\A(\d+)\%?\Z/)
+							if mut_percent_match.nil?
+								raise StandardError, "error in mutation percent for '#{m}', must match format [X]123Y [45%]"
+							else
+								mut_percent = mut_percent_match[1].to_i
+								pp "MAKING MUTATION WITH PORP"
+								SequenceMutation.new(:description => mut_desc,
+									:magnitude => mut_percent)
+							end
+						end
 					}
 					suscep_seq = SusceptibilitySequence.new(:gene => gen,
 						:sequence_mutations => mutations)
@@ -185,6 +211,8 @@ module ToolForms
 					raise StandardError, "unrecognised gene or resistance '#{k}'"
 				end
 			}
+		pp "LEAVING BUILD GENO PHENO"
+
 			return suscep_entries, sequences
 		end
 
@@ -227,30 +255,10 @@ module ToolForms
 						# TODO: raise error
 					end
 				}
-				if ! [nil, ''].member(rec[:patient_date_of_birth])
-					
-				end
+				
+				return new_p
 				
 			end
-			
-			
-			
-
-		
-			gender                Patient::Gender
-			date_of_illness       :date
-			location              :string
-			vaccinated            Patient::TriState
-			antivirals            Patient::AntiviralExposure
-			household_contact     Patient::TriState
-			disease_progression   Patient::Progression
-			disease_complication  :string
-			hospitalized          Patient::TriState
-			death                 Patient::TriState
-			
-			
-				
-			return nil
 		end
 
 		

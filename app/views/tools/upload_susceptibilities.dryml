@@ -15,7 +15,7 @@
 		
 		<table class="field-list">
 			<form-field type="file" name="spreadsheet"
-				help="An Excel (.xls or .xls) file in the described format."
+				help="An Excel (.xls or .xlsx) file in the described format."
 			/>
 			<form-field name="country" title="Country" type="selectone"
 				help="For what country is this data being lodged" 
