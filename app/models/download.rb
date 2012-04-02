@@ -19,8 +19,6 @@ class Download < ActiveRecord::Base
 	# Check that a file is actually attached by looking for file name.
 	#
 	def clean_file_file_name (d)
-		print d
-		print "***"
 		if ! d
 			errors.add('file', 'need to attach a file')
 		end
@@ -32,7 +30,13 @@ class Download < ActiveRecord::Base
 	# This is because people can sign themselves up, and we want only "checked"
 	# users to upload.
 	def create_permitted?
-		acting_user.signed_up? and (0 < acting_user.countries.length())
+		if acting_user.guest?
+			false
+		elsif acting_user.administrator?
+			true
+		else
+			return (0 < acting_user.countries.length())
+		end
 	end
 
 	def update_permitted?

@@ -97,7 +97,7 @@ module Plotting
 			if ! opts.extrapolated_thresholds.nil?
 			   possible_range.concat (opts.extrapolated_thresholds)
 			end
-	      y_bounds = bounds(possible_range)
+	      y_bounds = bounds(possible_range, :log => @log)
 	      
 	      # make area for plotting
 	      # ???: adhoc values for left, etc. set padding for labels

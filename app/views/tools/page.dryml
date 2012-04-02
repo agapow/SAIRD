@@ -57,15 +57,23 @@ elsewhere.
 				<%# put the form here %>
 				<div class="tool-form">
 					<%
+					    pp "URLS!!!!"
+						 pp request.url
+						 pp request.request_uri
 						attrs_hsh = {
-							:action => "#{request.url}",
+							:action => "#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '')}#{request.request_uri}",
 							:method => this.form_method,
 						}
 						if this.enctype_multipart?
 							attrs_hsh[:enctype] = "multipart/form-data"
 						end
 						
+						
 					-%>
+               <%- "<p>#{ENV.fetch('RAILS_RELATIVE_URL_ROOT', '')}</p>" %>
+               <%- "<p>#{request.url}</p>" %>
+               <%- "<p>#{request.request_uri}</p>" %>
+					
 					<form merge-attrs="&attrs_hsh">
 						<div param="tool-form-fields">
 							THIS IS WHERE THE FORM FIELDS GO

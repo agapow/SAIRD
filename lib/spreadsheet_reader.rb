@@ -60,7 +60,7 @@ module SpreadsheetReader
 			if file_type == 'xls'
 				@wbook = Excel.new(tmpfile.path)
 			elsif file_type == 'xlsx'
-				@wbook = ExcelX.new(tmpfile.path)
+				@wbook = Excelx.new(tmpfile.path)
 			else
 				raise ArgumentError("unrecognised filetype '#{file_type}'")
 			end

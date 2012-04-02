@@ -242,7 +242,7 @@ module ToolForms
 				svg = pltr.render_data([['', inliers]],
 					:season_thresholds => season_thresholds,
 					:extrapolated_thresholds => extrap_thresholds,
-					:outliers => outliers,
+					:outliers => a[:outliers],
 				)
 				
 				svg_path = "#{graphs_dir}#{base_plot_name}-#{a[:name]}.svg"

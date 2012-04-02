@@ -10,7 +10,7 @@ TODO: check links.
     <ul>
 	<nav-item href="/docs">About &amp; help</nav-item>
 	<nav-item href="http://www.hpa.org.uk/"><hosted-logo /></nav-item>
-	<nav-item href="/docs/contact">Contact</nav-item>
+	<nav-item href="mailto:bioinformatics@hpa.org.uk?subject=SAIRD">Contact</nav-item>
     </ul>
 </def>
 

@@ -35,14 +35,10 @@ def process_form(tf, req)
 	errors = []
 	# NOTE: we do this because there's a weird problem where error messages 
 	# seem to be cached. So we explicitly clear it out. A session thing maybe?
-	pp "FLASh LOOKS LIKE THIS"
-	pp flash
-	pp flash[:error]
-	flash[:error] = nil
+
 	if ! req.parameters['_submit'].nil?
 		# check for errors in parameters and clean them up
 		conv_params, errors = tf.is_valid?(req.parameters)
-		pp req.parameters
 		# if we get parameters back, it's okay, process it
 		if errors.size() == 0
 			results, errors = tf.process(conv_params)

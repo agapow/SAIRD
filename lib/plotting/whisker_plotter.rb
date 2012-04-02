@@ -91,7 +91,7 @@ module Plotting
 			if ! opts.extrapolated_thresholds.nil?
 			   possible_range.concat opts.extrapolated_thresholds
 			end
-	      bounds = bounds(possible_range)
+	      bounds = bounds(possible_range, :log => @log)
 	      pp "The bounds are #{bounds}"
 	      plot_range = bounds[1] - bounds[0]
 	
@@ -136,8 +136,7 @@ module Plotting
 	      vis.add(pv.Rule)
 	         .data(vert.ticks())  
 	         .bottom(lambda {|d| vert.scale(d)})                             
-	         .strokeStyle(lambda { |d| label_ticks.member?(d) ?  "blue" : "lightblue" })
-	         .line_width(0.5)
+	         .strokeStyle(lambda {|d| d!= vert.ticks()[0] ? "#eee" : "#000"})
 	         .antialias(true)
 	         .add(pv.Label)                                      
 	            .left(-5)                                           
