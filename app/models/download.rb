@@ -44,7 +44,7 @@ class Download < ActiveRecord::Base
 	end
 
 	def view_permitted?(field)
-		true
+		acting_user.signed_up? and (acting_user.administrator? or (0 < acting_user.countries.length()))
 	end
 
 end

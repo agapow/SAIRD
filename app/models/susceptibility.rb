@@ -56,15 +56,17 @@ class Susceptibility < ActiveRecord::Base
 		end
 		
 		# check user has permission for country
-		if acting_user.guest?
-			errors.add('country',
-				'you do not have permissions to create records for this or any country')
-		elsif (! acting_user.administrator?)
-			pp country
-			pp acting_user.countries
-			if (! acting_user.countries.member? (country))
+		if ! acting_user.nil? 
+			if acting_user.guest?
 				errors.add('country',
-					'you do not have permissions to create records for this country')
+					'you do not have permissions to create records for this or any country')
+			elsif (! acting_user.administrator?)
+				pp country
+				pp acting_user.countries
+				if (! acting_user.countries.member? (country))
+					errors.add('country',
+						'you do not have permissions to create records for this country')
+				end
 			end
 		end
 		

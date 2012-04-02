@@ -123,6 +123,9 @@ module SuscepReader
 		end
 		
 		def convert_patient_gender (raw_val)
+			if ['', nil].member?(raw_val)
+				return nil
+			end
 			val = raw_val.strip.downcase()
 			return {
 				:m => :male,
@@ -133,6 +136,9 @@ module SuscepReader
 		end
 		
 		def convert_tristate (raw_val)
+			if ['', nil].member?(raw_val)
+				return nil
+			end
 			val = raw_val.strip.downcase()
 			return {
 				:y => :yes,
@@ -159,6 +165,9 @@ module SuscepReader
 		end
 	
 		def convert_patient_antivirals(raw_val)
+			if ['', nil].member?(raw_val)
+				return nil
+			end
 			val = raw_val.strip.downcase().gsub(/\s/, '')
 			return {
 				:patienttreated => :patientTreated,
@@ -174,6 +183,9 @@ module SuscepReader
 		end
 		
 		def convert_patient_patient_disease(raw_val)
+			if ['', nil].member?(raw_val)
+				return nil
+			end
 			val = raw_val.strip.downcase()
 			return {
 				:complicated => :complicated,

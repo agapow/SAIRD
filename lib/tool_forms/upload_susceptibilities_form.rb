@@ -85,8 +85,18 @@ module ToolForms
 					if params[:dryrun]
 						results << "Report #{rec[:isolate_name]} read successfully"
 					else
+						prev_recs = Susceptibility.scoped(:conditions => {:isolate_name => new_sr.isolate_name})
+						if 0 < prev_recs.length
+							raise StandardError, "there is already a susceptibility entry with that name"
+						end
 						new_sr.save()
-						results << "Report #{rec[:isolate_name]} saved successfully"
+						if new_sr.errors.empty?
+							results << "Report #{rec[:isolate_name]} saved successfully"
+						else
+							new_sr.errors.full_messages.each { |m|
+								errors << "Problem with report #{rec[:isolate_name]}: #{m}"
+							}
+						end
 					end
 				rescue StandardError => err
 					errors << "Problem with report #{rec[:isolate_name]}: #{err}"
@@ -219,7 +229,7 @@ module ToolForms
 		def self.build_patient(rec)
 			passed_fields = {}
 			rec.each_pair { |k,v|
-				if ! [nil, ''].member(v)
+				if ! [nil, ''].member?(v)
 					passed_fields[k] = v
 				end
 			}

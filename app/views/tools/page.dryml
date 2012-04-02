@@ -58,7 +58,7 @@ elsewhere.
 				<div class="tool-form">
 					<%
 						attrs_hsh = {
-							:action => "",
+							:action => "#{request.url}",
 							:method => this.form_method,
 						}
 						if this.enctype_multipart?

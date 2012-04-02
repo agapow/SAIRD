@@ -206,12 +206,12 @@ module Plotting
 
 			threshold_data = [
 				{
-					:title => 'current',
+					:title => 'user-defined',
 					:data => opts.season_thresholds.nil? ? [] : opts.season_thresholds,
 					:colour => "red",
 				},
 				{
-					:title => 'extrapolated',
+					:title => 'calculated',
 					:data => opts.extrapolated_thresholds.nil? ? [] : opts.extrapolated_thresholds,
 					:colour => 'orange',
 				}
