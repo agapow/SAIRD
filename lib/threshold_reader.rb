@@ -13,7 +13,7 @@ module ThresholdReader
 	
 	### CONSTANTS & DEFINES	
 	
-	COLNAMES = {
+	THRESH_SYNONYMS = {
 		"pathogen_type" => :pathogen_type,
 		"name" => :pathogen_type,
 		"pathogen" => :pathogen_type,
@@ -28,11 +28,9 @@ module ThresholdReader
 	
 	class ExcelReader < SpreadsheetReader::ExcelReader
 		
-		# Clean up the title of a column to something reasonable
-		#
-		# If the header is one of the essentials
-		def clean_col_header (hdr)
-			return COLNAMES.fetch(hdr.downcase.gsub(' ', '_'), hdr)
+		def initialize(infile, file_type)
+			super(infile, file_type)
+			@syn_dict = THRESH_SYNONYMS
 		end
 		
 	end

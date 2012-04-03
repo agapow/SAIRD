@@ -32,7 +32,6 @@ module ToolForms
 		
 		## Services:
 		def self.is_valid?(params)
-			pp "**** params #{params}"
 			errors = []
 			clean_params = {}
 			if params['spreadsheet'].nil?
@@ -44,6 +43,7 @@ module ToolForms
 			clean_params[:country] = Country.find_by_id(params['country'])
 			clean_params[:season] = Season.find_by_id(params['season'])
 			clean_params[:dryrun] = params['dryrun'] != "0"
+			clean_params[:overwrite] = params['overwrite'] != "0"
 			
 			# check stuff
 			if clean_params[:country].nil? then errors << "unknown country" end
@@ -58,6 +58,8 @@ module ToolForms
 			## Preconditions & preparation:
 			errors = []
 			results = []
+			pp '----', "PARAMS", params
+				
 			## Main:
 			# figure out file type
 			sheet_file = params[:spreadsheet]
@@ -74,11 +76,16 @@ module ToolForms
 			rdr = ThresholdReader::ExcelReader.new(sheet_file.local_path, file_ext)
 			rdr.read() { |rec|
 				begin
-					pp rec
+					pp '*', 'THRESHOLD REC', rec
 					new_threshold = build_threshold(rec)
 					new_threshold.country = params[:country]
 					new_threshold.season = params[:season]
-						
+					
+					pp '*', 'THRESHOLD FOR DB', new_threshold.pathogen_type, new_threshold.country, new_threshold.season
+					new_threshold.thresholdentries.each { |te|
+						pp "#{te.resistance}: #{te.minor}-#{te.major}"
+					}
+					
 					new_threshold.validate()
 					pp new_threshold.errors
 					if params[:dryrun]
@@ -99,6 +106,10 @@ module ToolForms
 		end
 		
 		def self.build_threshold(rec)
+			## Preconditions:
+			pp '*', 'BUILD THRESH REC', rec
+			
+			## Main:
 			if [nil, ''].member?(rec[:pathogen_type])
 				raise StandardError, 'needs an pathogen type'
 			end
@@ -106,11 +117,16 @@ module ToolForms
 			
 			# Other fields
 			threshold_entries = []
+				
+			# for each column
 			rec.each_pair { |k,v|
+				
+				# skip pathogen col of course
 				if [:pathogen_type].member?(k)
 					next
 				end
 				
+				# skip empty columns
 				if [nil, ''].member?(v)
 					next
 				end
@@ -121,30 +137,40 @@ module ToolForms
 					:conditions => [ "lower(agent) = ?", k.downcase() ]
 				)
 						
-				if ! res.nil?
-					new_entry = Thresholdentry.new(
-						:resistance => res,
-					)
-					
-					# now parse cutoffs
-					pp "HERE"
-					pp v
-					cutoffs = v.gsub('-',',').split(',').collect { |c|
-						c.strip.to_f()
-					}
-					pp cutoffs
-					if cutoffs.length != 2
-						raise StandardError, "malformed cutoffs, need 2 not #{len(cutoffs)}"
-					else
-						new_entry.minor = cutoffs[0]
-						new_entry.major = cutoffs[1]
-					end
-					
-					pp new_entry
-					threshold_entries << new_entry
-				else
-					raise StandardError, "unrecognised resistance '#{k}'"
+				if res.nil?
+					raise StandardError, "unrecognised resistance or drug '#{k}'"
 				end
+				
+				# now parse cutoffs
+				if v.class != String
+					raise StandardError, "unrecognised Excel format in threshold values for '#{k}', must be text"
+				end
+				cutoffs = v.gsub('-',',').split(',').collect { |c|
+					c.strip
+				}
+				pp cutoffs
+				if cutoffs.length != 2
+					raise StandardError, "unrecognised format in threshold values for '#{k}', need two in format 'X-Y'"
+				end
+				cutoff_floats = cutoffs.collect { |c|
+					if c.match(/\A[0-9]*\.?[0-9]+\Z/).nil?
+						pp "REGEX FORMAT ERROR: ", c
+						raise StandardError, "unrecognised format in threshold values for '#{k}', must be floating-point values"
+					else
+						c.to_f
+					end
+				}
+				pp cutoff_floats
+				if cutoff_floats[1] <= cutoff_floats[0]
+					raise StandardError, "unrecognised format in threshold values for '#{k}', major value must be more than minor"
+				end
+				
+					
+				threshold_entries << Thresholdentry.new(
+					:resistance => res,
+					:minor => cutoff_floats[0],
+					:major => cutoff_floats[1]
+				)
 			}
 			
 			new_threshold.thresholdentries = threshold_entries

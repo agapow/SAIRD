@@ -55,8 +55,6 @@ class Threshold < ActiveRecord::Base
 				errors.add('country',
 					'you do not have permissions to create records for this or any country')
 			elsif (! acting_user.administrator?)
-				pp country
-				pp acting_user.countries
 				if (! acting_user.countries.member? (country))
 					errors.add('country',
 						'you do not have permissions to create records for this country')

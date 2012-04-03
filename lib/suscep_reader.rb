@@ -118,7 +118,6 @@ module SuscepReader
 		
 		def convert_season (raw_arg)
 			season = raw_arg.to_i()
-			print "The season is #{season}"
 			return season
 		end
 		
