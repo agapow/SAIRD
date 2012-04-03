@@ -12,7 +12,8 @@ class Download < ActiveRecord::Base
 	end
 
 	belongs_to :uploader, :class_name => "User", :creator => true
-	has_attached_file :attachment
+	has_attached_file :attachment,
+		:path => ENV.fetch('DOWNLOAD_ATTACHMENT_PATH', ':rails_root/public:url')
 
 	validates_attachment_presence :attachment
 	

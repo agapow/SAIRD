@@ -1,7 +1,8 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
 ENV["RAILS_RELATIVE_URL_ROOT"] = "/saird"
-	
+ENV["DOWNLOAD_ATTACHMENT_PATH"] = '/home/f0/html/saird'
+
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
 config.cache_classes = true

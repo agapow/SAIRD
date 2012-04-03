@@ -77,27 +77,69 @@ module ToolForms
 			rdr.read() { |rec|
 				begin
 					pp '*', 'THRESHOLD REC', rec
-					new_threshold = build_threshold(rec)
-					new_threshold.country = params[:country]
-					new_threshold.season = params[:season]
+
+					new_thr = build_threshold(rec)
+					new_thr.country = params[:country]
+					new_thr.season = params[:season]
 					
-					pp '*', 'THRESHOLD FOR DB', new_threshold.pathogen_type, new_threshold.country, new_threshold.season
-					new_threshold.thresholdentries.each { |te|
-						pp "#{te.resistance}: #{te.minor}-#{te.major}"
-					}
-					
-					new_threshold.validate()
-					pp new_threshold.errors
-					if params[:dryrun]
-						results << "Threshold for #{rec[:pathogen_type]} read successfully"
-					else
-						new_threshold.save()
-						results << "Threshold for #{rec[:pathogen_type]} saved successfully"
+					# TODO: will this error out if there is a previous one?
+					new_thr.validate()
+					if ! new_thr.errors.empty?
+						raise StandardError, new_thr.errors.full_messages[0]
 					end
+					
+					thr_name = "#{new_thr.country} / #{new_thr.season} / #{new_thr.pathogen_type}"
+					pp '----', "THRESHOLD #{thr_name}"
+					new_thr.thresholdentries.each { |thr_ent|
+						pp "#{thr_ent.resistance}: #{thr_ent.minor}-#{thr_ent.major}"
+					}
+				
+					# check if record already exists
+					# note isolate name must be globally unique
+					old_thr = Threshold.scoped(:conditions => {
+						:country_id => new_thr.country_id,
+						:season_id => new_thr.season_id,
+						:pathogen_type_id => new_thr.pathogen_type_id
+					})
+					if ! old_thr.nil?
+						old_thr = old_thr.all[0]
+					end
+					
+					if params[:dryrun]
+						if old_thr.nil? or params[:overwrite]
+							results << "Row/threshold #{new_thr.pathogen_type} read successfully"
+						else
+							raise StandardError, 'already an threshold for that country / season / pathogen combination'
+						end
+					else
+						if old_thr.nil?
+							thr_to_save = new_thr
+							action_name = "saved"
+						elsif params[:overwrite]
+							# update shit
+							old_thr.description = new_thr.description
+							old_thr.thresholdentries = new_thr.thresholdentries
+	
+							thr_to_save = old_thr
+							action_name = "updated"
+						else
+							raise StandardError, 'already an threshold for that country / season / pathogen combination'
+						end
+	
+						thr_to_save.save()
+						if thr_to_save.errors.empty?
+							results << "Threshold #{rec[:isolate_name]} #{action_name} successfully"
+						else
+							sr_to_save.errors.full_messages.each { |m|
+								errors << "Problem with row/entry #{rec[:isolate_name]}: #{m}"
+							}
+						end
+					end
+					
 				rescue StandardError => err
-					errors << "Problem with threshold for #{rec[:pathogen_type]}: #{err}"
+					errors << "Problem with row/threshold for #{rec[:pathogen_type]}: #{err}"
 				rescue
-					errors << "Unknown problem with threshold for #{rec[:pathogen_type]}"
+					errors << "Unknown problem with row/threshold for #{rec[:pathogen_type]}"
 				end
 			}
 		

@@ -39,8 +39,6 @@ class SusceptibilitySequence < ActiveRecord::Base
 				mutations_seen << t.description
 			end
 		}
-
-		pp raw_args
 		
 		if ((! raw_args['assay_other'].nil?) and (raw_args['assay'] != 'other'))
 			errors.add('assay_other', "should only be provided if assay type is
